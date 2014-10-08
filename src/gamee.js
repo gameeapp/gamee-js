@@ -3,7 +3,9 @@
 var gamee = function(global) {
 	'use strict';
 
-	var gamee, score, noop = function() {};
+	var gamee = {}, 
+		score, 
+		noop = function() {};
 
 	/**
 	 * Score

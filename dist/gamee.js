@@ -34,7 +34,9 @@
 var gamee = function(global) {
 	'use strict';
 
-	var gamee, score, noop = function() {};
+	var gamee = {}, 
+		score, 
+		noop = function() {};
 
 	/**
 	 * Score
@@ -162,6 +164,10 @@ var gamee = gamee || {};
 	Controller.prototype = Object.create(BulletClass.constructor.prototype);
 	Controller.constructor = Controller;
 
+	Controller.prototype.addButton = function(button) {
+		this.buttons[button.key] = button;
+	};
+
 	Controller.prototype.enableKeyboard = function() {
 		var key, button, keyCodes = {}, self = this;
 
@@ -268,6 +274,8 @@ var gamee = gamee || {};
 			return;
 		}
 
+		opts = opts || {};
+
 		controller = new controllerTypes[type]();
 
 		if (opts.enableKeyboard) {
@@ -294,7 +302,7 @@ var gamee = gamee || {};
 
 	// public API
 	gamee.controller = {
-		requrestController: requestController,
+		requestController: requestController,
 		trigger: function() {
 			if (controller) {
 				controller.trigger.apply(controller, arguments); 
