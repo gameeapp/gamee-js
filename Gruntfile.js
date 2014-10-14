@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 		concat: {
 			source: {
 				src: [
-					'<%= app.src %>/native_shim.js', 
+					'<%= app.src %>/gamee_native.js', 
 					'<%= app.src %>/gamee.js', 
 					'<%= app.src %>/controller.js'
 				],
@@ -44,6 +44,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('default', [
+		'jshint',
 		'concat:source',
 		'uglify',
 		'concat:mins',

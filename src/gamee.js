@@ -18,7 +18,7 @@ var gamee = function(global) {
 		set: function(newScore) {
 			score = newScore;
 
-			global.$gameeNative.setScore(score);
+			global.$gameeNative.updateScore(score);
 		}
 	});
 

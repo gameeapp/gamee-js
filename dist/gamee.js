@@ -3,16 +3,14 @@
  */
 (function(global) {
 	'use strict';
-
-	if (!global.$gameeNative) {
-		global.$gameeNative = {
+	
+	var gameeNative = {
 			/**
 			 * Update score 
 			 *
 			 * {String} score
 			 */ 
-			updateScore: function(score) {
-			},
+			updateScore: function(score) {},
 
 			/**
 			 * Request controller
@@ -25,8 +23,27 @@
 			 * Game over
 			 */
 			gameOver: function() {}
+		},
+		userAgent = navigator.userAgent.toLowerCase();
+
+	if (
+		/gamee\/[0-9\.]+$/.test(userAgent) ||                            // test for android webview
+		(/safari/.test(userAgent) && /iphone|ipod|ipad/.test(userAgent)) // test for iOS webview
+	) {
+		gameeNative.updateScore = function(score) {
+			window.location.href = "gamee://score/" + score;
+		};
+
+		gameeNative.requestController = function(type) {
+			window.location.href = "gamee://request-controller/" + type;
+		};
+
+		gameeNative.gameOver = function() {
+			window.location.href = "gamee://game-over";
 		};
 	}
+
+	global.$gameeNative = gameeNative;
 }(this));
 
 // var $gameeNative = require('./gamee_native.js');
@@ -49,7 +66,7 @@ var gamee = function(global) {
 		set: function(newScore) {
 			score = newScore;
 
-			global.$gameeNative.setScore(score);
+			global.$gameeNative.updateScore(score);
 		}
 	});
 
