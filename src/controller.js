@@ -157,7 +157,7 @@ var gamee = gamee || {};
 	function FourButtonController() {
 		Controller.call(this);
 
-		this.addButton(new Button('top', 38));   // top arrow
+		this.addButton(new Button('up', 38));   // up arrow
 		this.addButton(new Button('left', 37));  // left arrow
 		this.addButton(new Button('right', 39)); // right arrow
 		this.addButton(new Button('A', 32));     // spacebar
@@ -168,7 +168,7 @@ var gamee = gamee || {};
 	function FiveButtonController() {
 		Controller.call(this);
 
-		this.addButton(new Button('top', 38));   // top arrow
+		this.addButton(new Button('up', 38));   // up arrow
 		this.addButton(new Button('left', 37));  // left arrow
 		this.addButton(new Button('right', 39)); // right arrow
 		this.addButton(new Button('down', 40));  // down arrow
@@ -180,7 +180,7 @@ var gamee = gamee || {};
 	function SixButtonController() {
 		Controller.call(this);
 
-		this.addButton(new Button('top', 38));   // top arrow
+		this.addButton(new Button('up', 38));   // up arrow
 		this.addButton(new Button('left', 37));  // left arrow
 		this.addButton(new Button('right', 39)); // right arrow
 		this.addButton(new Button('down', 40));  // down arrow
