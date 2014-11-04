@@ -22,13 +22,19 @@
 			/**
 			 * Game over
 			 */
-			gameOver: function() {}
+			gameOver: function() {},
+
+			/**
+			 * Game start
+			 */ 
+			gameStart: function() {}
 		},
+
 		userAgent = navigator.userAgent.toLowerCase();
 
 	if (
-		/gamee\/[0-9\.]+$/.test(userAgent) ||                            // test for android webview
-		(/safari/.test(userAgent) && /iphone|ipod|ipad/.test(userAgent)) // test for iOS webview
+		/gamee\/[0-9\.]+$/.test(userAgent) || // test for android webview
+		/iphone|ipod|ipad/.test(userAgent)    // test for iOS webview
 	) {
 		gameeNative.updateScore = function(score) {
 			window.location.href = "gamee://score/" + score;
@@ -40,6 +46,10 @@
 
 		gameeNative.gameOver = function() {
 			window.location.href = "gamee://game-over";
+		};
+
+		gameeNative.gameStart = function() {
+			window.location.href = "gamee://game-start";
 		};
 	}
 
