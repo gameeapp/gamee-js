@@ -43,9 +43,11 @@ var gamee = function(global) {
 		global.$gameeNative.pause();
 	};
 
-	gamee.onResume = noop;
-	gamee.onPause = noop;
-	gamee.onStop = noop;
+	gamee.onResume  = noop;
+	gamee.onPause   = noop;
+	gamee.onUnpause = noop;
+	gamee.onStop    = noop;
+	gamee.onRestart = noop;
 	
 	return gamee;
 }(this);
