@@ -87,6 +87,13 @@ var gamee = function(global) {
 		global.$gameeNative.gameOver();
 	};
 
+	/**
+	 * game start
+	 */
+	gamee.gameStart = function() {
+		global.$gameeNative.gameStart();
+	};
+
 	/** 
 	 * pause
 	 */
