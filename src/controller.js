@@ -216,7 +216,7 @@ var gamee = gamee || {};
 			self.trigger('touchcancel', data);
 		});
 	}
-	TouchController.prototype = Object.create(SimpleTouchController.prototype);
+	TouchController.prototype = Object.create(TouchController.prototype);
 	TouchController.prototype.constructor = TouchController;
 
 	function requestController(type, opts) {
