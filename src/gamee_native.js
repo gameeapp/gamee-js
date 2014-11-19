@@ -4,7 +4,8 @@
 (function(global) {
 	'use strict';
 	
-	var gameeNative = {
+	var simulator,
+		gameeNative = {
 			/**
 			 * Update score 
 			 *
@@ -50,6 +51,26 @@
 
 		gameeNative.gameStart = function() {
 			window.location.href = "gamee://game-start";
+		};
+	} else if (
+		window.parent && window.parent.gameeSimulator
+	) {
+		simulator = window.parent.gameeSimulator;
+
+		gameeNative.updateScore = function(score) {
+			simulator.updateScore(score);
+		};
+
+		gameeNative.requestController = function(type) {
+			simulator.requestController(type);
+		};
+
+		gameeNative.gameOver = function() {
+			simulator.gameOver();
+		};
+
+		gameeNative.gameStart = function() {
+			simulator.gameStart();
 		};
 	}
 

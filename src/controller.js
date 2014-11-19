@@ -15,7 +15,8 @@ var gamee = gamee || {};
 		'TwoButtons': TwoButtonController,
 		'FourButtons': FourButtonController,
 		'FiveButtons': FiveButtonController,
-		'SixButtons': SixButtonController
+		'SixButtons': SixButtonController,
+		'Touch': TouchController
 	};
 
 	function Button(key, keyCode) {
@@ -189,6 +190,34 @@ var gamee = gamee || {};
 	}
 	SixButtonController.prototype = Object.create(Controller.prototype);
 	SixButtonController.prototype.constructor = SixButtonController;
+
+	function TouchController() {
+		var self = this;
+
+		Controller.call(this);
+
+		this.on("$touchstart", function(data) {
+			self.trigger('touchstart', data);
+		});
+
+		this.on("$touchend", function(data) {
+			self.trigger('touchend', data);
+		});
+
+		this.on("$touchmove", function(data) {
+			self.trigger('touchmove', data);
+		});
+
+		this.on("$touchleave", function(data) {
+			self.trigger('touchleave', data);
+		});
+
+		this.on("$touchcancel", function(data) {
+			self.trigger('touchcancel', data);
+		});
+	}
+	TouchController.prototype = Object.create(SimpleTouchController.prototype);
+	TouchController.prototype.constructor = TouchController;
 
 	function requestController(type, opts) {
 		var btn;
