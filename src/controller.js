@@ -7,8 +7,9 @@ var gamee = gamee || {};
 	'use strict';
 
 	var BulletClass = Bullet.constructor,
-		controller, // global controller
-		controllerTypes;
+		mainController, // global gamee controller 
+		controllerTypes,
+		additionalController;
 
 	controllerTypes = {
 		'OneButton': OneButtonController,
@@ -219,12 +220,11 @@ var gamee = gamee || {};
 	TouchController.prototype = Object.create(TouchController.prototype);
 	TouchController.prototype.constructor = TouchController;
 
-	function requestController(type, opts) {
-		var btn;
+	function getController(type, opts) {
+		var btn, controller;
 
 		if (!controllerTypes[type]) {
-			console.error('Unsupported controller type, ' + type);
-			return;
+			throw new Error('Unsupported controller type, ' + type);
 		}
 
 		opts = opts || {};
@@ -241,8 +241,6 @@ var gamee = gamee || {};
 			}
 		}
 
-		global.$gameeNative.requestController(type);
-
 		return controller;
 
 /*		return {
@@ -253,14 +251,30 @@ var gamee = gamee || {};
 		} */
 	}
 
+
+	function requestController(type, opts) {
+		var controller = getController(type, opts);
+
+		global.$gameeNative.requestController(type);
+		mainController = controller;
+		
+		return controller;
+	}
+
+	// currently only for keyboard alternate bindings
+	additionalController = getController;
+
 	// public API
 	gamee.controller = {
 		requestController: requestController,
+		additionalController: additionalController,
 		trigger: function() {
-			if (controller) {
-				controller.trigger.apply(controller, arguments); 
+			var i;
+
+			if (mainController) {
+				mainController.trigger.apply(controller, arguments); 
 			} else {
-				console.error('No controller present');
+				throw new Error('No controller present');
 			}
 		}
 	};
