@@ -272,7 +272,7 @@ var gamee = gamee || {};
 			var i;
 
 			if (mainController) {
-				mainController.trigger.apply(controller, arguments); 
+				mainController.trigger.apply(mainController, arguments); 
 			} else {
 				throw new Error('No controller present');
 			}
