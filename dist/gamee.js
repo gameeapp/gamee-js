@@ -172,11 +172,15 @@ var gamee = function(global) {
 		global.$gameeNative.pause();
 	};
 
+	gamee.restart = function() {
+	};
+
 	gamee.onResume  = noop;
 	gamee.onPause   = noop;
 	gamee.onUnpause = noop;
 	gamee.onStop    = noop;
 	gamee.onRestart = noop;
+	gamee.onMute    = noop;
 	
 	return gamee;
 }(this);
