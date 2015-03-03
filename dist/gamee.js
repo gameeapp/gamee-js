@@ -27,7 +27,9 @@
 			/**
 			 * Game start
 			 */ 
-			gameStart: function() {}
+			gameStart: function() {},
+
+			type: 'no-gamee'
 		},
 		userAgent = navigator.userAgent.toLowerCase();
 		
@@ -50,6 +52,8 @@
 			gameeNative.gameStart = function() {
 				window.location.href = "gamee://game-start";
 			};
+
+			gameeNative.type = 'gamee-mobile';
 		}
 
 		/**
@@ -73,6 +77,8 @@
 			gameeNative.gameStart = function() {
 				simulator.gameStart();
 			};
+
+			gameeNative.type = 'gamee-simulator';
 		}
 
 		/**
@@ -97,6 +103,8 @@
 			gameeNative.gameStart = function() {
 				gameeUI.gameStart();
 			};
+
+			gameeNative.type = 'gamee-web';
 		}
 
 
@@ -111,8 +119,9 @@
 
 	} else if (window.parent && window.parent.gameeSimulator) {
 		gameeSimulator(gameeNative);
+
 	} else {
-		console.error('No gamee enviroment');
+		console.error('No gamee enviroment matched');
 	}
 
 	global.$gameeNative = gameeNative;
