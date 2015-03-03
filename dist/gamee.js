@@ -28,7 +28,8 @@
 			 * Game start
 			 */ 
 			gameStart: function() {}
-		};
+		},
+		userAgent = navigator.userAgent.toLowerCase();
 		
 		/**
 		 * Gamee Mobile App 
@@ -98,7 +99,6 @@
 			};
 		}
 
-		userAgent = navigator.userAgent.toLowerCase();
 
 	if (
 		/gamee\/[0-9\.]+$/.test(userAgent) || // test for android webview
