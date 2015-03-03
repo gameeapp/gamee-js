@@ -105,8 +105,7 @@ var gamee = gamee || {};
 			}
 		}
 
-		// TODO odstranit zavislost na jQuery/Zepto
-		$(window).on('keydown', function(ev) {
+		gamee._keydown(function(ev) {
 			var button = keyCodes[ev.keyCode];
 
 			if (!button) {
@@ -115,8 +114,9 @@ var gamee = gamee || {};
 
 			ev.preventDefault();
 			self.trigger('keydown', {button: button.key});
-
-		}).on('keyup', function(ev) {
+		});
+		
+		gamee._keyup(function(ev) {
 			var button = keyCodes[ev.keyCode];
 
 			if (!button) {

@@ -85,23 +85,26 @@
 		 * Gamee desktop web view
 		 */
 		function gameeWeb(gameeNative) {
-			var gameeUI = window.parent.gameeUI;
+			var gamee = window.parent.GameeWeb;
 
 			gameeNative.updateScore = function(score) {
-				gameeUI.updateScore(score);
+				gamee.updateScore(score);
 			};
 
 			gameeNative.requestController = function(type) {
-				// TODO dohodnut podporu s vyvojarom
-				// gameeUI.requestController(type);
+				gamee.requestController(type);
 			};
 
 			gameeNative.gameOver = function() {
-				gameeUI.gameOver();
+				gamee.gameOver();
 			};
 
 			gameeNative.gameStart = function() {
-				gameeUI.gameStart();
+				gamee.gameStart();
+			};
+
+			gameeNative.gamePaused = function() {
+				gamee.gamePaused();
 			};
 
 			gameeNative.type = 'gamee-web';
@@ -114,7 +117,7 @@
 	) {
 		gameeMobile(gameeNative);
 
-	} else if (window.parent && window.parent.gameeUI) {
+	} else if (window.parent && window.parent.GameeWeb) {
 		gameeWeb(gameeNative);
 
 	} else if (window.parent && window.parent.gameeSimulator) {
