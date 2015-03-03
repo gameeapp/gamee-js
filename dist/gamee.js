@@ -165,22 +165,16 @@ var gamee = function(global) {
 		global.$gameeNative.gameStart();
 	};
 
-	/** 
-	 * pause
-	 */
-	gamee.pause = function() {
-		global.$gameeNative.pause();
-	};
-
-	gamee.restart = function() {
-	};
-
 	gamee.onResume  = noop;
 	gamee.onPause   = noop;
-	gamee.onUnpause = noop;
 	gamee.onStop    = noop;
 	gamee.onRestart = noop;
 	gamee.onMute    = noop;
+
+	// *deprecated* for backward compatibility
+	gamee.onUnpause = function() {
+		gamee.onResume();
+	};
 	
 	return gamee;
 }(this);

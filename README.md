@@ -31,7 +31,6 @@ Mimo ovládača má gamee objekt ešte metódy
  * **score** property, ktorá inforumje Gamee, aké je aktualne skóre, tj. pri zavolani gamee.score = gameScore sa updatne aktuálne skóre v Gamee
  * **gameStart()** metóda, ktorá oznámi Gamee, že hráč začal hrať
  * **gameOver()** metóda, ktorá oznámi Gamee, že v hre nastal game over
- * **pause()** indikácia, že hra sa chce pausnuť
 	
  * **onRestart** callback, ktorý sa zavolá, keď užívateľ chce reštartnuť hru
  * **onResume** callback, ktorý sa zavolá, keď sa Gamee dostane z pozadia do popredia (napr. sa hra preruší keď užívatel prijal hovor)
