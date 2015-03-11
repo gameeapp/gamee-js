@@ -8,16 +8,23 @@
 			/**
 			 * Update score 
 			 *
-			 * {String} score
+			 * @param {String} score
 			 */ 
 			updateScore: function(score) {},
 
 			/**
 			 * Request controller
 			 *
-			 * {String} score
+			 * @param {String} score
 			 */
 			requestController: function(type) {},
+
+			/**
+			 * Request additional controller (for desktop)
+			 *
+			 * @param {String} type type of controller
+			 */
+			additionalController: function(type) {},
 
 			/**
 			 * Game over
@@ -85,26 +92,30 @@
 		 * Gamee desktop web view
 		 */
 		function gameeWeb(gameeNative) {
-			var gamee = window.parent.GameeWeb;
+			var gamee = window.parent;
 
 			gameeNative.updateScore = function(score) {
-				gamee.updateScore(score);
+				gamee.postMessage(["score", score], '*');
 			};
 
 			gameeNative.requestController = function(type) {
-				gamee.requestController(type);
+				gamee.postMessage(['request-controller', type], '*');
+			};
+
+			gameeNative.additionalController = function(type) {
+				gamee.postMessage(['additional-controller', type], '*');
 			};
 
 			gameeNative.gameOver = function() {
-				gamee.gameOver();
+				gamee.postMessage(['game-over'], '*');
 			};
 
 			gameeNative.gameStart = function() {
-				gamee.gameStart();
+				gamee.postMessage(['game-start'], '*');
 			};
 
 			gameeNative.gamePaused = function() {
-				gamee.gamePaused();
+				gamee.postMessage(['game-paused'], '*');
 			};
 
 			gameeNative.type = 'gamee-web';
@@ -117,7 +128,7 @@
 	) {
 		gameeMobile(gameeNative);
 
-	} else if (window.parent && window.parent.GameeWeb) {
+	} else if (window.parent) {
 		gameeWeb(gameeNative);
 
 	} else if (window.parent && window.parent.gameeSimulator) {

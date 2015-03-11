@@ -8,16 +8,23 @@
 			/**
 			 * Update score 
 			 *
-			 * {String} score
+			 * @param {String} score
 			 */ 
 			updateScore: function(score) {},
 
 			/**
 			 * Request controller
 			 *
-			 * {String} score
+			 * @param {String} score
 			 */
 			requestController: function(type) {},
+
+			/**
+			 * Request additional controller (for desktop)
+			 *
+			 * @param {String} type type of controller
+			 */
+			additionalController: function(type) {},
 
 			/**
 			 * Game over
@@ -85,26 +92,30 @@
 		 * Gamee desktop web view
 		 */
 		function gameeWeb(gameeNative) {
-			var gamee = window.parent.GameeWeb;
+			var gamee = window.parent;
 
 			gameeNative.updateScore = function(score) {
-				gamee.updateScore(score);
+				gamee.postMessage(["score", score], '*');
 			};
 
 			gameeNative.requestController = function(type) {
-				gamee.requestController(type);
+				gamee.postMessage(['request-controller', type], '*');
+			};
+
+			gameeNative.additionalController = function(type) {
+				gamee.postMessage(['additional-controller', type], '*');
 			};
 
 			gameeNative.gameOver = function() {
-				gamee.gameOver();
+				gamee.postMessage(['game-over'], '*');
 			};
 
 			gameeNative.gameStart = function() {
-				gamee.gameStart();
+				gamee.postMessage(['game-start'], '*');
 			};
 
 			gameeNative.gamePaused = function() {
-				gamee.gamePaused();
+				gamee.postMessage(['game-paused'], '*');
 			};
 
 			gameeNative.type = 'gamee-web';
@@ -117,7 +128,7 @@
 	) {
 		gameeMobile(gameeNative);
 
-	} else if (window.parent && window.parent.GameeWeb) {
+	} else if (window.parent) {
 		gameeWeb(gameeNative);
 
 	} else if (window.parent && window.parent.gameeSimulator) {
@@ -159,19 +170,15 @@ var gamee = function(global) {
 
 	function wrapKeyEvent(fn) {
 		return function(ev) {
-			var code;
+			if (!ev || !ev.keyCode) {
+				if (!ev) {
+					ev = window.event;
+				}
 
-			if (!ev) {
-				ev = window.event;
+				if (ev.which) {
+					ev.keyCode = ev.which;
+				}
 			}
-
-			if (ev.keyCode) {
-				code = ev.keyCode;
-			} else if (ev.which) {
-				code = ev.which;
-			}
-
-			ev.keyCode = code;
 
 			return fn(ev);
 		};
@@ -219,7 +226,7 @@ var gamee = function(global) {
 	gamee.onRestart = noop;
 	gamee.onMute    = noop;
 
-	// *deprecated* forV backward compatibility
+	// *deprecated* for backward compatibility
 	gamee.onUnpause = noop;
 	// use onResume instead
 	gamee.onResume = function() {
@@ -240,6 +247,29 @@ var gamee = function(global) {
 					break;
 			}
 		});
+
+		addDOMEvent(global, 'message', function(ev) {
+			switch(ev.data[0]) {
+				case 'pause': 
+					gamee.onPause();
+					break;
+
+				case 'resume':
+					gamee.onResume();
+					break;
+
+				case 'restart':
+					gamee.onRestart();
+					break;
+
+				case 'mute':
+					gamee.onMute();
+					break;
+
+				default:
+					throw Error('Unknown message');
+			}
+		});
 	}
 	
 	return gamee;
@@ -255,8 +285,7 @@ var gamee = gamee || {};
 
 	var BulletClass = Bullet.constructor,
 		mainController, // global gamee controller 
-		controllerTypes,
-		additionalController;
+		controllerTypes;
 
 	controllerTypes = {
 		'OneButton': OneButtonController,
@@ -509,7 +538,12 @@ var gamee = gamee || {};
 	}
 
 	// currently only for keyboard alternate bindings
-	additionalController = getController;
+	function additionalController(type, opts) {
+		var controller = getController(type, opts);
+		global.$gameeNative.additionalController(type);
+
+		return controller;
+	}
 
 	// public API
 	gamee.controller = {

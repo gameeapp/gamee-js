@@ -8,8 +8,7 @@ var gamee = gamee || {};
 
 	var BulletClass = Bullet.constructor,
 		mainController, // global gamee controller 
-		controllerTypes,
-		additionalController;
+		controllerTypes;
 
 	controllerTypes = {
 		'OneButton': OneButtonController,
@@ -262,7 +261,12 @@ var gamee = gamee || {};
 	}
 
 	// currently only for keyboard alternate bindings
-	additionalController = getController;
+	function additionalController(type, opts) {
+		var controller = getController(type, opts);
+		global.$gameeNative.additionalController(type);
+
+		return controller;
+	}
 
 	// public API
 	gamee.controller = {

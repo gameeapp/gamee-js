@@ -27,19 +27,15 @@ var gamee = function(global) {
 
 	function wrapKeyEvent(fn) {
 		return function(ev) {
-			var code;
+			if (!ev || !ev.keyCode) {
+				if (!ev) {
+					ev = window.event;
+				}
 
-			if (!ev) {
-				ev = window.event;
+				if (ev.which) {
+					ev.keyCode = ev.which;
+				}
 			}
-
-			if (ev.keyCode) {
-				code = ev.keyCode;
-			} else if (ev.which) {
-				code = ev.which;
-			}
-
-			ev.keyCode = code;
 
 			return fn(ev);
 		};
@@ -106,6 +102,29 @@ var gamee = function(global) {
 				case 82: // r for restart
 					gamee.onRestart();
 					break;
+			}
+		});
+
+		addDOMEvent(global, 'message', function(ev) {
+			switch(ev.data[0]) {
+				case 'pause': 
+					gamee.onPause();
+					break;
+
+				case 'resume':
+					gamee.onResume();
+					break;
+
+				case 'restart':
+					gamee.onRestart();
+					break;
+
+				case 'mute':
+					gamee.onMute();
+					break;
+
+				default:
+					throw Error('Unknown message');
 			}
 		});
 	}
