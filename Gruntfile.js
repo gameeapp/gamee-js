@@ -34,7 +34,10 @@ module.exports = function(grunt) {
 				],
 				dest: '<%= app.dist %>/gamee.js'
 			},
-
+			devel: {
+				src: ['<%= app.bower %>/bullet/dist/bullet.js', '<%= app.dist %>/gamee.js'],
+				dest: '<%= app.dist %>/gamee.all.devel.js'
+			},
 			mins: {
 				src: ['<%= app.bower %>/bullet/dist/bullet.min.js', '<%= app.dist %>/gamee.min.js'],
 				dest: '<%= app.dist %>/gamee.all.min.js'
@@ -46,6 +49,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', [
 		'jshint',
 		'concat:source',
+		'concat:devel',
 		'uglify',
 		'concat:mins',
 	]);
