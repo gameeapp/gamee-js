@@ -116,6 +116,7 @@ var gamee = function(global) {
 					break;
 
 				case 'restart':
+					window.focus();
 					gamee.onRestart();
 					break;
 
