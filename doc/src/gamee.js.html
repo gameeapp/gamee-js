@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>gamee.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "src/gamee.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h2">
+        <a href="#gamee.score">gamee.score</a>
+      </div>
+      <div class="heading h2">
+        <a href="#gamee.gameover()">gamee.gameOver()</a>
+      </div>
+      <div class="heading h2">
+        <a href="#gamee.gamestart()">gamee.gameStart()</a>
+      </div>
+      <div class="heading h2">
+        <a href="#callbacks">callbacks</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>gamee.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Gamee interface for games (clients). It creates a <code>gamee</code> global
+object to access comunicate with Gamee* platform.</p>
+  </div>
+  <div class="body"><p>* <em>later in the document Gamee will be referred as GameeApp to not
+be mistaken for game</em></p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">gamee</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">global</span><span class="p">)</span> <span class="p">{</span>
+  <span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">gamee</span> <span class="o">=</span> <span class="p">{},</span> 
+    <span class="nx">score</span><span class="p">,</span> 
+    <span class="nx">noop</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="gamee.score">
+  <h2>
+    <a href="#gamee.score" name="gamee.score" class="pilcrow">&#182;</a>
+    gamee.score
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Set or get the game score and update the score in the GameeApp.</p>
+
+
+<div class="highlight"><pre><code><span class="nx">gamee</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="nx">gamee</span><span class="p">.</span><span class="nx">score</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+
+
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">gamee</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">get</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">score</span><span class="p">;</span>
+    <span class="p">},</span>
+
+    <span class="nx">set</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newScore</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">score</span> <span class="o">=</span> <span class="nx">newScore</span><span class="p">;</span>
+
+      <span class="nx">global</span><span class="p">.</span><span class="nx">$gameeNative</span><span class="p">.</span><span class="nx">updateScore</span><span class="p">(</span><span class="nx">score</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="gamee.gameover()">
+  <h2>
+    <a href="#gamee.gameover()" name="gamee.gameover()" class="pilcrow">&#182;</a>
+    gamee.gameOver()
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Indicate that game has ended to GameeApp. GameeApp will take the 
+focus and the game has to wait for <code>onRestart</code> or <code>onStop</code> 
+callbacks.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">gameOver</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">global</span><span class="p">.</span><span class="nx">$gameeNative</span><span class="p">.</span><span class="nx">gameOver</span><span class="p">();</span>
+  <span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="gamee.gamestart()">
+  <h2>
+    <a href="#gamee.gamestart()" name="gamee.gamestart()" class="pilcrow">&#182;</a>
+    gamee.gameStart()
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Indicate that game has been initalized and started.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">gameStart</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">global</span><span class="p">.</span><span class="nx">$gameeNative</span><span class="p">.</span><span class="nx">gameStart</span><span class="p">();</span>
+  <span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap" id="callbacks">
+  <h2>
+    <a href="#callbacks" name="callbacks" class="pilcrow">&#182;</a>
+    callbacks
+  </h2>
+</div>
+
+
+<p>to handle signals from GameeApp</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">onPause</span>   <span class="o">=</span> <span class="nx">noop</span><span class="p">;</span>
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">onStop</span>    <span class="o">=</span> <span class="nx">noop</span><span class="p">;</span>
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">onRestart</span> <span class="o">=</span> <span class="nx">noop</span><span class="p">;</span>
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">onMute</span>    <span class="o">=</span> <span class="nx">noop</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p><em>deprecated</em> for backward compatibility</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">onUnpause</span> <span class="o">=</span> <span class="nx">noop</span><span class="p">;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>use onResume instead</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">onResume</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">gamee</span><span class="p">.</span><span class="nx">onUnpause</span><span class="p">();</span>
+  <span class="p">};</span>
+
+  
+  <span class="kd">function</span> <span class="nx">addDOMEvent</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">obj</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">fn</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">obj</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">(</span><span class="s1">&#39;on&#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">fn</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="kd">function</span> <span class="nx">removeDOMEvent</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">obj</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">fn</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">detachEvent</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">obj</span><span class="p">.</span><span class="nx">detachEvent</span><span class="p">(</span><span class="s1">&#39;on&#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">fn</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="kd">function</span> <span class="nx">wrapKeyEvent</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ev</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ev</span> <span class="o">||</span> <span class="o">!</span><span class="nx">ev</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ev</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">ev</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">ev</span><span class="p">.</span><span class="nx">which</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">ev</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">=</span> <span class="nx">ev</span><span class="p">.</span><span class="nx">which</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+
+      <span class="k">return</span> <span class="nx">fn</span><span class="p">(</span><span class="nx">ev</span><span class="p">);</span>
+    <span class="p">};</span>
+  <span class="p">}</span>
+
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">_keydown</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">addDOMEvent</span><span class="p">(</span><span class="nx">global</span><span class="p">,</span> <span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">wrapKeyEvent</span><span class="p">(</span><span class="nx">fn</span><span class="p">));</span>
+  <span class="p">};</span>
+
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">_keyup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">addDOMEvent</span><span class="p">(</span><span class="nx">global</span><span class="p">,</span> <span class="s1">&#39;keyup&#39;</span><span class="p">,</span> <span class="nx">wrapKeyEvent</span><span class="p">(</span><span class="nx">fn</span><span class="p">));</span> 
+  <span class="p">};</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>gamee-web keyboard hooks</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">global</span><span class="p">.</span><span class="nx">$gameeNative</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;gamee-web&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">gamee</span><span class="p">.</span><span class="nx">_keydown</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">ev</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">switch</span><span class="p">(</span><span class="nx">ev</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="mi">80</span><span class="o">:</span>  <span class="c1">// p for pause</span>
+          <span class="nx">gamee</span><span class="p">.</span><span class="nx">onPause</span><span class="p">();</span>
+          <span class="nx">$gameeNative</span><span class="p">.</span><span class="nx">gamePaused</span><span class="p">();</span>
+          <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="mi">82</span><span class="o">:</span> <span class="c1">// r for restart</span>
+          <span class="nx">gamee</span><span class="p">.</span><span class="nx">onRestart</span><span class="p">();</span>
+          <span class="k">break</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="nx">addDOMEvent</span><span class="p">(</span><span class="nx">global</span><span class="p">,</span> <span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ev</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">switch</span><span class="p">(</span><span class="nx">ev</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="s1">&#39;pause&#39;</span><span class="o">:</span> 
+          <span class="nx">gamee</span><span class="p">.</span><span class="nx">onPause</span><span class="p">();</span>
+          <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="s1">&#39;resume&#39;</span><span class="o">:</span>
+          <span class="nx">gamee</span><span class="p">.</span><span class="nx">onResume</span><span class="p">();</span>
+          <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="s1">&#39;restart&#39;</span><span class="o">:</span>
+          <span class="nb">window</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
+          <span class="nx">gamee</span><span class="p">.</span><span class="nx">onRestart</span><span class="p">();</span>
+          <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="s1">&#39;mute&#39;</span><span class="o">:</span>
+          <span class="nx">gamee</span><span class="p">.</span><span class="nx">onMute</span><span class="p">();</span>
+          <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">default</span><span class="o">:</span>
+          <span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Unknown message&#39;</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="nx">gamee</span><span class="p">;</span>
+<span class="p">}(</span><span class="k">this</span><span class="p">);</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

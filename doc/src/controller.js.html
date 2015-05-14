@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>controller.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "src/controller.js", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>controller.js</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Controller object for gamee</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">global</span><span class="p">,</span> <span class="nx">gamee</span><span class="p">)</span> <span class="p">{</span>
+  <span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">BulletClass</span> <span class="o">=</span> <span class="nx">Bullet</span><span class="p">.</span><span class="nx">constructor</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>global gamee controller </p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">var</span> <span class="nx">mainController</span><span class="p">;</span> 
+
+  <span class="kd">var</span> <span class="nx">controllerTypes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;OneButton&#39;</span><span class="o">:</span> <span class="nx">OneButtonController</span><span class="p">,</span>
+    <span class="s1">&#39;TwoButtons&#39;</span><span class="o">:</span> <span class="nx">TwoButtonController</span><span class="p">,</span>
+    <span class="s1">&#39;FourButtons&#39;</span><span class="o">:</span> <span class="nx">FourButtonController</span><span class="p">,</span>
+    <span class="s1">&#39;FiveButtons&#39;</span><span class="o">:</span> <span class="nx">FiveButtonController</span><span class="p">,</span>
+    <span class="s1">&#39;SixButtons&#39;</span><span class="o">:</span> <span class="nx">SixButtonController</span><span class="p">,</span>
+    <span class="s1">&#39;Touch&#39;</span><span class="o">:</span> <span class="nx">TouchController</span>
+  <span class="p">};</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>Represenation of a controller button</p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">Button</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">keyCode</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+    <span class="nx">BulletClass</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">_pressed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>name of the controller </p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">this</span><span class="p">.</span><span class="nx">key</span> <span class="o">=</span> <span class="nx">key</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">=</span> <span class="nx">keyCode</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">_pressed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;keyup&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">_pressed</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="nx">Button</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">BulletClass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="nx">Button</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Button</span><span class="p">;</span>
+
+  <span class="nx">Button</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isDown</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_pressed</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="kd">function</span> <span class="nx">Controller</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+    <span class="nx">BulletClass</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">buttonAlias</span> <span class="o">=</span> <span class="p">{};</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;$keydown&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span> <span class="o">&amp;&amp;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">buttonAlias</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span><span class="p">])</span> <span class="p">{</span>
+        <span class="nx">data</span><span class="p">.</span><span class="nx">button</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">buttonAlias</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span><span class="p">];</span>
+      <span class="p">}</span>
+
+      <span class="nx">self</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;$keyup&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span> <span class="o">&amp;&amp;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">buttonAlias</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span><span class="p">])</span> <span class="p">{</span>
+        <span class="nx">data</span><span class="p">.</span><span class="nx">button</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">buttonAlias</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span><span class="p">];</span>
+      <span class="p">}</span>
+
+      <span class="nx">self</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;keyup&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span> <span class="o">||</span> <span class="o">!</span><span class="nx">self</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span><span class="p">])</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="nx">self</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span><span class="p">].</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;keyup&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span> <span class="o">||</span> <span class="o">!</span><span class="nx">self</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span><span class="p">])</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="nx">self</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">data</span><span class="p">.</span><span class="nx">button</span><span class="p">].</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;keyup&#39;</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">BulletClass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="nx">Controller</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">Controller</span><span class="p">;</span>
+
+  <span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">button</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">button</span><span class="p">.</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">button</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">enableKeyboard</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">button</span><span class="p">,</span> <span class="nx">keyCodes</span> <span class="o">=</span> <span class="p">{},</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="nx">key</span> <span class="k">in</span> <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">button</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="nx">button</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">keyCodes</span><span class="p">[</span><span class="nx">button</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">]</span> <span class="o">=</span> <span class="nx">button</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nx">gamee</span><span class="p">.</span><span class="nx">_keydown</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">ev</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">keyCodes</span><span class="p">[</span><span class="nx">ev</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">];</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">button</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="nx">ev</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span><span class="o">:</span> <span class="nx">button</span><span class="p">.</span><span class="nx">key</span><span class="p">});</span>
+    <span class="p">});</span>
+    
+    <span class="nx">gamee</span><span class="p">.</span><span class="nx">_keyup</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">ev</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">keyCodes</span><span class="p">[</span><span class="nx">ev</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">];</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">button</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="nx">ev</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;keyup&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span><span class="o">:</span> <span class="nx">button</span><span class="p">.</span><span class="nx">key</span><span class="p">});</span>
+    <span class="p">});</span>
+  <span class="p">};</span>
+
+  <span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">remapButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">oldName</span><span class="p">,</span> <span class="nx">newProp</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">oldName</span><span class="p">])</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">buttonAlias</span><span class="p">[</span><span class="nx">oldName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">newProp</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+      
+      <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">newProp</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">oldName</span><span class="p">];</span>
+
+      <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">oldName</span><span class="p">];</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="kd">function</span> <span class="nx">OneButtonController</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">Controller</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">));</span> <span class="c1">// spacebar </span>
+  <span class="p">}</span>
+  <span class="nx">OneButtonController</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="nx">OneButtonController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">OneButtonController</span><span class="p">;</span>
+
+  <span class="kd">function</span> <span class="nx">TwoButtonController</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">Controller</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="mi">37</span><span class="p">));</span>  <span class="c1">// left arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="mi">39</span><span class="p">));</span> <span class="c1">// right arrow</span>
+  <span class="p">}</span>
+  <span class="nx">TwoButtonController</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="nx">TwoButtonController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">TwoButtonController</span><span class="p">;</span>
+
+
+  <span class="kd">function</span> <span class="nx">FourButtonController</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">Controller</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;up&#39;</span><span class="p">,</span> <span class="mi">38</span><span class="p">));</span>   <span class="c1">// up arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="mi">37</span><span class="p">));</span>  <span class="c1">// left arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="mi">39</span><span class="p">));</span> <span class="c1">// right arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">));</span>     <span class="c1">// spacebar</span>
+  <span class="p">}</span>
+  <span class="nx">FourButtonController</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="nx">FourButtonController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">FourButtonController</span><span class="p">;</span>
+
+  <span class="kd">function</span> <span class="nx">FiveButtonController</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">Controller</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;up&#39;</span><span class="p">,</span> <span class="mi">38</span><span class="p">));</span>   <span class="c1">// up arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="mi">37</span><span class="p">));</span>  <span class="c1">// left arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="mi">39</span><span class="p">));</span> <span class="c1">// right arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;down&#39;</span><span class="p">,</span> <span class="mi">40</span><span class="p">));</span>  <span class="c1">// down arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">));</span>     <span class="c1">// spacebar</span>
+  <span class="p">}</span>
+  <span class="nx">FiveButtonController</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="nx">FiveButtonController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">FiveButtonController</span><span class="p">;</span>
+
+  <span class="kd">function</span> <span class="nx">SixButtonController</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">Controller</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;up&#39;</span><span class="p">,</span> <span class="mi">38</span><span class="p">));</span>   <span class="c1">// up arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="mi">37</span><span class="p">));</span>  <span class="c1">// left arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="mi">39</span><span class="p">));</span> <span class="c1">// right arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;down&#39;</span><span class="p">,</span> <span class="mi">40</span><span class="p">));</span>  <span class="c1">// down arrow</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">));</span>     <span class="c1">// spacebar</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="mi">17</span><span class="p">));</span>     <span class="c1">// ctrl</span>
+  <span class="p">}</span>
+  <span class="nx">SixButtonController</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="nx">SixButtonController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">SixButtonController</span><span class="p">;</span>
+
+  <span class="kd">function</span> <span class="nx">TouchController</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+    <span class="nx">Controller</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;$touchstart&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;touchstart&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;$touchend&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;touchend&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;$touchmove&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;touchmove&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;$touchleave&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;touchleave&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;$touchcancel&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;touchcancel&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  <span class="nx">TouchController</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">TouchController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="nx">TouchController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">TouchController</span><span class="p">;</span>
+
+  <span class="kd">function</span> <span class="nx">getController</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">opts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">btn</span><span class="p">,</span> <span class="nx">controller</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">controllerTypes</span><span class="p">[</span><span class="nx">type</span><span class="p">])</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Unsupported controller type, &#39;</span> <span class="o">+</span> <span class="nx">type</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">opts</span> <span class="o">=</span> <span class="nx">opts</span> <span class="o">||</span> <span class="p">{};</span>
+
+    <span class="nx">controller</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">controllerTypes</span><span class="p">[</span><span class="nx">type</span><span class="p">]();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">enableKeyboard</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">controller</span><span class="p">.</span><span class="nx">enableKeyboard</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">buttons</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">for</span> <span class="p">(</span><span class="nx">btn</span> <span class="k">in</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">buttons</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">controller</span><span class="p">.</span><span class="nx">remapButton</span><span class="p">(</span><span class="nx">btn</span><span class="p">,</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">btn</span><span class="p">]);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">controller</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<div class="dox">
+  <div class="summary"><p>return {
+on: controller.on.bind(controller),
+off: controller.off.bind(controller),
+once: controller.once.bind(controller),
+trigger: controller.trigger.bind(controller)
+}   </p>
+  </div>
+  <div class="body">
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="p">}</span>
+
+
+  <span class="kd">function</span> <span class="nx">requestController</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">opts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">controller</span> <span class="o">=</span> <span class="nx">getController</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">opts</span><span class="p">);</span>
+
+    <span class="nx">global</span><span class="p">.</span><span class="nx">$gameeNative</span><span class="p">.</span><span class="nx">requestController</span><span class="p">(</span><span class="nx">type</span><span class="p">);</span>
+    <span class="nx">mainController</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="nx">controller</span><span class="p">;</span>
+  <span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>currently only for keyboard alternate bindings</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">additionalController</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">opts</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">controller</span> <span class="o">=</span> <span class="nx">getController</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">opts</span><span class="p">);</span>
+    <span class="nx">global</span><span class="p">.</span><span class="nx">$gameeNative</span><span class="p">.</span><span class="nx">additionalController</span><span class="p">(</span><span class="nx">type</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nx">controller</span><span class="p">;</span>
+  <span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>public API</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">requestController</span><span class="o">:</span> <span class="nx">requestController</span><span class="p">,</span>
+    <span class="nx">additionalController</span><span class="o">:</span> <span class="nx">additionalController</span><span class="p">,</span>
+    <span class="nx">trigger</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="nx">mainController</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">mainController</span><span class="p">.</span><span class="nx">trigger</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">mainController</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span> 
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;No controller present&#39;</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">}(</span><span class="k">this</span><span class="p">,</span> <span class="nx">gamee</span><span class="p">));</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
