@@ -1,16 +1,15 @@
-// var gamee = require('./gamee.js');
-// var $gameeNative = require('./gamee_native.js');
-
-var gamee = gamee || {};
-
+/** 
+ * Controller object for gamee
+ */
 (function(global, gamee) {
 	'use strict';
 
-	var BulletClass = Bullet.constructor,
-		mainController, // global gamee controller 
-		controllerTypes;
+	var BulletClass = Bullet.constructor;
 
-	controllerTypes = {
+	// global gamee controller 
+	var mainController; 
+
+	var controllerTypes = {
 		'OneButton': OneButtonController,
 		'TwoButtons': TwoButtonController,
 		'FourButtons': FourButtonController,
@@ -19,6 +18,10 @@ var gamee = gamee || {};
 		'Touch': TouchController
 	};
 
+
+	/**
+	 * Represenation of a controller button
+	 */
 	function Button(key, keyCode) {
 		var self = this;
 
@@ -26,6 +29,7 @@ var gamee = gamee || {};
 
 		this._pressed = true;
 
+		// name of the controller 
 		this.key = key;
 		this.keyCode = keyCode;
 
