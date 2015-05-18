@@ -246,7 +246,7 @@ var gamee = function(global) {
 
 	/** ### gamee.requestController
 	 *
-	 * See [controller.js#requestController](controller.js.html#requestController)
+	 * See [controller.js#requestController](controller.js.html#requestcontroller)
 	 */
 
 	//
