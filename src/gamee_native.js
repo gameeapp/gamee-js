@@ -1,43 +1,63 @@
-/**
- * Wrappers for $gameeNative object in diferent envitorments
- */
+//
+// Wrappers for `$gameeNative` object on diferent platforms which
+// directly communicates with the GameeApp.
+//
+// Games should not used this object, it exists only for internal use
+// for the public `gamee` object.
 (function(global) {
 	'use strict';
 	
+	//
+	// ## $gameeNative
+	//
+	// Basic `$gameeNative` interface
 	var gameeNative = {
-			/**
-			 * Update score 
+			/** ### updateScore
+			 * Update score.
 			 *
 			 * @param {String} score
 			 */ 
 			updateScore: function(score) {},
 
-			/**
-			 * Request controller
+			/** ### requestController
+			 * Request controller.
 			 *
-			 * @param {String} score
+			 * *see also 
+			 * [gamee.controller.requestController](controller.js.html#requestcontroller)*
+			 * @param {String} type
 			 */
 			requestController: function(type) {},
 
-			/**
-			 * Request additional controller (for desktop)
+			/** ### additionalController
+			 * Request additional controller (for desktop).
 			 *
-			 * @param {String} type type of controller
+			 * *see also 
+			 * [gamee.controller.additionalController](controller.js.html#additionalcontroller)*
+			 *
+			 * @param {String} type type of controller 			 
 			 */
 			additionalController: function(type) {},
 
-			/**
-			 * Game over
+			/** ### gameOver
+			 * Game over.
+			 *
+			 * *see also
+			 * [gamee.gameOver](gamee.js.html#gamee.gameover)
 			 */
 			gameOver: function() {},
 
-			/**
-			 * Game start
+			/** ### gameStart
+			 * Game start.
+			 *
+			 * *see also
+			 * [gamee.gameStart](gamee.js.html#gamee.gamestart)
 			 */ 
 			gameStart: function() {},
 
 			type: 'no-gamee'
 		},
+
+		/* current user agent */
 		userAgent = navigator.userAgent.toLowerCase();
 		
 		/**
@@ -89,7 +109,7 @@
 		}
 
 		/**
-		 * Gamee desktop web view
+		 * Gamee Web App
 		 */
 		function gameeWeb(gameeNative) {
 			var gamee = window.parent;
@@ -121,7 +141,7 @@
 			gameeNative.type = 'gamee-web';
 		}
 
-
+	// user agent is use to determine current enviroment
 	if (
 		/gamee\/[0-9\.]+$/.test(userAgent) || // test for android webview
 		/iphone|ipod|ipad/.test(userAgent)    // test for iOS webview
@@ -138,5 +158,6 @@
 		console.error('No gamee enviroment matched');
 	}
 
+	// export to global scope
 	global.$gameeNative = gameeNative;
 }(this));

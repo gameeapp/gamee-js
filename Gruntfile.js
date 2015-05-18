@@ -7,6 +7,7 @@ module.exports = function(grunt) {
 		app: {
 			src: './src/',
 			dist: './dist/',
+			docs: './doc/',
 			bower: './bower_components/'
 		},
 
@@ -42,6 +43,23 @@ module.exports = function(grunt) {
 				src: ['<%= app.bower %>/bullet/dist/bullet.min.js', '<%= app.dist %>/gamee.min.js'],
 				dest: '<%= app.dist %>/gamee.all.min.js'
 			}
+		},
+
+		docker: {
+			app: {
+				src: '<%= app.src %>',
+				dest: '<%= app.docs %>'
+			}
+		},
+
+		watch: {
+			scripts: {
+				files: ['<%= app.src %>/**/*.js'],
+				tasks: ['docker'],
+				options: {
+					spawn: false
+				}
+			}
 		}
 
 	});
@@ -52,5 +70,6 @@ module.exports = function(grunt) {
 		'concat:devel',
 		'uglify',
 		'concat:mins',
+		'docker'
 	]);
 };

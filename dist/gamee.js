@@ -1,43 +1,63 @@
-/**
- * Wrappers for $gameeNative object in diferent envitorments
- */
+//
+// Wrappers for `$gameeNative` object on diferent platforms which
+// directly communicates with the GameeApp.
+//
+// Games should not used this object, it exists only for internal use
+// for the public `gamee` object.
 (function(global) {
 	'use strict';
 	
+	//
+	// ## $gameeNative
+	//
+	// Basic `$gameeNative` interface
 	var gameeNative = {
-			/**
-			 * Update score 
+			/** ### updateScore
+			 * Update score.
 			 *
 			 * @param {String} score
 			 */ 
 			updateScore: function(score) {},
 
-			/**
-			 * Request controller
+			/** ### requestController
+			 * Request controller.
 			 *
-			 * @param {String} score
+			 * *see also 
+			 * [gamee.controller.requestController](controller.js.html#requestcontroller)*
+			 * @param {String} type
 			 */
 			requestController: function(type) {},
 
-			/**
-			 * Request additional controller (for desktop)
+			/** ### additionalController
+			 * Request additional controller (for desktop).
 			 *
-			 * @param {String} type type of controller
+			 * *see also 
+			 * [gamee.controller.additionalController](controller.js.html#additionalcontroller)*
+			 *
+			 * @param {String} type type of controller 			 
 			 */
 			additionalController: function(type) {},
 
-			/**
-			 * Game over
+			/** ### gameOver
+			 * Game over.
+			 *
+			 * *see also
+			 * [gamee.gameOver](gamee.js.html#gamee.gameover)
 			 */
 			gameOver: function() {},
 
-			/**
-			 * Game start
+			/** ### gameStart
+			 * Game start.
+			 *
+			 * *see also
+			 * [gamee.gameStart](gamee.js.html#gamee.gamestart)
 			 */ 
 			gameStart: function() {},
 
 			type: 'no-gamee'
 		},
+
+		/* current user agent */
 		userAgent = navigator.userAgent.toLowerCase();
 		
 		/**
@@ -89,7 +109,7 @@
 		}
 
 		/**
-		 * Gamee desktop web view
+		 * Gamee Web App
 		 */
 		function gameeWeb(gameeNative) {
 			var gamee = window.parent;
@@ -121,7 +141,7 @@
 			gameeNative.type = 'gamee-web';
 		}
 
-
+	// user agent is use to determine current enviroment
 	if (
 		/gamee\/[0-9\.]+$/.test(userAgent) || // test for android webview
 		/iphone|ipod|ipad/.test(userAgent)    // test for iOS webview
@@ -138,28 +158,54 @@
 		console.error('No gamee enviroment matched');
 	}
 
+	// export to global scope
 	global.$gameeNative = gameeNative;
 }(this));
 
-/**
- * Gamee interface for games (clients). It creates a `gamee` global
- * object to access comunicate with Gamee* platform.
- *
- * \* _later in the document Gamee will be referred as GameeApp to not
- * be mistaken for game_
- */
+// # Gamee.js
+// 
+// This file defines and expose a public API for games to communicate
+// with Gamee*.
+//
+// Also it handles some requirements when Gamee is run in an desktop 
+// environment.
+//
+// \* _later in the document Gamee will be referred as GameeApp to not
+// be mistaken for word game_
+//
+// ** _GameeWebApp will refer to Gamee which is running in a desktop 
+// browser_
 var gamee = function(global) {
 	'use strict';
 
-	var gamee = {}, 
-		score, 
-		noop = function() {};
+	/** internal state of the game score */
+	var score;
 
-	/**
-	 * ## gamee.score
+	/** an empty function */
+	var noop = function() {};
+
+	/** ## gamee
 	 *
+	 * GameeApp interface for games. It is exposed as a `gamee` global
+	 * object and games should only use its public methods and 
+	 * properties to communicate with the GameeApp. 
+	 *
+	 * _There is also [$gameeNative](gamee_native.js.html) global object 
+	 * which handles internal parts of the communication._
+	 */
+	var gamee = {};
+
+	// 
+	// ## Signaling game state 
+	// 
+	// The game should signal the GameeApp its status (playing/game-over)
+	// and current score.
+	//
+
+	/** ### gamee.score
+	 * 
 	 * Set or get the game score and update the score in the GameeApp.
-	 *
+	 * 
 	 * ```javascript
 	 * gamee.score = gamee.score + 1;
 	 * ```
@@ -176,8 +222,7 @@ var gamee = function(global) {
 		}
 	});
 
-	/**
-	 * ## gamee.gameOver()
+	/** ### gamee.gameOver
 	 * 
 	 * Indicate that game has ended to GameeApp. GameeApp will take the 
 	 * focus and the game has to wait for `onRestart` or `onStop` 
@@ -187,48 +232,159 @@ var gamee = function(global) {
 		global.$gameeNative.gameOver();
 	};
 
-	/**
-	 * ## gamee.gameStart()
-	 * 
-	 * Indicate that game has been initalized and started.
+	/** ### gamee.gameStart
+	 *
+	 * Indicate that game has been initialized and started.
 	 */
 	gamee.gameStart = function() {
 		global.$gameeNative.gameStart();
 	};
 
-	// ## callbacks 
-	// to handle signals from GameeApp
+	// ## Controller
+	//
+	// To keep it light controller code is in [controller.js](controller.js.html)
+
+	/** ### gamee.requestController
+	 *
+	 * See [controller.js#requestController](controller.js.html#requestController)
+	 */
+
+	//
+	// ## Callbacks - handling user action
+	//
+	// To handle signals from GameeApp you have to assinge callbacks to 
+	// `gamee` object to react on user actions from GameeApp (outside the
+	// game's webview/iframe).
+	//
+	// From the GameeApp user can
+	//
+	// * pause the game 
+	// * resume the game after pause
+	// * restart the game after game has ended with `gamee.gameOver()` call
+	// * mute the game
+	//
+	// ```javascript
+	// gamee.onPause = function() { 
+	//   myGame.setState('pause'); 
+	//   myGame.update();
+	// }
+	// ```
+
+	/** ### gamee.onPause
+	 *
+	 * Will be called when user paused the game
+	 */
 	gamee.onPause   = noop;
+
+	/** ### gamee.onStop
+	 *
+	 * Will be called when the user has closed the game
+	 */
 	gamee.onStop    = noop;
+
+	/** ### gamee.onRestart
+	 *
+	 * Will be called when user will return the game after 
+	 * `gamee.gameOver()` was called
+	 */
 	gamee.onRestart = noop;
+
+	/** ### gamee.onMute
+	 *
+	 * ***not yet implemented***
+	 *
+	 * Will be called when user clicks the mute button
+	 */
 	gamee.onMute    = noop;
 
-	// *deprecated* for backward compatibility
+	/**
+	 * ***deprecated***
+	 *
+	 * for backward compatibility, use [onResume](#gamee.onresume) instead
+	 */
 	gamee.onUnpause = noop;
-	// use onResume instead
+
+	/** ### gamee.onResume
+	 * 
+	 * Will be called after user resumes the game after pause or GameeApp
+	 * suspension
+	 */
 	gamee.onResume = function() {
 		gamee.onUnpause();
 	};
 
+	// 
+	// ## Private methods
+	//
+	// These methods are only for internal use, should be avoided in games,
+	// but it can be helpful for debugging.
+
+	/** ### gamee._keydown
+	 * 
+	 * A helper function to listen for `keydown` events on window object.
+	 * 
+	 * @param {Function} fn callback to handle the event
+	 */
+	gamee._keydown = function(fn) {
+		addDOMEvent(global, 'keydown', wrapKeyEvent(fn));
+	};
+
+	/** ### gamee._keyup
+	 * 
+	 * A helper function to listen for `keyup` events on window object.
+	 * 
+	 * @param {Function} fn callback to handle the event
+	 */
+	gamee._keyup = function(fn) {
+		addDOMEvent(global, 'keyup', wrapKeyEvent(fn));	
+	};
+
+	// 
+	// ## Private functions
+	// 
+	// These are internal helper functions in closed scope. Good to know
+	// about them when debugging.
 	
-	function addDOMEvent(obj, event, fn) {
- 		if (obj.addEventListener) {
-			obj.addEventListener(event, fn, false);
+	/** ### addDOMEvent
+	 * 
+	 * Add an event listener for a DOM event
+	 *
+	 * @param {EventTarget} target an object to listen for a DOM event on
+	 * @param {String} event event name
+	 * @param {Function} fn callback to handle the event
+	 */
+	function addDOMEvent(target, event, fn) {
+ 		if (target.addEventListener) {
+			target.addEventListener(event, fn, false);
 
-		} else if (obj.attachEvent) {
-			obj.attachEvent('on' + event, fn);
+		} else if (target.attachEvent) {
+			target.attachEvent('on' + event, fn);
 		}
 	}
 
-	function removeDOMEvent(obj, event, fn) {
-		if (obj.removeEventListener) {
-			obj.removeEventListener(event, fn, false);
+	/** ### removeDOMEvent
+	 * 
+	 * Remove an event listener for a DOM event
+	 *
+	 * @param {EventTarget} target an object to listen for a DOM event on
+	 * @param {String} event event name
+	 * @param {Function} fn callback to remove
+	 */
+	function removeDOMEvent(target, event, fn) {
+		if (target.removeEventListener) {
+			target.removeEventListener(event, fn, false);
 
-		} else if (obj.detachEvent) {
-			obj.detachEvent('on' + event, fn);
+		} else if (target.detachEvent) {
+			target.detachEvent('on' + event, fn);
 		}
 	}
 
+	/** ### wrapKeyEvent 
+	 * 
+	 * Handle old IE event differences for key events
+	 * 
+	 * @param {Function} fn callback
+	 */
 	function wrapKeyEvent(fn) {
 		return function(ev) {
 			if (!ev || !ev.keyCode) {
@@ -245,15 +401,24 @@ var gamee = function(global) {
 		};
 	}
 
-	gamee._keydown = function(fn) {
-		addDOMEvent(global, 'keydown', wrapKeyEvent(fn));
-	};
 
-	gamee._keyup = function(fn) {
-		addDOMEvent(global, 'keyup', wrapKeyEvent(fn));	
-	};
-	// gamee-web keyboard hooks
+	// 
+	// ## Gamee Web App
+	// 
+	// gamee.js handles also some specific requirements for the GameeWebApp
+
 	if (global.$gameeNative.type === 'gamee-web') {
+
+		// 
+		// ### Key binding
+		//
+		// For user comfort the web app interface requires to react on 
+		// certain keys within the game and the game should not override
+		// them.
+		//
+		// * 'p' - for pause
+		// * 'r' - for restart
+		// 
 		gamee._keydown(function(ev) {
 			switch(ev.keyCode) {
 				case 80:  // p for pause
@@ -267,6 +432,14 @@ var gamee = function(global) {
 			}
 		});
 
+		//
+		// ### Interframe communication 
+		// 
+		// In the GameeWebApp games are inside iframe and are hosted on
+		// different domains, therefor `postMessage`/ `on('message')` 
+		// is used. This handles the callbacks send from the GameeApp.
+		//
+		// [More about *postMessage*](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
 		addDOMEvent(global, 'message', function(ev) {
 			switch(ev.data[0]) {
 				case 'pause': 
@@ -278,7 +451,8 @@ var gamee = function(global) {
 					break;
 
 				case 'restart':
-					window.focus();
+					// after restart we have to steal the focus from parent frame
+					window.focus(); 
 					gamee.onRestart();
 					break;
 
@@ -295,29 +469,102 @@ var gamee = function(global) {
 	return gamee;
 }(this);
 
-/** 
- * Controller object for gamee
- */
+// 
+// Controller for ``gamee``
+//
 (function(global, gamee) {
 	'use strict';
 
+	/** ## Bullet 
+	 *
+	 * [Bullet.js](https://github.com/munkychop/bullet) is used as pub/sub
+	 * library. 
+	 * 
+	 * The controller and its buttons are instance of Bullet.
+	 */
 	var BulletClass = Bullet.constructor;
 
-	// global gamee controller 
-	var mainController; 
+	//
+	// ## gamee.controller
+	//
+	// Namespace where the methods for controller are published.
+	// 
+	gamee.controller = {
+		/** ### requestController
+		 *
+		 * Factory method to create a controller. It creates the controller
+		 * and signals to GameeApp which type the game requires
+		 *
+		 * You should called this method once before calling
+		 * `gamee.gameStart()`.
+		 *
+		 * @param {String} type type of controller ('OneButton', 'TwoButtons',
+		 * 'FourButtons', 'FiveButtons', 'SixButtons', 'Touch')
+		 * @param {Object} [opts] optional controller options 
+		 * {'enableKeyboard': .., 'buttons': ...}
+		 * @param {boolean} [opts.enableKeyboard] enable the keyboard
+		 * @param {Object} [opts.buttons] remap buttons {'oldKey': 'newKey', 
+		 * 'left': 'break' ..}
+		 */
+		requestController: function (type, opts) {
+			var controller = createController(type, opts);
 
-	var controllerTypes = {
-		'OneButton': OneButtonController,
-		'TwoButtons': TwoButtonController,
-		'FourButtons': FourButtonController,
-		'FiveButtons': FiveButtonController,
-		'SixButtons': SixButtonController,
-		'Touch': TouchController
+			global.$gameeNative.requestController(type);
+			mainController = controller;
+			
+			return controller;
+		},
+
+		/** ### additionalController
+		 * 
+		 * Construct an additional controller. Sometimes games require a
+		 * different controller depending on platform (eg. touch on mobile, 
+		 * but Four Buttons on desktop)
+		 *
+		 * **This is currently supported only for GameeWebApp** as a way to 
+		 * have alternate keybinding. The game should request a type used 
+		 * for mobile platform and then some other as *additionalController*
+		 * if alternate keybinding is needed;
+		 */
+		additionalController: function(type, opts) {
+			var controller = createController(type, opts);
+			global.$gameeNative.additionalController(type);
+
+			return controller;
+		},
+
+		/** ### trigger
+		 * 
+		 * Triggers and event for the controller
+		 *
+		 * This is called by GameeApp to trigger the *keydown*, *keyup*
+		 * events. For more info see [Controller](#controller)
+		 * 
+		 * @param {String} eventName name of the event
+		 * @param {*} [data,...] data to pass for the event
+		 *
+		 */
+		trigger: function() {
+			var i;
+
+			if (mainController) {
+				mainController.trigger.apply(mainController, arguments); 
+			} else {
+				throw new Error('No controller present');
+			}
+		}
 	};
 
 
-	/**
-	 * Represenation of a controller button
+	/** ## Button
+	 *
+	 * Represenation of a controller button. It is a child of 
+	 * [Bullet](https://github.com/munkychop/bullet), so you can
+	 * subscribe for events triggered on it. 
+	 *
+	 * @param {String} key name of the button
+	 * @param {Number} keyCode keycode for the key to represent the button
+	 * on keyboard
 	 */
 	function Button(key, keyCode) {
 		var self = this;
@@ -326,7 +573,6 @@ var gamee = function(global) {
 
 		this._pressed = true;
 
-		// name of the controller 
 		this.key = key;
 		this.keyCode = keyCode;
 
@@ -342,18 +588,64 @@ var gamee = function(global) {
 	Button.prototype = Object.create(BulletClass.constructor.prototype);
 	Button.constructor = Button;
 
+	/** ### isDown
+	 * 
+	 * Ask if the button is currently pressed.
+	 *
+	 * @return {Boolean} true if the button is currently pressed
+	 */
 	Button.prototype.isDown = function() {
 		return this._pressed;
 	};
 
+	/** ## Controller
+	 * 
+	 * Controller has a collection of [buttons](#buttons).
+	 * It is a child of 
+	 * [Bullet](https://github.com/munkychop/bullet), so you can 
+	 * subscribe for events triggered on it. 
+	 *
+	 * Controllers will get all the events for its buttons so you can
+	 * listen for them globaly from controller or individualy on every
+	 * button.
+	 *
+	 * ```javascript
+	 * controller.on('keydown', function(data) {
+	 *   console.log('button ' + data.button + ' is pressed');
+	 * });
+	 *
+	 * controller.buttons.left.on('keydown', function() {
+	 *   console.log('button left is pressed');
+	 * });
+	 * ```
+	 */ 
 	function Controller() {
 		var self = this;
 
 		BulletClass.call(this);
 
+		// ### buttons
+		//
+		// Map of controller's [buttons](#button) by their name.
+		//
+		// ```javascript
+		// controller.buttons.left // Button('left', ..)
+		// ```
 		this.buttons = {};
+
+		// ### buttonAlias
+		//
+		// Map of remapped buttons.
+		//
+		// *see [remapButton](#remapbutton) for more info*
+		//
 		this.buttonAlias = {};
 
+		// Events prefixed with *$* are private, sent from GameeApp ment
+		// to be handled before resended as *public (non-prefixed)* 
+		// event.
+		//
+		// They should be not used in games as they can change in the future.
 		this.on('$keydown', function(data) {
 			if (data.button && self.buttonAlias[data.button]) {
 				data.button = self.buttonAlias[data.button];
@@ -370,6 +662,14 @@ var gamee = function(global) {
 			self.trigger('keyup', data);
 		});
 
+	 	// By default GameeApp will trigger *keydown* and *keyup* events for
+		// the controller for every button presses/released.
+		// 
+		// The controller then handles the event and triggers the event for
+		// the coresponding button.
+		// 
+		// It expexts a `data` argument which should have a property `button`
+		// with the name of button.
 		this.on('keydown', function(data) {
 			if (!data.button || !self.buttons[data.button]) {
 				return;
@@ -390,10 +690,22 @@ var gamee = function(global) {
 	Controller.prototype = Object.create(BulletClass.constructor.prototype);
 	Controller.constructor = Controller;
 
+	/** ### addButton
+	 *
+	 * Add button to the controller.
+	 * 
+	 * @param {Button} button a [Button](#button) instance
+	 */
 	Controller.prototype.addButton = function(button) {
 		this.buttons[button.key] = button;
 	};
 
+	/** ### enableKeyboard
+	 * 
+	 * Enable keyboard controlls. It will attach event listeners to the 
+	 * *window* object for every button and trigger their *keydown* /
+	 * *keyup* event for the controller.
+	 */
 	Controller.prototype.enableKeyboard = function() {
 		var key, button, keyCodes = {}, self = this;
 
@@ -428,6 +740,20 @@ var gamee = function(global) {
 		});
 	};
 
+	/** ### remapButton
+	 * 
+	 * Remap the names of the controller's buttons. Controllers have their
+	 * button names set (left, right, A, B), but sometimes in context of 
+	 * the game a different names are desired.
+	 *
+	 * ```javascript
+	 * var controller = gamee.controller.requestController('TwoButtons');
+	 * controller.remapButton('left', 'throttle');
+	 * controller.remapButton('right', 'break');
+	 * 
+	 * controller.buttons.throttle.on('keydown', ..);
+	 * ```
+	 */
 	Controller.prototype.remapButton = function(oldName, newProp) {
 		if (this.buttons[oldName]) {
 			this.buttonAlias[oldName] = newProp.name;
@@ -438,60 +764,156 @@ var gamee = function(global) {
 		}
 	};
 
+	// ## Controllers 
+
+	/** ### OneButtonController
+	 *
+	 * Controller with only one button.
+	 */
 	function OneButtonController() {
 		Controller.call(this);
 
-		this.addButton(new Button('button', 32)); // spacebar 
+		// * __name__: 'button' 
+		// * __key__: spacebar
+		this.addButton(new Button('button', 32)); 
 	}
 	OneButtonController.prototype = Object.create(Controller.prototype);
 	OneButtonController.prototype.constructor = OneButtonController;
 
+
+	/** ### TwoButtonController
+	 *
+	 * Controller with two buttons
+	 */
 	function TwoButtonController() {
 		Controller.call(this);
 
-		this.addButton(new Button('left', 37));  // left arrow
-		this.addButton(new Button('right', 39)); // right arrow
+		// * __name__: 'left'
+		// * __key__: left arrow
+		this.addButton(new Button('left', 37)); 
+
+		// * __name__: 'right'
+		// * __key__: righ arrow
+		this.addButton(new Button('right', 39));
 	}
 	TwoButtonController.prototype = Object.create(Controller.prototype);
 	TwoButtonController.prototype.constructor = TwoButtonController;
 
 
+	/** ### FourButtonController
+	 *
+	 * Controller with four buttons
+	 */
 	function FourButtonController() {
 		Controller.call(this);
 
-		this.addButton(new Button('up', 38));   // up arrow
-		this.addButton(new Button('left', 37));  // left arrow
-		this.addButton(new Button('right', 39)); // right arrow
-		this.addButton(new Button('A', 32));     // spacebar
+		// * __name__: 'up'
+		// * __key__: left arrow
+		this.addButton(new Button('up', 38));
+
+		// * __name__: 'left'
+		// * __key__: left arrow
+		this.addButton(new Button('left', 37));  
+
+		
+		// * __name__: 'right'
+		// * __key__: righ arrow
+		this.addButton(new Button('right', 39)); 
+
+		// * __name__: 'A'
+		// * __key__: spacebar
+		this.addButton(new Button('A', 32));     
 	}
 	FourButtonController.prototype = Object.create(Controller.prototype);
 	FourButtonController.prototype.constructor = FourButtonController;
 
+	/** ### FiveButtonController
+	 *
+	 * Controller with five buttons
+	 */
 	function FiveButtonController() {
 		Controller.call(this);
 
-		this.addButton(new Button('up', 38));   // up arrow
-		this.addButton(new Button('left', 37));  // left arrow
-		this.addButton(new Button('right', 39)); // right arrow
-		this.addButton(new Button('down', 40));  // down arrow
-		this.addButton(new Button('A', 32));     // spacebar
+		// * __name__: 'up'
+		// * __key__: left arrow
+		this.addButton(new Button('up', 38));
+
+		// * __name__: 'left'
+		// * __key__: left arrow
+		this.addButton(new Button('left', 37));  
+
+		
+		// * __name__: 'right'
+		// * __key__: righ arrow
+		this.addButton(new Button('right', 39)); 
+
+		// * __name__: 'down'
+		// * __key__: down arrow
+		this.addButton(new Button('down', 40));  
+
+		// * __name__: 'A'
+		// * __key__: spacebar
+		this.addButton(new Button('A', 32));     
 	}
 	FiveButtonController.prototype = Object.create(Controller.prototype);
 	FiveButtonController.prototype.constructor = FiveButtonController;
 
+	/** ### SixButtonController
+	 *
+	 * Controller with six buttons
+	 */
 	function SixButtonController() {
 		Controller.call(this);
 
-		this.addButton(new Button('up', 38));   // up arrow
-		this.addButton(new Button('left', 37));  // left arrow
-		this.addButton(new Button('right', 39)); // right arrow
-		this.addButton(new Button('down', 40));  // down arrow
-		this.addButton(new Button('A', 32));     // spacebar
-		this.addButton(new Button('B', 17));     // ctrl
+		// * __name__: 'up'
+		// * __key__: left arrow
+		this.addButton(new Button('up', 38));
+
+		// * __name__: 'left'
+		// * __key__: left arrow
+		this.addButton(new Button('left', 37));  
+
+		
+		// * __name__: 'right'
+		// * __key__: righ arrow
+		this.addButton(new Button('right', 39)); 
+
+		// * __name__: 'down'
+		// * __key__: down arrow
+		this.addButton(new Button('down', 40));  
+
+		// * __name__: 'A'
+		// * __key__: spacebar
+		this.addButton(new Button('A', 32));     
+
+		// * __name__: 'B'
+		// * __key__: ctrl
+		this.addButton(new Button('B', 17));
 	}
 	SixButtonController.prototype = Object.create(Controller.prototype);
 	SixButtonController.prototype.constructor = SixButtonController;
 
+	/** ### TouchController 
+	 *
+	 * This controller has no buttons. Instead it has a touchpad which
+	 * triggers *touchstart*, *touchend*, *touchmove*, *touchcancel*,
+	 * *touchend* events (similar to 
+	 * [Touch event types](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent#Touch_event_types))
+	 *
+	 * The position of the touch is in the `data.position` argument as a 
+	 * *x* and *y* with the values between [0, 0] for the left top corner
+	 * and [1, 1] for the bottom right corner ([0.5, 0.5] is the center).
+	 *
+	 * ```javascript
+	 * controller = gamee.controller.requestController('Touch');
+	 *
+	 * controller.on('touchstart', function(data) {
+	 *	if (data.position.x < 0.5 && data.position.y < 0.5) {
+	 *    console.log('touch in the top left quadrant');
+	 *  }
+	 * })
+	 * ```
+	 */
 	function TouchController() {
 		var self = this;
 
@@ -520,7 +942,23 @@ var gamee = function(global) {
 	TouchController.prototype = Object.create(TouchController.prototype);
 	TouchController.prototype.constructor = TouchController;
 
-	function getController(type, opts) {
+	//
+	// ## Private objects and methods
+	// These are internal objects in closed scope. Good to know about them
+	// when debugging.
+
+
+	/** ### createController
+	 * 
+	 * Function to create a controller.
+	 *
+	 * *see [requestController](#requestcontroller)
+	 *
+	 * @param {String} type
+	 * @param {Object} [opts]
+	 * @returns {Controller} controller
+	 */
+	function createController(type, opts) {
 		var btn, controller;
 
 		if (!controllerTypes[type]) {
@@ -542,45 +980,27 @@ var gamee = function(global) {
 		}
 
 		return controller;
-
-/*		return {
-			on: controller.on.bind(controller),
-			off: controller.off.bind(controller),
-			once: controller.once.bind(controller),
-			trigger: controller.trigger.bind(controller)
-		} */
 	}
 
 
-	function requestController(type, opts) {
-		var controller = getController(type, opts);
+	/** ### mainController
+	 * 
+	 * Current controller.
+	 */
+	var mainController; 
 
-		global.$gameeNative.requestController(type);
-		mainController = controller;
-		
-		return controller;
-	}
-
-	// currently only for keyboard alternate bindings
-	function additionalController(type, opts) {
-		var controller = getController(type, opts);
-		global.$gameeNative.additionalController(type);
-
-		return controller;
-	}
-
-	// public API
-	gamee.controller = {
-		requestController: requestController,
-		additionalController: additionalController,
-		trigger: function() {
-			var i;
-
-			if (mainController) {
-				mainController.trigger.apply(mainController, arguments); 
-			} else {
-				throw new Error('No controller present');
-			}
-		}
+	/** ### controllerTypes
+	 *
+	 * List of controller types and their coresponding classes.
+	 *
+	 * *see [Controllers](#controllers) for more info*
+	 */
+	var controllerTypes = {
+		'OneButton': OneButtonController,
+		'TwoButtons': TwoButtonController,
+		'FourButtons': FourButtonController,
+		'FiveButtons': FiveButtonController,
+		'SixButtons': SixButtonController,
+		'Touch': TouchController
 	};
 }(this, gamee));
