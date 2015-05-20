@@ -134,6 +134,8 @@ var gamee = function(global) {
 	gamee.onMute    = noop;
 
 	/**
+	 * *gamee.onUnpause*
+	 *
 	 * ***deprecated***
 	 *
 	 * for backward compatibility, use [onResume](#gamee.onresume) instead
