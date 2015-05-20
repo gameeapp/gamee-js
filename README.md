@@ -13,7 +13,7 @@ Easy intro (in Slovak): https://morihladko.github.io/gamee-js/
 Project structure
 -----------------
 
-* __dist/__ source files which ready to be included in your game
+* __dist/__ source files ready to be included in your game
  * __gamee.all.devel.js__ non minified with dependencies
  * __gamee.all.min.js__ minified with dependencies
  * __gamee.js__ non minified without dependencies
@@ -22,3 +22,13 @@ Project structure
 * __doc__/ documentation
 
 [Gamee]:http://www.gameeapp.com/
+
+
+Building
+--------
+
+```bash
+npm install
+bower install
+grunt 
+```
