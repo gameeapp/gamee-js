@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <title>Gamee - integrácia hry</title>
+
+  <xmp theme="cerulean" style="display: none">
+Hru už máme nakódenú, jedine čo ostáva je integrovať gamee. V Gamee
+bude hra bežať vo webview na  mobilných plaftormách iOS/Android a v 
+desktopovej verzii v iframe. Ovládacie prvky ako i komunikácia so 
+službami obstaráva Gamee. 
+
+
+index.html
+----------
+Na komunikáciu s Gamee slúži [gamee.js]. Môžme ho buď priamo stiahnuť z
+githubu alebo použiť [bower] a automatizovať tak updatovanie a 
+inkludovanie (pomocou *wiredep* pluginu)
+
+Ak budeme vkladať ručne poväčšine stačí využiť verziu so závislosťami 
+ale pri možnom konflikte so závislosťami hry je možné použiť čistú 
+verziu. 
+
+```html
+  <script src="vendor/gamee.all.js"></script>
+```
+
+V repozitári sú ešte _*.min.*_ verzie, ktoré môžme použiť ak máme hru
+pripravenú pre release a chceme mať menšie js súbory.
+
+##### Inštalácia cez Bower 
+
+```bash
+bower install https://morihladko.github.io/gamee-js
+```
+
+Pri použití *wiredep* pluginu nemusíme potom riešiť čo a kde inkludnúť.
+
+```html
+  <!-- bower:js -->
+  <!-- endbower -->
+```
+
+gamee
+-----
+Po pridaní gamee.js bude v globálnom namespaci prístupný objekt [gamee].
+
+### Kontrolér 
+Hra musí ako prvé deklarovať typ ovládača, ktorý chce použiť. Gamee sa 
+postará o jeho zobrazenie resp. nabinduje klávesy pre desktop verziu.
+
+V hre potom už mi nabindujeme akcie ovládača na akcie v hre. Viac info 
+na [controller.js].
+
+```javascript
+var controller = gamee.controller.requestController('FourButtons', {enableKeyboard: true});
+
+controller.buttons.left.on('keydown', mygame.goLeft);
+controller.buttons.right.on('keydown', mygame.goRight);
+
+// ..
+
+mygame.update = function(dt) {
+  // ..
+  if (controller.buttons.A.isDown()) {
+    this.fire();
+  } 
+  // ..
+}
+
+```
+V ukážke sme si vypýtali *FourButton* ovládač, ktorý nám poskytuje 3
+smerové a 1 akčné tlačítko. Na ne sme si nabindovali funkcie hry a ďalej
+v update metóde podľa stavu akčného tlačítka vykonáme akciu.
+
+### Signalizácia stavu hry
+Hra musí signalizovať svoj stav (hrám/nehrám), takže hneď ako sa 
+načítali všetky assety a hra je pripravená začať zavoláme
+
+```javascript
+gamee.gameStart()
+```
+
+Keď hra sa ukončí (nastal game over) tak zavoláme
+
+```javascript
+gamee.gameEnd()
+```
+
+### Odchytávanie užívateľských eventov
+Na reakciu užívateľského vstupu mimo ovládača slúžia callbacky v *gamee*.
+
+Napr. spracovanie pausy
+
+```javascript
+gamee.onPause = function() {
+  myGame.pause();
+}
+
+gamee.onResume = function() {
+  myGame.unpause();
+}
+```
+
+Viac info na 
+[Callbacks - handling user action](https://morihladko.github.io/gamee-js/doc/src/gamee.js.html#callbacks%20-%20handling%20user%20action).
+
+Odkazy
+------
+
+Zdrojáky: https://github.com/morihladko/gamee-js
+
+Dokumentácia (anotované zdrojáky): https://morihladko.github.io/gamee-js/doc/src/gamee.js.html
+
+Webstránka ku Gamee.JS: https://morihladko.github.io/gamee-js
+
+[gamee.js]:https://github.com/morihladko/gamee-js
+[gamee]:https://morihladko.github.io/gamee-js/doc/src/gamee.js.html#gamee
+[bower]:http://bower.io/
+[controller.js]:https://morihladko.github.io/gamee-js/doc/src/controller.js.html
+
+  </xmp>
+
+  <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>
