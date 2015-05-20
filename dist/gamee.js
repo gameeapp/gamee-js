@@ -298,6 +298,8 @@ var gamee = function(global) {
 	gamee.onMute    = noop;
 
 	/**
+	 * *gamee.onUnpause*
+	 *
 	 * ***deprecated***
 	 *
 	 * for backward compatibility, use [onResume](#gamee.onresume) instead
@@ -519,7 +521,7 @@ var gamee = function(global) {
 		 * 
 		 * Construct an additional controller. Sometimes games require a
 		 * different controller depending on platform (eg. touch on mobile, 
-		 * but Four Buttons on desktop)
+		 e but Four Buttons on desktop)
 		 *
 		 * **This is currently supported only for GameeWebApp** as a way to 
 		 * have alternate keybinding. The game should request a type used 
@@ -753,14 +755,25 @@ var gamee = function(global) {
 	 * 
 	 * controller.buttons.throttle.on('keydown', ..);
 	 * ```
+	 *
+	 * @param {String} oldName button name we want to change
+	 * @param {String} newName new button name
 	 */
-	Controller.prototype.remapButton = function(oldName, newProp) {
+	Controller.prototype.remapButton = function(oldName, newName) {
+		
+		// handle old code
+		if (newName.name) {
+			newName = newName.name;
+		}
+
 		if (this.buttons[oldName]) {
-			this.buttonAlias[oldName] = newProp.name;
+			this.buttonAlias[oldName] = newName.name;
 			
-			this.buttons[newProp.name] = this.buttons[oldName];
+			this.buttons[newName.name] = this.buttons[oldName];
 
 			delete this.buttons[oldName];
+		} else {
+			throw Error('Button ' + oldName + ' was not found in controller');
 		}
 	};
 

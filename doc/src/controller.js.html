@@ -231,7 +231,7 @@ and signals to GameeApp which type the game requires</p>
   </div>
   <div class="body"><p>Construct an additional controller. Sometimes games require a
 different controller depending on platform (eg. touch on mobile, 
-but Four Buttons on desktop)</p>
+e but Four Buttons on desktop)</p>
 
 <p><strong>This is currently supported only for GameeWebApp</strong> as a way to 
 have alternate keybinding. The game should request a type used 
@@ -664,16 +664,48 @@ the game a different names are desired.</p>
 
 
   </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">oldName</span>
+      <span class="dox_type">String</span>
+      <span>button name we want to change</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">newName</span>
+      <span class="dox_type">String</span>
+      <span>new button name</span>
+    </div>
+  </div>
 </div>
         </td>
         <td class="code highlight"><div class="highlight"><pre>
-  <span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">remapButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">oldName</span><span class="p">,</span> <span class="nx">newProp</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">remapButton</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">oldName</span><span class="p">,</span> <span class="nx">newName</span><span class="p">)</span> <span class="p">{</span>
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>handle old code</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">newName</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">newName</span> <span class="o">=</span> <span class="nx">newName</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+    <span class="p">}</span>
+
     <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">oldName</span><span class="p">])</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">buttonAlias</span><span class="p">[</span><span class="nx">oldName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">newProp</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">buttonAlias</span><span class="p">[</span><span class="nx">oldName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">newName</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
       
-      <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">newProp</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">oldName</span><span class="p">];</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">newName</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">oldName</span><span class="p">];</span>
 
       <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">buttons</span><span class="p">[</span><span class="nx">oldName</span><span class="p">];</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Button &#39;</span> <span class="o">+</span> <span class="nx">oldName</span> <span class="o">+</span> <span class="s1">&#39; was not found in controller&#39;</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">};</span>
 
@@ -723,7 +755,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'button' </li>
@@ -767,7 +799,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'left'</li>
@@ -784,7 +816,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'right'</li>
@@ -828,7 +860,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'up'</li>
@@ -845,7 +877,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'left'</li>
@@ -863,7 +895,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'right'</li>
@@ -880,7 +912,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'A'</li>
@@ -923,7 +955,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'up'</li>
@@ -940,7 +972,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'left'</li>
@@ -958,7 +990,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'right'</li>
@@ -975,7 +1007,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'down'</li>
@@ -992,7 +1024,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'A'</li>
@@ -1035,7 +1067,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'up'</li>
@@ -1052,7 +1084,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'left'</li>
@@ -1070,7 +1102,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'right'</li>
@@ -1087,7 +1119,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'down'</li>
@@ -1104,7 +1136,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'A'</li>
@@ -1121,7 +1153,7 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
 </div>
 <ul>
 <li><strong>name</strong>: 'B'</li>
