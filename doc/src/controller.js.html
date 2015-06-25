@@ -78,6 +78,9 @@
       <div class="heading h3">
         <a href="#touchcontroller">TouchController</a>
       </div>
+      <div class="heading h3">
+        <a href="#joystickcontroller">JoystickController</a>
+      </div>
       <div class="heading h2">
         <a href="#private%20objects%20and%20methods">Private objects and methods</a>
       </div>
@@ -1238,6 +1241,82 @@ and [1, 1] for the bottom right corner ([0.5, 0.5] is the center).</p>
         </td>
       </tr>
       <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="joystickcontroller">
+  <h3>
+    <a href="#joystickcontroller" name="joystickcontroller" class="pilcrow">&#182;</a>
+    JoystickController
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>JoystickController emits <code>change</code> event, after the position of the 
+joystick is changed. </p>
+
+<p>The position of the joystick is in the property <code>x</code> and <code>y</code>. The 
+position on axis is between &lt;-1, 1> (for x -1 is max left 
+position, 1 max right position). [0.0, 0.0] is the center.</p>
+
+
+<div class="highlight"><pre><code><span class="nx">joystick</span> <span class="o">=</span> <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">requestController</span><span class="p">(</span><span class="s1">&#39;Joystick&#39;</span><span class="p">);</span>
+
+<span class="nx">joystick</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">new_x</span> <span class="o">=</span> <span class="nx">joystick</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+  <span class="nx">nex_y</span> <span class="o">=</span> <span class="nx">joystick</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+<span class="p">})</span>
+</code></pre></div>
+
+
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">JoystickController</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+    <span class="nx">Controller</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+</div>
+<p>x axis</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+</div>
+<p>y axis</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;$change&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+
+      <span class="nx">self</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;change&quot;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
         <td class="docs">
 <div class="pilwrap" id="private%20objects%20and%20methods">
   <h2>
@@ -1367,7 +1446,8 @@ when debugging.</p>
     <span class="s1">&#39;FourButtons&#39;</span><span class="o">:</span> <span class="nx">FourButtonController</span><span class="p">,</span>
     <span class="s1">&#39;FiveButtons&#39;</span><span class="o">:</span> <span class="nx">FiveButtonController</span><span class="p">,</span>
     <span class="s1">&#39;SixButtons&#39;</span><span class="o">:</span> <span class="nx">SixButtonController</span><span class="p">,</span>
-    <span class="s1">&#39;Touch&#39;</span><span class="o">:</span> <span class="nx">TouchController</span>
+    <span class="s1">&#39;Touch&#39;</span><span class="o">:</span> <span class="nx">TouchController</span><span class="p">,</span>
+    <span class="s1">&#39;Joystick&#39;</span><span class="o">:</span> <span class="nx">JoystickController</span>
   <span class="p">};</span>
 <span class="p">}(</span><span class="k">this</span><span class="p">,</span> <span class="nx">gamee</span><span class="p">));</span>
 </pre></div>

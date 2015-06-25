@@ -482,6 +482,42 @@
 	TouchController.prototype = Object.create(TouchController.prototype);
 	TouchController.prototype.constructor = TouchController;
 
+	/** ### JoystickController 
+	 *
+	 * JoystickController emits `change` event, after the position of the 
+	 * joystick is changed. 
+	 *
+	 * The position of the joystick is in the property `x` and `y`. The 
+	 * position on axis is between <-1, 1> (for x -1 is max left 
+	 * position, 1 max right position). [0.0, 0.0] is the center.
+	 *
+	 * ```javascript
+	 * joystick = gamee.controller.requestController('Joystick');
+	 *
+	 * joystick.on('change', function() {
+	 *   new_x = joystick.x;
+	 *   nex_y = joystick.y;
+	 * })
+	 * ```
+	 */
+	function JoystickController() {
+		var self = this;
+
+		Controller.call(this);
+	
+		// x axis
+		this.x = 0;
+		// y axis
+		this.y = 0;
+
+		this.on("$change", function(data) {
+			self.x = data.position.x;
+			self.y = data.position.y;
+
+			self.trigger("change", data);
+		});
+	}
+
 	//
 	// ## Private objects and methods
 	// These are internal objects in closed scope. Good to know about them
@@ -541,6 +577,7 @@
 		'FourButtons': FourButtonController,
 		'FiveButtons': FiveButtonController,
 		'SixButtons': SixButtonController,
-		'Touch': TouchController
+		'Touch': TouchController,
+		'Joystick': JoystickController
 	};
 }(this, gamee));

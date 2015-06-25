@@ -8,6 +8,7 @@ module.exports = function(grunt) {
 			src: './src/',
 			dist: './dist/',
 			docs: './doc/',
+			test: './test/',
 			bower: './bower_components/'
 		},
 
@@ -59,6 +60,13 @@ module.exports = function(grunt) {
 				options: {
 					spawn: false
 				}
+			}
+		},
+
+		karma: {
+			unit: {
+				configFile: '<%= app.test %>/karma.conf.js',
+				autoWatch: true
 			}
 		}
 
