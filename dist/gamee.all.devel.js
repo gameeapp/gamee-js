@@ -1015,6 +1015,33 @@ var gamee = function(global) {
 	SixButtonController.prototype = Object.create(Controller.prototype);
 	SixButtonController.prototype.constructor = SixButtonController;
 
+	/** ### FourArrowController 
+	 *
+	 * Controller with four arrow buttons
+	 */
+	function FourArrowController() {
+		Controller.call(this);
+
+		// * __name__: 'up'
+		// * __key__: left arrow
+		this.addButton(new Button('up', 38));
+
+		// * __name__: 'left'
+		// * __key__: left arrow
+		this.addButton(new Button('left', 37));  
+
+		
+		// * __name__: 'right'
+		// * __key__: righ arrow
+		this.addButton(new Button('right', 39)); 
+
+		// * __name__: 'down'
+		// * __key__: down arrow
+		this.addButton(new Button('down', 40));  
+	}
+	FourArrowController.prototype = Object.create(Controller.prototype);
+	FourArrowController.prototype.constructor = FourArrowController;
+
 	/** ### TouchController 
 	 *
 	 * This controller has no buttons. Instead it has a touchpad which
@@ -1099,6 +1126,37 @@ var gamee = function(global) {
 			self.trigger("change", data);
 		});
 	}
+	JoystickController.prototype = Object.create(Controller.prototype);
+	JoystickController.prototype.constructor = JoystickController;
+
+	/** ### JoystickButtonController 
+	 *
+	 * JoystickButtonController is a `JoystickController` with one button.
+	 *
+	 * ```javascript
+	 * joystick = gamee.controller.requestController('JoystickWithButton');
+	 *
+	 * joystick.on('change', function() {
+	 *   new_x = joystick.x;
+	 *   nex_y = joystick.y;
+	 * })
+	 *
+	 * joystick.buttons.button.on('keydown', callback)
+	 * // or simply
+	 * joystick.on('keydown', callback)
+	 * ```
+	 */
+	function JoystickButtonController() {
+		var self = this;
+
+		JoystickController.call(this);
+
+		// * __name__: 'button' 
+		// * __key__: spacebar
+		this.addButton(new Button('button', 32)); 
+	}
+	JoystickButtonController.prototype = Object.create(JoystickController.prototype);
+	JoystickButtonController.prototype.constructor = JoystickButtonController;
 
 	//
 	// ## Private objects and methods
@@ -1159,7 +1217,9 @@ var gamee = function(global) {
 		'FourButtons': FourButtonController,
 		'FiveButtons': FiveButtonController,
 		'SixButtons': SixButtonController,
+		'FourArrows': FourArrowController,
 		'Touch': TouchController,
-		'Joystick': JoystickController
+		'Joystick': JoystickController,
+		'JoystickWithButton': JoystickButtonController
 	};
 }(this, gamee));

@@ -76,10 +76,16 @@
         <a href="#sixbuttoncontroller">SixButtonController</a>
       </div>
       <div class="heading h3">
+        <a href="#fourarrowcontroller">FourArrowController</a>
+      </div>
+      <div class="heading h3">
         <a href="#touchcontroller">TouchController</a>
       </div>
       <div class="heading h3">
         <a href="#joystickcontroller">JoystickController</a>
+      </div>
+      <div class="heading h3">
+        <a href="#joystickbuttoncontroller">JoystickButtonController</a>
       </div>
       <div class="heading h2">
         <a href="#private%20objects%20and%20methods">Private objects and methods</a>
@@ -1176,6 +1182,101 @@ the game a different names are desired.</p>
       <tr>
         <td class="docs"><div class="dox">
   <div class="summary">
+<div class="pilwrap" id="fourarrowcontroller">
+  <h3>
+    <a href="#fourarrowcontroller" name="fourarrowcontroller" class="pilcrow">&#182;</a>
+    FourArrowController
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Controller with four arrow buttons</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">FourArrowController</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">Controller</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+</div>
+<ul>
+<li><strong>name</strong>: 'up'</li>
+<li><strong>key</strong>: left arrow</li>
+</ul>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;up&#39;</span><span class="p">,</span> <span class="mi">38</span><span class="p">));</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+</div>
+<ul>
+<li><strong>name</strong>: 'left'</li>
+<li><strong>key</strong>: left arrow</li>
+</ul>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="mi">37</span><span class="p">));</span>  
+
+    
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+</div>
+<ul>
+<li><strong>name</strong>: 'right'</li>
+<li><strong>key</strong>: righ arrow</li>
+</ul>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="mi">39</span><span class="p">));</span> 
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+</div>
+<ul>
+<li><strong>name</strong>: 'down'</li>
+<li><strong>key</strong>: down arrow</li>
+</ul>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;down&#39;</span><span class="p">,</span> <span class="mi">40</span><span class="p">));</span>  
+  <span class="p">}</span>
+  <span class="nx">FourArrowController</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="nx">FourArrowController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">FourArrowController</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
 <div class="pilwrap" id="touchcontroller">
   <h3>
     <a href="#touchcontroller" name="touchcontroller" class="pilcrow">&#182;</a>
@@ -1284,7 +1385,7 @@ position, 1 max right position). [0.0, 0.0] is the center.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
 </div>
 <p>x axis</p>
         </td>
@@ -1297,7 +1398,7 @@ position, 1 max right position). [0.0, 0.0] is the center.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
 </div>
 <p>y axis</p>
         </td>
@@ -1311,6 +1412,68 @@ position, 1 max right position). [0.0, 0.0] is the center.</p>
       <span class="nx">self</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;change&quot;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
     <span class="p">});</span>
   <span class="p">}</span>
+  <span class="nx">JoystickController</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="nx">JoystickController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">JoystickController</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="joystickbuttoncontroller">
+  <h3>
+    <a href="#joystickbuttoncontroller" name="joystickbuttoncontroller" class="pilcrow">&#182;</a>
+    JoystickButtonController
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>JoystickButtonController is a <code>JoystickController</code> with one button.</p>
+
+
+<div class="highlight"><pre><code><span class="nx">joystick</span> <span class="o">=</span> <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">requestController</span><span class="p">(</span><span class="s1">&#39;JoystickWithButton&#39;</span><span class="p">);</span>
+
+<span class="nx">joystick</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">new_x</span> <span class="o">=</span> <span class="nx">joystick</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+  <span class="nx">nex_y</span> <span class="o">=</span> <span class="nx">joystick</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+<span class="p">})</span>
+
+<span class="nx">joystick</span><span class="p">.</span><span class="nx">buttons</span><span class="p">.</span><span class="nx">button</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span>
+<span class="c1">// or simply</span>
+<span class="nx">joystick</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;keydown&#39;</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span>
+</code></pre></div>
+
+
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="kd">function</span> <span class="nx">JoystickButtonController</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+    <span class="nx">JoystickController</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+</div>
+<ul>
+<li><strong>name</strong>: 'button' </li>
+<li><strong>key</strong>: spacebar</li>
+</ul>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addButton</span><span class="p">(</span><span class="k">new</span> <span class="nx">Button</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">));</span> 
+  <span class="p">}</span>
+  <span class="nx">JoystickButtonController</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">JoystickController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="nx">JoystickButtonController</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">JoystickButtonController</span><span class="p">;</span>
 
 
 </pre></div>
@@ -1446,8 +1609,10 @@ when debugging.</p>
     <span class="s1">&#39;FourButtons&#39;</span><span class="o">:</span> <span class="nx">FourButtonController</span><span class="p">,</span>
     <span class="s1">&#39;FiveButtons&#39;</span><span class="o">:</span> <span class="nx">FiveButtonController</span><span class="p">,</span>
     <span class="s1">&#39;SixButtons&#39;</span><span class="o">:</span> <span class="nx">SixButtonController</span><span class="p">,</span>
+    <span class="s1">&#39;FourArrows&#39;</span><span class="o">:</span> <span class="nx">FourArrowController</span><span class="p">,</span>
     <span class="s1">&#39;Touch&#39;</span><span class="o">:</span> <span class="nx">TouchController</span><span class="p">,</span>
-    <span class="s1">&#39;Joystick&#39;</span><span class="o">:</span> <span class="nx">JoystickController</span>
+    <span class="s1">&#39;Joystick&#39;</span><span class="o">:</span> <span class="nx">JoystickController</span><span class="p">,</span>
+    <span class="s1">&#39;JoystickWithButton&#39;</span><span class="o">:</span> <span class="nx">JoystickButtonController</span>
   <span class="p">};</span>
 <span class="p">}(</span><span class="k">this</span><span class="p">,</span> <span class="nx">gamee</span><span class="p">));</span>
 </pre></div>
