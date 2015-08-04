@@ -27,8 +27,7 @@
 		 * You should called this method once before calling
 		 * `gamee.gameStart()`.
 		 *
-		 * @param {String} type type of controller ('OneButton', 'TwoButtons',
-		 * 'FourButtons', 'FiveButtons', 'SixButtons', 'Touch')
+		 * @param {String} type type of controller (see [controllerTypes](#controllertypes))
 		 * @param {Object} [opts] optional controller options 
 		 * {'enableKeyboard': .., 'buttons': ...}
 		 * @param {boolean} [opts.enableKeyboard] enable the keyboard
@@ -567,7 +566,7 @@
 	function JoystickButtonController() {
 		var self = this;
 
-		JoystickController(this);
+		JoystickController.call(this);
 
 		// * __name__: 'button' 
 		// * __key__: spacebar

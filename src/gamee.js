@@ -70,7 +70,7 @@ var gamee = function(global) {
 
 	/** ### gamee.gameStart
 	 *
-	 * Indicate that game has been initialized and started.
+	 * Indicate that player has started the game (even after restart).
 	 */
 	gamee.gameStart = function() {
 		global.$gameeNative.gameStart();
