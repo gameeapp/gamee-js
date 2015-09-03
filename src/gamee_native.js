@@ -54,6 +54,8 @@
 			 */ 
 			gameStart: function() {},
 
+			gameLoaded: function() {},
+
 			type: 'no-gamee'
 		},
 
@@ -80,6 +82,10 @@
 				window.location.href = "gamee://game-start";
 			};
 
+			gameeNative.gameLoaded = function() {
+				window.location.href = "gamee://game-loaded";
+			};
+
 			gameeNative.type = 'gamee-mobile';
 		}
 
@@ -103,6 +109,10 @@
 
 			gameeNative.gameStart = function() {
 				simulator.gameStart();
+			};
+
+			gameeNative.gameLoaded = function() {
+				simulator.gameLoaded();
 			};
 
 			gameeNative.type = 'gamee-simulator';
@@ -136,6 +146,10 @@
 
 			gameeNative.gamePaused = function() {
 				gamee.postMessage(['game-paused'], '*');
+			};
+
+			gameeNative.gameLoaded = function() {
+				gamee.postMessage(['game-loaded'], '*')
 			};
 
 			gameeNative.type = 'gamee-web';

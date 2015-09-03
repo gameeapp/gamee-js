@@ -76,6 +76,14 @@ var gamee = function(global) {
 		global.$gameeNative.gameStart();
 	};
 
+	/** ### gamee.gameLoaded
+	 *
+	 * Indicate that the game has loaded
+	 */
+	gamee.gameLoaded = function() {
+		global.$gameeNative.gameLoaded();
+	};
+
 	// ## Controller
 	//
 	// To keep it light controller code is in [controller.js](controller.js.html)
