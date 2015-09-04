@@ -149,7 +149,7 @@
 			};
 
 			gameeNative.gameLoaded = function() {
-				gamee.postMessage(['game-loaded'], '*')
+				gamee.postMessage(['game-loaded'], '*');
 			};
 
 			gameeNative.type = 'gamee-web';

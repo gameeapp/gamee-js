@@ -163,6 +163,8 @@
 			 */ 
 			gameStart: function() {},
 
+			gameLoaded: function() {},
+
 			type: 'no-gamee'
 		},
 
@@ -189,6 +191,10 @@
 				window.location.href = "gamee://game-start";
 			};
 
+			gameeNative.gameLoaded = function() {
+				window.location.href = "gamee://game-loaded";
+			};
+
 			gameeNative.type = 'gamee-mobile';
 		}
 
@@ -212,6 +218,10 @@
 
 			gameeNative.gameStart = function() {
 				simulator.gameStart();
+			};
+
+			gameeNative.gameLoaded = function() {
+				simulator.gameLoaded();
 			};
 
 			gameeNative.type = 'gamee-simulator';
@@ -245,6 +255,10 @@
 
 			gameeNative.gamePaused = function() {
 				gamee.postMessage(['game-paused'], '*');
+			};
+
+			gameeNative.gameLoaded = function() {
+				gamee.postMessage(['game-loaded'], '*');
 			};
 
 			gameeNative.type = 'gamee-web';
@@ -343,10 +357,18 @@ var gamee = function(global) {
 
 	/** ### gamee.gameStart
 	 *
-	 * Indicate that game has been initialized and started.
+	 * Indicate that player has started the game (even after restart).
 	 */
 	gamee.gameStart = function() {
 		global.$gameeNative.gameStart();
+	};
+
+	/** ### gamee.gameLoaded
+	 *
+	 * Indicate that the game has loaded
+	 */
+	gamee.gameLoaded = function() {
+		global.$gameeNative.gameLoaded();
 	};
 
 	// ## Controller
@@ -609,8 +631,7 @@ var gamee = function(global) {
 		 * You should called this method once before calling
 		 * `gamee.gameStart()`.
 		 *
-		 * @param {String} type type of controller ('OneButton', 'TwoButtons',
-		 * 'FourButtons', 'FiveButtons', 'SixButtons', 'Touch')
+		 * @param {String} type type of controller (see [controllerTypes](#controllertypes))
 		 * @param {Object} [opts] optional controller options 
 		 * {'enableKeyboard': .., 'buttons': ...}
 		 * @param {boolean} [opts.enableKeyboard] enable the keyboard

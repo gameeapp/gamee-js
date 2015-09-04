@@ -36,6 +36,9 @@
       <div class="heading h3">
         <a href="#gamee.gamestart">gamee.gameStart</a>
       </div>
+      <div class="heading h3">
+        <a href="#gamee.gameloaded">gamee.gameLoaded</a>
+      </div>
       <div class="heading h2">
         <a href="#controller">Controller</a>
       </div>
@@ -266,6 +269,30 @@ callbacks.</p>
         </td>
       </tr>
       <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="gamee.gameloaded">
+  <h3>
+    <a href="#gamee.gameloaded" name="gamee.gameloaded" class="pilcrow">&#182;</a>
+    gamee.gameLoaded
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Indicate that the game has loaded</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">gameLoaded</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">global</span><span class="p">.</span><span class="nx">$gameeNative</span><span class="p">.</span><span class="nx">gameLoaded</span><span class="p">();</span>
+  <span class="p">};</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
         <td class="docs">
 <div class="pilwrap" id="controller">
   <h2>
@@ -436,7 +463,7 @@ game's webview/iframe).</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p><em>gamee.onUnpause</em></p>
@@ -812,7 +839,7 @@ is used. This handles the callbacks send from the GameeApp.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
 </div>
 <p>after restart we have to steal the focus from parent frame</p>
         </td>
