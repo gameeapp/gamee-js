@@ -6,9 +6,10 @@ Javascript library for [Gamee].
 Documentation
 -------------
                                                                                                          
-Annoted source code: https://morihladko.github.io/gamee-js/doc/src/gamee.js.html
+Annoted source code: https://gameeapp.github.io/gamee-js/doc/src/gamee.js.html
 
-Easy intro (in Slovak): https://morihladko.github.io/gamee-js/integration.sk.html
+Easy intro: https://gameeapp.github.io/gamee-js/integration.en.html
+Easy intro (in Slovak): https://gameeapp.github.io/gamee-js/integration.sk.html
 
 Project structure
 -----------------
