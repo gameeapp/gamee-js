@@ -84,6 +84,22 @@ var gamee = function(global) {
 		global.$gameeNative.gameLoaded();
 	};
 
+	/** ### gamee.gameMute
+	 *
+	 * Mute the game
+	 */
+	gamee.gameMute = function() {
+		global.$gameeNative.setMute(true);
+	};
+
+    /** ### gamee.gameUnmute
+	 * 
+	 * Unmute the game
+	 */
+	gamee.gameUnmute = function() {
+		global.$gameeNative.setMute(false);
+	};
+
 	// ## Controller
 	//
 	// To keep it light controller code is in [controller.js](controller.js.html)
