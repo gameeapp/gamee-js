@@ -84,22 +84,6 @@ var gamee = function(global) {
 		global.$gameeNative.gameLoaded();
 	};
 
-	/** ### gamee.gameMute
-	 *
-	 * Mute the game
-	 */
-	gamee.gameMute = function() {
-		global.$gameeNative.setMute(true);
-	};
-
-    /** ### gamee.gameUnmute
-	 * 
-	 * Unmute the game
-	 */
-	gamee.gameUnmute = function() {
-		global.$gameeNative.setMute(false);
-	};
-
 	// ## Controller
 	//
 	// To keep it light controller code is in [controller.js](controller.js.html)
@@ -151,11 +135,17 @@ var gamee = function(global) {
 
 	/** ### gamee.onMute
 	 *
-	 * ***not yet implemented***
-	 *
-	 * Will be called when user clicks the mute button
+	 * Will be called when user clicks the mute button and the game should
+	 * mute all game sounds.
 	 */
 	gamee.onMute    = noop;
+
+	/** ### gamee.onUnmute
+	 *
+	 * Will be called when user clicks the unmute button and the game 
+	 * should unmute all game sounds.
+	 */
+	gamee.onUnmute    = noop;
 
 	/**
 	 * *gamee.onUnpause*

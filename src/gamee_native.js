@@ -56,8 +56,6 @@
 
 			gameLoaded: function() {},
 
-			setMute: function(mute) {},
-
 			type: 'no-gamee'
 		},
 
@@ -86,10 +84,6 @@
 
 			gameeNative.gameLoaded = function() {
 				window.location.href = "gamee://game-loaded";
-			};
-
-			gameeNative.setMute = function(mute) {
-				window.location.href = "gamee://mute/" + mute;
 			};
 
 			gameeNative.type = 'gamee-mobile';
@@ -156,10 +150,6 @@
 
 			gameeNative.gameLoaded = function() {
 				gamee.postMessage(['game-loaded'], '*');
-			};
-
-			gameeNative.setMute = function(mute) {
-				gamee.postMessage(['mute', mute], '*');
 			};
 
 			gameeNative.type = 'gamee-web';
