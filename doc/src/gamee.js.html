@@ -61,6 +61,9 @@
         <a href="#gamee.onmute">gamee.onMute</a>
       </div>
       <div class="heading h3">
+        <a href="#gamee.onunmute">gamee.onUnmute</a>
+      </div>
+      <div class="heading h3">
         <a href="#gamee.onresume">gamee.onResume</a>
       </div>
       <div class="heading h2">
@@ -447,9 +450,8 @@ game's webview/iframe).</p>
 </div>
 
   </div>
-  <div class="body"><p><strong><em>not yet implemented</em></strong></p>
-
-<p>Will be called when user clicks the mute button</p>
+  <div class="body"><p>Will be called when user clicks the mute button and the game should
+mute all game sounds.</p>
   </div>
 </div>
         </td>
@@ -461,9 +463,32 @@ game's webview/iframe).</p>
         </td>
       </tr>
       <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="gamee.onunmute">
+  <h3>
+    <a href="#gamee.onunmute" name="gamee.onunmute" class="pilcrow">&#182;</a>
+    gamee.onUnmute
+  </h3>
+</div>
+
+  </div>
+  <div class="body"><p>Will be called when user clicks the unmute button and the game 
+should unmute all game sounds.</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+  <span class="nx">gamee</span><span class="p">.</span><span class="nx">onUnmute</span>    <span class="o">=</span> <span class="nx">noop</span><span class="p">;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
 </div>
 <div class="dox">
   <div class="summary"><p><em>gamee.onUnpause</em></p>
@@ -839,7 +864,7 @@ is used. This handles the callbacks send from the GameeApp.</p>
       <tr>
         <td class="docs">
 <div class="pilwrap">
-  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
 </div>
 <p>after restart we have to steal the focus from parent frame</p>
         </td>
