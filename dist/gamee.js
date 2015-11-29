@@ -313,11 +313,17 @@ var gamee = function(global) {
 
 	/** ### gamee.onMute
 	 *
-	 * ***not yet implemented***
-	 *
-	 * Will be called when user clicks the mute button
+	 * Will be called when user clicks the mute button and the game should
+	 * mute all game sounds.
 	 */
 	gamee.onMute    = noop;
+
+	/** ### gamee.onUnmute
+	 *
+	 * Will be called when user clicks the unmute button and the game 
+	 * should unmute all game sounds.
+	 */
+	gamee.onUnmute    = noop;
 
 	/**
 	 * *gamee.onUnpause*
