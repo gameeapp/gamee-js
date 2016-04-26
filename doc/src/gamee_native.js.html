@@ -61,6 +61,8 @@ for the public <code>gamee</code> object.</p>
         </td>
         <td class="code highlight"><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">global</span><span class="p">)</span> <span class="p">{</span>
   <span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">defer</span> <span class="o">=</span> <span class="nx">global</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">;</span>
   
 
 </pre></div>
@@ -267,7 +269,9 @@ for the public <code>gamee</code> object.</p>
       <span class="p">};</span>
 
       <span class="nx">gameeNative</span><span class="p">.</span><span class="nx">gameStart</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="s2">&quot;gamee://game-start&quot;</span><span class="p">;</span>
+        <span class="nx">defer</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+          <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="s2">&quot;gamee://game-start&quot;</span><span class="p">;</span>
+        <span class="p">},</span> <span class="mi">100</span><span class="p">);</span>
       <span class="p">};</span>
 
       <span class="nx">gameeNative</span><span class="p">.</span><span class="nx">gameLoaded</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>

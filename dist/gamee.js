@@ -6,6 +6,8 @@
 // for the public `gamee` object.
 (function(global) {
 	'use strict';
+
+	var defer = global.setTimeout;
 	
 	//
 	// ## $gameeNative
@@ -79,7 +81,9 @@
 			};
 
 			gameeNative.gameStart = function() {
-				window.location.href = "gamee://game-start";
+				defer(function() {
+					window.location.href = "gamee://game-start";
+				}, 100);
 			};
 
 			gameeNative.gameLoaded = function() {
