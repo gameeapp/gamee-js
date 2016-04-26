@@ -155,22 +155,25 @@
 			gameeNative.type = 'gamee-web';
 		}
 
-	// user agent is use to determine current enviroment
-	if (
-		/gamee\/[0-9\.]+$/.test(userAgent) || // test for android webview
-		/iphone|ipod|ipad/.test(userAgent)    // test for iOS webview
-	) {
-		gameeMobile(gameeNative);
 
-	} else if (window.parent) {
-		gameeWeb(gameeNative);
+    // user agent is use to determine current enviroment
+    if (/iphone|ipod|ipad/.test(userAgent)) { // test ios device
 
-	} else if (window.parent && window.parent.gameeSimulator) {
-		gameeSimulator(gameeNative);
-
-	} else {
-		console.error('No gamee enviroment matched');
-	}
+        // Test if window with game have a parent (loading in iframe)
+        if(window.self !== window.top) {
+            gameeWeb(gameeNative);
+        } else {
+            gameeMobile(gameeNative);
+        }
+    } else if (/gamee\/[0-9\.]+$/.test(userAgent)) { // test android app
+        gameeMobile(gameeNative);
+    } else if (window.parent) {
+        gameeWeb(gameeNative);
+    } else if (window.parent && window.parent.gameeSimulator) {
+        gameeSimulator(gameeNative);
+    } else {
+        console.error('No gamee enviroment matched');
+    }
 
 	// export to global scope
 	global.$gameeNative = gameeNative;
