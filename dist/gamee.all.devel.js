@@ -585,22 +585,79 @@ var gamee = function(global) {
 		// [More about *postMessage*](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
 		addDOMEvent(global, 'message', function(ev) {
 			switch(ev.data[0]) {
-				case 'pause': 
+				case 'pause':
 					gamee.onPause();
 					break;
 
 				case 'resume':
-					gamee.onResume();
+					gamee.onUnpause();
 					break;
 
 				case 'restart':
 					// after restart we have to steal the focus from parent frame
-					window.focus(); 
+					window.focus();
 					gamee.onRestart();
 					break;
 
 				case 'mute':
 					gamee.onMute();
+					break;
+
+				case 'button_button_down':
+					gamee.controller.trigger("keydown", {button : "button"});
+					break;
+
+				case 'button_button_up':
+					gamee.controller.trigger("keyup", {button : "button"});
+					break;
+
+				case 'button_left_up':
+					gamee.controller.trigger("keyup", {button : "left"});
+					break;
+
+				case 'button_left_down':
+					gamee.controller.trigger("keydown", {button : "left"});
+					break;
+
+				case 'button_right_down':
+					gamee.controller.trigger("keydown", {button : "right"});
+					break;
+
+				case 'button_right_up':
+					gamee.controller.trigger("keyup", {button : "right"});
+					break;
+
+				case 'button_up_down':
+					gamee.controller.trigger("keydown", {button : "up"});
+					break;
+
+				case 'button_up_up':
+					gamee.controller.trigger("keyup", {button : "up"});
+					break;
+
+				case 'button_down_down':
+					gamee.controller.trigger("keydown", {button : "down"});
+					break;
+
+				case 'button_down_up':
+					gamee.controller.trigger("keyup", {button : "down"});
+					break;
+
+				case 'button_a_down':
+					gamee.controller.trigger("keydown", {button : "A"});
+					break;
+
+				case 'button_a_up':
+					gamee.controller.trigger("keyup", {button : "A"});
+					break;
+
+
+				case 'button_b_down':
+					gamee.controller.trigger("keydown", {button : "B"});
+					break;
+
+				case 'button_b_up':
+					gamee.controller.trigger("keyup", {button : "B"});
 					break;
 
 				default:
