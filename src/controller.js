@@ -410,20 +410,20 @@
 
 		// * __name__: 'left'
 		// * __key__: left arrow
-		this.addButton(new Button('left', 37));  
+		this.addButton(new Button('left', 37));
 
-		
+
 		// * __name__: 'right'
 		// * __key__: righ arrow
-		this.addButton(new Button('right', 39)); 
+		this.addButton(new Button('right', 39));
 
 		// * __name__: 'down'
 		// * __key__: down arrow
-		this.addButton(new Button('down', 40));  
+		this.addButton(new Button('down', 40));
 
 		// * __name__: 'A'
 		// * __key__: spacebar
-		this.addButton(new Button('A', 32));     
+		this.addButton(new Button('A', 32));
 
 		// * __name__: 'B'
 		// * __key__: ctrl
@@ -431,6 +431,62 @@
 	}
 	SixButtonController.prototype = Object.create(Controller.prototype);
 	SixButtonController.prototype.constructor = SixButtonController;
+
+	/** ### TwoArrowsOneButtonController
+	 *
+	 * Controller with two arrows and one action button
+	 */
+	function TwoArrowsOneButtonController() {
+		Controller.call(this);
+
+
+		// * __name__: 'left'
+		// * __key__: left arrow
+		this.addButton(new Button('left', 37));
+
+
+		// * __name__: 'right'
+		// * __key__: righ arrow
+		this.addButton(new Button('right', 39));
+
+
+		// * __name__: 'A'
+		// * __key__: spacebar
+		this.addButton(new Button('A', 32));
+
+	}
+	TwoArrowsOneButtonController.prototype = Object.create(Controller.prototype);
+	TwoArrowsOneButtonController.prototype.constructor = TwoArrowsOneButtonController;
+
+	/** ### TwoArrowsTwoButtonsController
+	 *
+	 * Controller with two arrows and two action buttons
+	 */
+	function TwoArrowsTwoButtonsController() {
+		Controller.call(this);
+
+
+		// * __name__: 'left'
+		// * __key__: left arrow
+		this.addButton(new Button('left', 37));
+
+
+		// * __name__: 'right'
+		// * __key__: righ arrow
+		this.addButton(new Button('right', 39));
+
+
+		// * __name__: 'A'
+		// * __key__: spacebar
+		this.addButton(new Button('A', 32));
+
+		// * __name__: 'B'
+		// * __key__: ctrl
+		this.addButton(new Button('B', 17));
+
+	}
+	TwoArrowsTwoButtonsController.prototype = Object.create(Controller.prototype);
+	TwoArrowsTwoButtonsController.prototype.constructor = TwoArrowsTwoButtonsController;
 
 	/** ### FourArrowController 
 	 *
@@ -637,6 +693,8 @@
 		'FourArrows': FourArrowController,
 		'Touch': TouchController,
 		'Joystick': JoystickController,
-		'JoystickWithButton': JoystickButtonController
+		'JoystickWithButton': JoystickButtonController,
+		'TwoArrowsTwoButtons': TwoArrowsTwoButtonsController,
+		'TwoArrowsOneButton': TwoArrowsOneButtonController
 	};
 }(this, gamee));
