@@ -185,17 +185,17 @@
 
 
 // # Gamee.js
-// 
+//
 // This file defines and expose a public API for games to communicate
 // with Gamee*.
 //
-// Also it handles some requirements when Gamee is run in an desktop 
+// Also it handles some requirements when Gamee is run in an desktop
 // environment.
 //
 // \* _later in the document Gamee will be referred as GameeApp to not
 // be mistaken for word game_
 //
-// ** _GameeWebApp will refer to Gamee which is running in a desktop 
+// ** _GameeWebApp will refer to Gamee which is running in a desktop
 // browser_
 var gamee = function(global) {
 	'use strict';
@@ -217,9 +217,9 @@ var gamee = function(global) {
 	 */
 	var gamee = {};
 
-	// 
-	// ## Signaling game state 
-	// 
+	//
+	// ## Signaling game state
+	//
 	// The game should signal the GameeApp its status (playing/game-over)
 	// and current score.
 	//
@@ -282,20 +282,20 @@ var gamee = function(global) {
 	//
 	// ## Callbacks - handling user action
 	//
-	// To handle signals from GameeApp you have to assinge callbacks to 
+	// To handle signals from GameeApp you have to assinge callbacks to
 	// `gamee` object to react on user actions from GameeApp (outside the
 	// game's webview/iframe).
 	//
 	// From the GameeApp user can
 	//
-	// * pause the game 
+	// * pause the game
 	// * resume the game after pause
 	// * restart the game after game has ended with `gamee.gameOver()` call
 	// * mute the game
 	//
 	// ```javascript
-	// gamee.onPause = function() { 
-	//   myGame.setState('pause'); 
+	// gamee.onPause = function() {
+	//   myGame.setState('pause');
 	//   myGame.update();
 	// }
 	// ```
@@ -351,7 +351,7 @@ var gamee = function(global) {
 		gamee.onUnpause();
 	};
 
-	// 
+	//
 	// ## Private methods
 	//
 	// These methods are only for internal use, should be avoided in games,
@@ -377,9 +377,9 @@ var gamee = function(global) {
 		addDOMEvent(global, 'keyup', wrapKeyEvent(fn));
 	};
 
-	// 
+	//
 	// ## Private functions
-	// 
+	//
 	// These are internal helper functions in closed scope. Good to know
 	// about them when debugging.
 
@@ -440,23 +440,23 @@ var gamee = function(global) {
 	}
 
 
-	// 
+	//
 	// ## Gamee Web App
-	// 
+	//
 	// gamee.js handles also some specific requirements for the GameeWebApp
 
 	if (global.$gameeNative.type === 'gamee-web') {
 
-		// 
+		//
 		// ### Key binding
 		//
-		// For user comfort the web app interface requires to react on 
+		// For user comfort the web app interface requires to react on
 		// certain keys within the game and the game should not override
 		// them.
 		//
 		// * 'p' - for pause
 		// * 'r' - for restart
-		// 
+		//
 		gamee._keydown(function(ev) {
 			switch(ev.keyCode) {
 				case 80:  // p for pause
@@ -471,10 +471,10 @@ var gamee = function(global) {
 		});
 
 		//
-		// ### Interframe communication 
-		// 
+		// ### Interframe communication
+		//
 		// In the GameeWebApp games are inside iframe and are hosted on
-		// different domains, therefor `postMessage`/ `on('message')` 
+		// different domains, therefor `postMessage`/ `on('message')`
 		// is used. This handles the callbacks send from the GameeApp.
 		//
 		// [More about *postMessage*](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
@@ -565,7 +565,7 @@ var gamee = function(global) {
 }(this);
 
 
-// 
+//
 // Controller for ``gamee``
 //
 (function(global, gamee) {
@@ -584,7 +584,7 @@ var gamee = function(global) {
 	// ## gamee.controller
 	//
 	// Namespace where the methods for controller are published.
-	// 
+	//
 	gamee.controller = {
 		/** ### requestController
 		 *
@@ -598,7 +598,7 @@ var gamee = function(global) {
 		 * @param {Object} [opts] optional controller options
 		 * {'enableKeyboard': .., 'buttons': ...}
 		 * @param {boolean} [opts.enableKeyboard] enable the keyboard
-		 * @param {Object} [opts.buttons] remap buttons {'oldKey': 'newKey', 
+		 * @param {Object} [opts.buttons] remap buttons {'oldKey': 'newKey',
 		 * 'left': 'break' ..}
 		 */
 		requestController: function (type, opts) {
@@ -737,7 +737,7 @@ var gamee = function(global) {
 		this.buttonAlias = {};
 
 		// Events prefixed with *$* are private, sent from GameeApp ment
-		// to be handled before resended as *public (non-prefixed)* 
+		// to be handled before resended as *public (non-prefixed)*
 		// event.
 		//
 		// They should be not used in games as they can change in the future.
@@ -759,10 +759,10 @@ var gamee = function(global) {
 
 		// By default GameeApp will trigger *keydown* and *keyup* events for
 		// the controller for every button presses/released.
-		// 
+		//
 		// The controller then handles the event and triggers the event for
 		// the coresponding button.
-		// 
+		//
 		// It expexts a `data` argument which should have a property `button`
 		// with the name of button.
 		this.on('keydown', function(data) {
@@ -870,7 +870,7 @@ var gamee = function(global) {
 		}
 	};
 
-	// ## Controllers 
+	// ## Controllers
 
 	/** ### OneButtonController
 	 *
@@ -879,7 +879,7 @@ var gamee = function(global) {
 	function OneButtonController() {
 		Controller.call(this);
 
-		// * __name__: 'button' 
+		// * __name__: 'button'
 		// * __key__: spacebar
 		this.addButton(new Button('button', 32));
 	}
@@ -904,6 +904,25 @@ var gamee = function(global) {
 	}
 	TwoButtonController.prototype = Object.create(Controller.prototype);
 	TwoButtonController.prototype.constructor = TwoButtonController;
+
+
+	/** ### TwoActionButtonController
+	 *
+	 * Controller with two action buttons (A,B)
+	 */
+	function TwoActionButtonController() {
+		Controller.call(this);
+
+		// * __name__: 'left'
+		// * __key__: left arrow
+		this.addButton(new Button('A', 32));
+
+		// * __name__: 'right'
+		// * __key__: righ arrow
+		this.addButton(new Button('B', 17));
+	}
+	TwoActionButtonController.prototype = Object.create(Controller.prototype);
+	TwoActionButtonController.prototype.constructor = TwoActionButtonController;
 
 
 	/** ### FourButtonController
@@ -1191,7 +1210,7 @@ var gamee = function(global) {
 
 		JoystickController.call(this);
 
-		// * __name__: 'button' 
+		// * __name__: 'button'
 		// * __key__: spacebar
 		this.addButton(new Button('button', 32));
 	}
@@ -1262,6 +1281,7 @@ var gamee = function(global) {
 		'Joystick': JoystickController,
 		'JoystickWithButton': JoystickButtonController,
 		'TwoArrowsTwoButtons': TwoArrowsTwoButtonsController,
-		'TwoArrowsOneButton': TwoArrowsOneButtonController
+		'TwoArrowsOneButton': TwoArrowsOneButtonController,
+		'TwoActionButtons': TwoActionButtonsController
 	};
 }(this, gamee));

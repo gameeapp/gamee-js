@@ -329,7 +329,7 @@
 
 		// * __name__: 'left'
 		// * __key__: left arrow
-		this.addButton(new Button('left', 37)); 
+		this.addButton(new Button('left', 37));
 
 		// * __name__: 'right'
 		// * __key__: righ arrow
@@ -337,6 +337,25 @@
 	}
 	TwoButtonController.prototype = Object.create(Controller.prototype);
 	TwoButtonController.prototype.constructor = TwoButtonController;
+
+
+	/** ### TwoActionButtonController
+	 *
+	 * Controller with two action buttons (A,B)
+	 */
+	function TwoActionButtonController() {
+		Controller.call(this);
+
+		// * __name__: 'left'
+		// * __key__: left arrow
+		this.addButton(new Button('A', 32));
+
+		// * __name__: 'right'
+		// * __key__: righ arrow
+		this.addButton(new Button('B', 17));
+	}
+	TwoActionButtonController.prototype = Object.create(Controller.prototype);
+	TwoActionButtonController.prototype.constructor = TwoActionButtonController;
 
 
 	/** ### FourButtonController
@@ -695,6 +714,7 @@
 		'Joystick': JoystickController,
 		'JoystickWithButton': JoystickButtonController,
 		'TwoArrowsTwoButtons': TwoArrowsTwoButtonsController,
-		'TwoArrowsOneButton': TwoArrowsOneButtonController
+		'TwoArrowsOneButton': TwoArrowsOneButtonController,
+		'TwoActionButtons': TwoActionButtonsController
 	};
 }(this, gamee));
