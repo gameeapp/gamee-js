@@ -1392,6 +1392,6 @@ var gamee = function(global) {
 		'JoystickWithButton': JoystickButtonController,
 		'TwoArrowsTwoButtons': TwoArrowsTwoButtonsController,
 		'TwoArrowsOneButton': TwoArrowsOneButtonController,
-		'TwoActionButtons': TwoActionButtonsController
+		'TwoActionButtons': TwoActionButtonController
 	};
 }(this, gamee));
