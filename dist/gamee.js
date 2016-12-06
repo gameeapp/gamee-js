@@ -1016,11 +1016,11 @@ var gamee = function(global) {
 	TwoButtonController.prototype.constructor = TwoButtonController;
 
 
-	/** ### TwoActionButtonController
+	/** ### TwoActionButtonsController
 	 *
 	 * Controller with two action buttons (A,B)
 	 */
-	function TwoActionButtonController() {
+	function TwoActionButtonsController() {
 		Controller.call(this);
 
 		// * __name__: 'left'
@@ -1031,8 +1031,8 @@ var gamee = function(global) {
 		// * __key__: righ arrow
 		this.addButton(new Button('B', 17));
 	}
-	TwoActionButtonController.prototype = Object.create(Controller.prototype);
-	TwoActionButtonController.prototype.constructor = TwoActionButtonController;
+	TwoActionButtonsController.prototype = Object.create(Controller.prototype);
+	TwoActionButtonsController.prototype.constructor = TwoActionButtonsController;
 
 
 	/** ### FourButtonController
@@ -1392,6 +1392,6 @@ var gamee = function(global) {
 		'JoystickWithButton': JoystickButtonController,
 		'TwoArrowsTwoButtons': TwoArrowsTwoButtonsController,
 		'TwoArrowsOneButton': TwoArrowsOneButtonController,
-		'TwoActionButtons': TwoActionButtonController
+		'TwoActionButtons': TwoActionButtonsController
 	};
 }(this, gamee));
