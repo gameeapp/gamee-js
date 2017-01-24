@@ -370,7 +370,10 @@ var gamee = function(global) {
                     break;
 
 				default:
-					throw Error('Unknown message');
+					// throw Error('Unknown message');
+					
+					// not sure why is this function running for unknown events
+					console.error("Unknown message");
 			}
 		});
 	}
