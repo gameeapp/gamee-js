@@ -6,7 +6,7 @@
   <link rel="stylesheet" media="all" href="../doc-style.css" />
   <script src="../doc-filelist.js"></script>
   <script>
-    var relativeDir = "../", thisFile = "src/gamee.js", defaultSidebar = true;
+    var relativeDir = "../", thisFile = "src\\gamee.js", defaultSidebar = true;
   </script>
   <script src="../doc-script.js"></script>
 </head>
@@ -877,8 +877,90 @@ is used. This handles the callbacks send from the GameeApp.</p>
           <span class="nx">gamee</span><span class="p">.</span><span class="nx">onMute</span><span class="p">();</span>
           <span class="k">break</span><span class="p">;</span>
 
+                <span class="k">case</span> <span class="s1">&#39;button_button_down&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keydown&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;button&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_button_up&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keyup&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;button&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_left_up&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keyup&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;left&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_left_down&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keydown&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;left&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_right_down&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keydown&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;right&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_right_up&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keyup&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;right&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_up_down&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keydown&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;up&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_up_up&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keyup&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;up&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_down_down&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keydown&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;down&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_down_up&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keyup&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;down&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_a_down&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keydown&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;A&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_a_up&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keyup&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;A&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+
+                <span class="k">case</span> <span class="s1">&#39;button_b_down&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keydown&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;B&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="s1">&#39;button_b_up&#39;</span><span class="o">:</span>
+                    <span class="nx">gamee</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;keyup&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">button</span> <span class="o">:</span> <span class="s2">&quot;B&quot;</span><span class="p">});</span>
+                    <span class="k">break</span><span class="p">;</span>
+
         <span class="k">default</span><span class="o">:</span>
-          <span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Unknown message&#39;</span><span class="p">);</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
+<p>throw Error('Unknown message');</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+          
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+</div>
+<p>not sure why is this function running for unknown events</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">&quot;Unknown message&quot;</span><span class="p">);</span>
       <span class="p">}</span>
     <span class="p">});</span>
   <span class="p">}</span>

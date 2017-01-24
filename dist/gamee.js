@@ -159,22 +159,25 @@
 			gameeNative.type = 'gamee-web';
 		}
 
-	// user agent is use to determine current enviroment
-	if (
-		/gamee\/[0-9\.]+$/.test(userAgent) || // test for android webview
-		/iphone|ipod|ipad/.test(userAgent)    // test for iOS webview
-	) {
-		gameeMobile(gameeNative);
 
-	} else if (window.parent) {
-		gameeWeb(gameeNative);
+    // user agent is use to determine current enviroment
+    if (/iphone|ipod|ipad/.test(userAgent)) { // test ios device
 
-	} else if (window.parent && window.parent.gameeSimulator) {
-		gameeSimulator(gameeNative);
-
-	} else {
-		console.error('No gamee enviroment matched');
-	}
+        // Test if window with game have a parent (loading in iframe)
+        if(window.self !== window.top) {
+            gameeWeb(gameeNative);
+        } else {
+            gameeMobile(gameeNative);
+        }
+    } else if (/gamee\/[0-9\.]+$/.test(userAgent)) { // test android app
+        gameeMobile(gameeNative);
+    } else if (window.parent) {
+        gameeWeb(gameeNative);
+    } else if (window.parent && window.parent.gameeSimulator) {
+        gameeSimulator(gameeNative);
+    } else {
+        console.error('No gamee enviroment matched');
+    }
 
 	// export to global scope
 	global.$gameeNative = gameeNative;
@@ -476,17 +479,17 @@ var gamee = function(global) {
 		// [More about *postMessage*](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
 		addDOMEvent(global, 'message', function(ev) {
 			switch(ev.data[0]) {
-				case 'pause':
+				case 'pause': 
 					gamee.onPause();
 					break;
 
 				case 'resume':
-					gamee.onUnpause();
+					gamee.onResume();
 					break;
 
 				case 'restart':
 					// after restart we have to steal the focus from parent frame
-					window.focus();
+					window.focus(); 
 					gamee.onRestart();
 					break;
 
@@ -494,65 +497,68 @@ var gamee = function(global) {
 					gamee.onMute();
 					break;
 
-				case 'button_button_down':
-					gamee.controller.trigger("keydown", {button : "button"});
-					break;
+                case 'button_button_down':
+                    gamee.controller.trigger("keydown", {button : "button"});
+                    break;
 
-				case 'button_button_up':
-					gamee.controller.trigger("keyup", {button : "button"});
-					break;
+                case 'button_button_up':
+                    gamee.controller.trigger("keyup", {button : "button"});
+                    break;
 
-				case 'button_left_up':
-					gamee.controller.trigger("keyup", {button : "left"});
-					break;
+                case 'button_left_up':
+                    gamee.controller.trigger("keyup", {button : "left"});
+                    break;
 
-				case 'button_left_down':
-					gamee.controller.trigger("keydown", {button : "left"});
-					break;
+                case 'button_left_down':
+                    gamee.controller.trigger("keydown", {button : "left"});
+                    break;
 
-				case 'button_right_down':
-					gamee.controller.trigger("keydown", {button : "right"});
-					break;
+                case 'button_right_down':
+                    gamee.controller.trigger("keydown", {button : "right"});
+                    break;
 
-				case 'button_right_up':
-					gamee.controller.trigger("keyup", {button : "right"});
-					break;
+                case 'button_right_up':
+                    gamee.controller.trigger("keyup", {button : "right"});
+                    break;
 
-				case 'button_up_down':
-					gamee.controller.trigger("keydown", {button : "up"});
-					break;
+                case 'button_up_down':
+                    gamee.controller.trigger("keydown", {button : "up"});
+                    break;
 
-				case 'button_up_up':
-					gamee.controller.trigger("keyup", {button : "up"});
-					break;
+                case 'button_up_up':
+                    gamee.controller.trigger("keyup", {button : "up"});
+                    break;
 
-				case 'button_down_down':
-					gamee.controller.trigger("keydown", {button : "down"});
-					break;
+                case 'button_down_down':
+                    gamee.controller.trigger("keydown", {button : "down"});
+                    break;
 
-				case 'button_down_up':
-					gamee.controller.trigger("keyup", {button : "down"});
-					break;
+                case 'button_down_up':
+                    gamee.controller.trigger("keyup", {button : "down"});
+                    break;
 
-				case 'button_a_down':
-					gamee.controller.trigger("keydown", {button : "A"});
-					break;
+                case 'button_a_down':
+                    gamee.controller.trigger("keydown", {button : "A"});
+                    break;
 
-				case 'button_a_up':
-					gamee.controller.trigger("keyup", {button : "A"});
-					break;
+                case 'button_a_up':
+                    gamee.controller.trigger("keyup", {button : "A"});
+                    break;
 
 
-				case 'button_b_down':
-					gamee.controller.trigger("keydown", {button : "B"});
-					break;
+                case 'button_b_down':
+                    gamee.controller.trigger("keydown", {button : "B"});
+                    break;
 
-				case 'button_b_up':
-					gamee.controller.trigger("keyup", {button : "B"});
-					break;
+                case 'button_b_up':
+                    gamee.controller.trigger("keyup", {button : "B"});
+                    break;
 
 				default:
-					throw Error('Unknown message');
+					// throw Error('Unknown message');
+					
+					// not sure why is this function running for unknown events
+					console.error("Unknown message");
 			}
 		});
 	}
