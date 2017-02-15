@@ -1,0 +1,35 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "plugins": [
+        "plugins/markdown"
+    ],
+    "private": false,
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": true,
+        "dateFormat": "ddd MMM Do YYYY",
+        "outputSourceFiles": false,
+        "outputSourcePath": false,
+        "systemName": "GAMEE",
+        "footer": "",
+        "copyright": "",
+        "linenums": true,
+        "collapseSymbols": false,
+        "inverseNav": true,
+        "highlightTutorialCode": true,
+        "default": {
+            "outputSourceFiles": false,
+            "includeDate": false
+        }
+    },
+    "markdown": {
+        "parser": "gfm",
+        "hardwrap": true
+    },
+    "opts": {
+        "readme": "README.md",
+        "encoding": "utf8"
+    }
+}

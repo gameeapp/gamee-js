@@ -50,3 +50,18 @@ Session.vim
 .netrwhist
 *~
 
+## builds
+
+gamee/dist
+
+## documentation files
+
+gamee/docs
+
+## packed samples
+
+projects-dist
+projects-build
+
+## IDE
+.vscode

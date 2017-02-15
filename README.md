@@ -1,36 +1,28 @@
-Gamee JS
-========
+Gamee JS 2
+==========
 
-Javascript library for [Gamee].
+Javascript framework for [Gamee].
 
-Documentation
--------------
-                                                                                                         
-Annoted source code: https://gameeapp.github.io/gamee-js/doc/src/gamee.js.html
+[Documentation on github wiki] 
 
-Easy intro: https://gameeapp.github.io/gamee-js/integration.en.html
-
-Easy intro (in Slovak): https://gameeapp.github.io/gamee-js/integration.sk.html
-
-Project structure
+Previous versions
 -----------------
 
-* __dist/__ source files ready to be included in your game
- * __gamee.all.devel.js__ non minified with dependencies
- * __gamee.all.min.js__ minified with dependencies
- * __gamee.js__ non minified without dependencies
- * __gamee.min.js__ minified
-* __src/__ source files
-* __doc__/ documentation
+Gamee JS - first version
 
-[Gamee]:http://www.gameeapp.com/
+Install & build
+---------------
 
-
-Building
---------
+```
+git clone git@github.com:gameeapp/gamee-js.git
+```
 
 ```bash
 npm install
 bower install
-grunt 
+grunt
+grunt watch (Framework development) 
 ```
+
+[Gamee]:http://www.gameeapp.com/
+[Documentation on github wiki]:https://github.com/gameeapp/gamee-js/wiki
