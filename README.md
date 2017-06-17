@@ -5,13 +5,21 @@ Javascript framework for [Gamee].
 
 [Documentation on github wiki] 
 
+Gamee framework is located in ```gamee/dist/```. Copy minified file (and source map) and paste it into your project:
+
+```
+gamee-js.2.0.0.min.js
+gamee-js.2.0.0.min.js.map
+```
+
 Previous versions
 -----------------
 
 [Gamee JS - first version]
 
-Install & build
----------------
+
+ Install & build
+ ---------------
 
 ```
 git clone git@github.com:gameeapp/gamee-js.git
