@@ -1,6 +1,6 @@
 # Gamee JS
 
-Javascript framework for connecting with [Gamee](http://www.gameeapp.com/) platform.
+Javascript framework for connecting to [Gamee](http://www.gameeapp.com/) platform.
 
 Documentation is currently located on [Github wiki](https://github.com/gameeapp/gamee-js/wiki), where you can also read about [Planned updates](https://github.com/gameeapp/gamee-js/wiki/Planned-updates).
 
@@ -20,7 +20,7 @@ Download the minified framework located in [gamee/dist/gamee-js.2.0.0.min.js](ht
 
 If you want to contribute, please feel free to use [Github issue tracker](https://github.com/gameeapp/gamee-js/issues) of this repository. 
 
-## Framework development
+## Build framework on your own
 
 ```bash
 git clone git@github.com:gameeapp/gamee-js.git
