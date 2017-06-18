@@ -1,5 +1,9 @@
 # Gamee JS
 
+Gamee is the HTML5 based platform that offers immediate game experimence. Players can reach many games not just from Gamee application, but also directly from Telegram, Kik, Facebook messenger or from our website. And all that with almost zero load! [Read more](https://github.com/gameeapp/gamee-js/wiki)
+
+## About this repo
+
 Javascript framework for connecting to [Gamee](http://www.gameeapp.com/) platform.
 
 Documentation is currently located on [Github wiki](https://github.com/gameeapp/gamee-js/wiki), where you can also read about [Planned updates](https://github.com/gameeapp/gamee-js/wiki/Planned-updates).
