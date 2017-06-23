@@ -1,12 +1,10 @@
 # Gamee JS
 
-Gamee is the HTML5 based platform that offers immediate game experimence. Players can reach many games not just from Gamee application, but also directly from Telegram, Kik, Facebook messenger or from our website. And all that with almost zero load ... [Read more](https://github.com/gameeapp/gamee-js/wiki)
+Gamee is a social platform full of HTML5 games. Our goal is to make the games playable everywhere. You can play in the mobile apps (Android, iOS), bots (Telegram, Kik, Facebook Messenger) or directly on web.
 
-## About this repo
+GameeJS is our Javascript framework for connecting HTML5 game to [Gamee](http://www.gameeapp.com/) platform.
 
-Javascript framework for connecting to [Gamee](http://www.gameeapp.com/) platform.
-
-Documentation is currently located on [Github wiki](https://github.com/gameeapp/gamee-js/wiki), where you can also read about [Planned updates](https://github.com/gameeapp/gamee-js/wiki/Planned-updates).
+Documentation is currently located on [Github wiki](https://github.com/gameeapp/gamee-js/wiki)
 
 ## Usage
 
@@ -19,6 +17,8 @@ Download the minified framework located in [gamee/dist/gamee-js.2.0.0.min.js](ht
 ## Previous versions (and changelogs)
 
 [https://github.com/gameeapp/gamee-js/releases](https://github.com/gameeapp/gamee-js/releases)
+
+[Planned updates](https://github.com/gameeapp/gamee-js/wiki/Planned-updates).
 
 ## Contribute
 
@@ -36,3 +36,9 @@ bower install
 grunt
 grunt watch (Framework development) 
 ```
+
+
+## Contact
+
+If you would like to publish your HTML5 game on the Gamee platform, please contact us on hello@gameeapp.com
+
