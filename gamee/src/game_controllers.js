@@ -1,3 +1,5 @@
+import { Bullet } from "../libs/bullet.js"
+
 /**
  * @module game_controllers
  */

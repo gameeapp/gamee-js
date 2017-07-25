@@ -1,5 +1,7 @@
 import { } from "../libs/shims.js"
 import { Gamee } from "./gameeAPI.js"
+import { core } from "./core.js"
+import { PlatformAPI, PlatformBridge, PostMessageBridge, MobileBridge, FacebookBridge } from "./platform_bridge.js"
 
 
 /**
@@ -8,7 +10,7 @@ import { Gamee } from "./gameeAPI.js"
  * 
  * @requires Gamee
  */
-var gamee = new Gamee();
+export var gamee = new Gamee();
 
 (function () {
 
@@ -23,7 +25,7 @@ var gamee = new Gamee();
 
         // Reslove Gamee enviroment
         /* current user agent */
-        userAgent = navigator.userAgent.toLowerCase();
+        var userAgent = navigator.userAgent.toLowerCase();
 
         if ((window.parent !== window) && (/facebook/.test(document.referrer))) { // FB
             // TODO fb platform

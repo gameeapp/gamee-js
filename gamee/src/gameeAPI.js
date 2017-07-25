@@ -1,5 +1,5 @@
 import { core } from "./core.js"
-
+import { CustomEmitter } from "../libs/shims.js"
 
 /**
  * gameeAPI module desc

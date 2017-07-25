@@ -1,4 +1,4 @@
-import { Controller } from "./game_controllers.js"
+import * as controllers from "./game_controllers.js"
 
 /**
  * @class core
@@ -425,18 +425,18 @@ export var core = (function () {
      * @requires Controller
      */
     var controllerTypes = {
-        'OneButton': OneButtonController,
-        'TwoButtons': TwoButtonController,
-        'FourButtons': FourButtonController,
-        'FiveButtons': FiveButtonController,
-        'SixButtons': SixButtonController,
-        'FourArrows': FourArrowController,
-        'Touch': TouchController,
-        'Joystick': JoystickController,
-        'JoystickWithButton': JoystickButtonController,
-        'TwoArrowsTwoButtons': TwoArrowsTwoButtonsController,
-        'TwoArrowsOneButton': TwoArrowsOneButtonController,
-        'TwoActionButtons': TwoActionButtonsController
+        'OneButton': controllers.OneButtonController,
+        'TwoButtons': controllers.TwoButtonController,
+        'FourButtons': controllers.FourButtonController,
+        'FiveButtons': controllers.FiveButtonController,
+        'SixButtons': controllers.SixButtonController,
+        'FourArrows': controllers.FourArrowController,
+        'Touch': controllers.TouchController,
+        'Joystick': controllers.JoystickController,
+        'JoystickWithButton': controllers.JoystickButtonController,
+        'TwoArrowsTwoButtons': controllers.TwoArrowsTwoButtonsController,
+        'TwoArrowsOneButton': controllers.TwoArrowsOneButtonController,
+        'TwoActionButtons': controllers.TwoActionButtonsController
     };
 
 

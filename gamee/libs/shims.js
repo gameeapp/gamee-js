@@ -91,7 +91,7 @@
 // });
 
 // e.dispatchEvent(new Event("something"));
-function CustomEmitter() {
+export function CustomEmitter() {
 	var eventTarget = document.createDocumentFragment();
 
 	function delegate(method) {
@@ -111,7 +111,7 @@ function CustomEmitter() {
  * 
  * @param {Function} fn callback
  */
-function wrapKeyEvent(fn) {
+export function wrapKeyEvent(fn) {
 	return function (ev) {
 		if (!ev || !ev.keyCode) {
 			if (!ev) {

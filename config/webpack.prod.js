@@ -1,13 +1,10 @@
-var path = require('path'),
-    webpack = require('webpack');
+const path = require('path'),
+    webpack = require('webpack')
 
 module.exports = {
     devtool: '#source-map',
 
-    entry: {
-        bower: './bower_components/bullet/dist/bullet.min.js',
-        gamee: './gamee/src/index.js'
-    },
+    entry: './gamee/src/index.js',
 
     module: {
         rules: [
@@ -25,6 +22,9 @@ module.exports = {
     },
 
     output: {
+        // dont set this or context will be `gamee.gamee.emitter` etc.
+        // library: 'gamee',
+        libraryTarget: 'umd',
         path: path.resolve(__dirname, '../gamee/dist'),
         filename: 'gamee-js.min.js'
     },
@@ -41,8 +41,7 @@ module.exports = {
                 screw_ie8: true,
                 keep_fnames: true,
                 toplevel: true,
-                except: ["Gamee",
-                    "OneButtonController",
+                except: ["OneButtonController",
                     "TwoButtonController",
                     "FourButtonController",
                     "FiveButtonController",
