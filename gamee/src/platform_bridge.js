@@ -104,6 +104,8 @@ PlatformBridge.prototype = {
 	_init: function () {
 	},
 	createRequest: function (method, opt_requestData, opt_callback) {
+		if (!validateMethod(method))
+			return;
 		if (typeof opt_requestData === 'function') {
 			opt_callback = opt_requestData;
 			opt_requestData = undefined;
@@ -124,6 +126,9 @@ PlatformBridge.prototype = {
 		};
 
 		this.doCall(preparedObject, opt_requestData);
+	},
+	validateMethod: function (method) {
+		return method === "gameLoadingProgress" ? false : true;
 	},
 	/**
 	 * @abstract
@@ -316,6 +321,10 @@ FacebookBridge.prototype.createRequest = function (method, opt_requestData, opt_
 	} catch (err) {
 		throw err;
 	}
+};
+
+FacebookBridge.prototype.validateMethod = function (method) {
+	return true;
 };
 
 FacebookBridge.prototype._methods = {
