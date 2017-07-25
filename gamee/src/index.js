@@ -10,72 +10,71 @@ import { PlatformAPI, PlatformBridge, PostMessageBridge, MobileBridge, FacebookB
  * 
  * @requires Gamee
  */
-export var gamee = new Gamee();
+export var gamee;
 
-(function () {
+/**
+ * Resolves what platform is being used and make instance of platform API. 
+ * 
+ * @requires PlatformBridge
+ */
+var platformBridge = (function () {
 
-    /**
-     * Resolves what platform is being used and make instance of platform API. 
-     * 
-     * @requires PlatformBridge
-     */
-    var platformBridge = (function () {
+    var platformBridge, platformType = "web";
 
-        var platformBridge, platformType = "web";
+    // Reslove Gamee enviroment
+    /* current user agent */
+    var userAgent = navigator.userAgent.toLowerCase();
 
-        // Reslove Gamee enviroment
-        /* current user agent */
-        var userAgent = navigator.userAgent.toLowerCase();
+    if ((window.parent !== window) && (/facebook/.test(document.referrer))) { // FB
+        // TODO fb platform
+        platformType = "fb";
+    } else if (/iphone|ipod|ipad/.test(userAgent)) { // test ios device
+        // user agent is use to determine current enviroment
 
-        if ((window.parent !== window) && (/facebook/.test(document.referrer))) { // FB
-            // TODO fb platform
-            platformType = "fb";
-        } else if (/iphone|ipod|ipad/.test(userAgent)) { // test ios device
-            // user agent is use to determine current enviroment
+        // Test if window with game have a parent (loading in iframe)
+        if (window.self !== window.top) {
+            platformType = "web";
+        } else {
+            platformType = "ios";
+        }
+    } else if (/gamee\/[0-9\.]+$/.test(userAgent)) { // test android app
+        // TODO do you really test android like that?
+        platformType = "android";
+    } else if (window.parent) { // TODO doesnt make sence, parent always exists!!
+        platformType = "web";
+    } else if (window.parent && window.parent.gameeSimulator) { // TODO doesnt make sence, parent always exist?
+        platformType = "web";
+    }
 
-            // Test if window with game have a parent (loading in iframe)
-            if (window.self !== window.top) {
-                platformType = "web";
-            } else {
-                platformType = "ios";
+    gamee = new Gamee(platformType);
+
+    switch (platformType) {
+        case "web":
+            if (window.parent === window) {
+                console.error("Gamee must run in iframe on web platform");
             }
-        } else if (/gamee\/[0-9\.]+$/.test(userAgent)) { // test android app
-            // TODO do you really test android like that?
-            platformType = "android";
-        } else if (window.parent) { // TODO doesnt make sence, parent always exists!!
-            platformType = "web";
-        } else if (window.parent && window.parent.gameeSimulator) { // TODO doesnt make sence, parent always exist?
-            platformType = "web";
-        }
-
-        switch (platformType) {
-            case "web":
-                if (window.parent === window) {
-                    console.error("Gamee must run in iframe on web platform");
-                }
-                platformBridge = new PostMessageBridge(window.parent);
-                break;
-            case "ios":
-                platformBridge = new MobileBridge("ios");
-                break;
-            case "android":
-                platformBridge = new MobileBridge("android");
-                break;
-            case "fb":
-                platformBridge = new FacebookBridge("fb");
-                break;
-            default:
-                throw "Can't identify the platform";
-        }
-        return platformBridge;
-    })();
-
-    core.PlatformAPI = PlatformAPI;
-    core.native = platformBridge;
-
-    PlatformAPI.emitter = gamee.emitter;
-
+            platformBridge = new PostMessageBridge(window.parent);
+            break;
+        case "ios":
+            platformBridge = new MobileBridge("ios");
+            break;
+        case "android":
+            platformBridge = new MobileBridge("android");
+            break;
+        case "fb":
+            platformBridge = new FacebookBridge("fb");
+            break;
+        default:
+            throw "Can't identify the platform";
+    }
+    return platformBridge;
 })();
+
+core.PlatformAPI = PlatformAPI;
+core.native = platformBridge;
+
+PlatformAPI.emitter = gamee.emitter;
+
 
 function loadScript(url, callback) {
     // Adding the script tag to the head as suggested before

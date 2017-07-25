@@ -20,7 +20,7 @@ export var GameeEmitter = function () {
  * @requires core
  * 
  */
-export var Gamee = function () {
+export var Gamee = function (platform) {
     /**
      * @instance
      * 
@@ -33,6 +33,7 @@ export var Gamee = function () {
      * @fires gameeAPI:GameeEmitter~ghostShow
      */
     this.emitter = new GameeEmitter();
+    this._platform = platform;
 };
 
 Gamee.prototype = (function () {
@@ -114,6 +115,16 @@ Gamee.prototype = (function () {
             }
             core.gameSave(data, share);
             cb(null);
+        },
+
+        /**
+         * getPlatform
+         * 
+         * @memberof Gamee
+         * @returns {string} platform type can be android | ios | web | fb
+         */
+        getPlatform: function () {
+            return this._platform;
         },
 
         /**

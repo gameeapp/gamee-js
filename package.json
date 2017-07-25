@@ -22,7 +22,7 @@
     "html-webpack-plugin": "^2.29.0",
     "mocha": "^3.4.2",
     "mocha-loader": "^1.1.1",
-    "webpack": "^2.6.1",
+    "webpack": "^2.7.0",
     "webpack-dev-server": "^2.6.1",
     "webpack-merge": "^4.1.0"
   }

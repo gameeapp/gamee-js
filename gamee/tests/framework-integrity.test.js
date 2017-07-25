@@ -2,13 +2,13 @@ const assert = require('assert');
 
 import { gamee } from '../dist/gamee-js.min.js'
 
-describe('Framework API', () => {
+describe('Test of properties of the gamee object', () => {
+    // gamee object
     it('gamee variable is an object', () => {
         assert.equal(typeof gamee, "object");
     });
-    console.log(gamee);
-    console.log(gamee.gamee);
-    console.log(gamee.emitter);
+
+    // basic properties
     it('gamee.gameInit is a function', () => {
         assert.equal(typeof gamee.gameInit, "function");
     });
@@ -25,6 +25,10 @@ describe('Framework API', () => {
         assert.equal(typeof gamee.emitter, "object");
     });
 
+    // advanced properties
+    it('gamee.getPlatform is a function', () => {
+        assert.equal(typeof gamee.getPlatform, "function");
+    });
     it('gamee.gameLoadingProgress is a function', () => {
         assert.equal(typeof gamee.gameLoadingProgress, "function");
     });
