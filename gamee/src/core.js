@@ -84,13 +84,20 @@ export var core = (function () {
             // remember capabilities of the game
             cache.capabilities = cap;
 
-            if (this.native.platform === "web" || this.native.platform === "fb") {
-                responseData.controller = core.controller.requestController(ctrlType, { enableKeyboard: true });
-                this._bindKeyboardTriggers(responseData.controller);
-            } else {
-                responseData.controller = core.controller.requestController(ctrlType, {});
+            // might fail if controller of this type doesnt exist
+            var error = null;
+            try {
+                if (this.native.platform === "web" || this.native.platform === "fb") {
+                    responseData.controller = core.controller.requestController(ctrlType, { enableKeyboard: true });
+                    this._bindKeyboardTriggers(responseData.controller);
+                } else {
+                    responseData.controller = core.controller.requestController(ctrlType, {});
+                }
+            } catch (err) {
+                error = err;
             }
-            cb(responseData);
+
+            cb(error, responseData);
         }.bind(this));
         // TODO remove
         // return core.controller.requestController(ctrlType, ctrlOpts);
