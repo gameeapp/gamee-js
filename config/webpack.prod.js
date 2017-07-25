@@ -34,6 +34,9 @@ module.exports = {
             minimize: true,
             debug: false
         }),
+        new webpack.BannerPlugin({
+            banner: `@preserve build time ${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}`
+        }),
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true,
             beautify: false,
@@ -64,7 +67,7 @@ module.exports = {
                 conditionals: true,
                 comparisons: true
             },
-            comments: false
+            comments: "some"
         })
     ],
 

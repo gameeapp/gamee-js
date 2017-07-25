@@ -19,6 +19,7 @@
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-preset-env": "^1.5.1",
+    "banner-webpack-plugin": "^0.2.3",
     "html-webpack-plugin": "^2.29.0",
     "mocha": "^3.4.2",
     "mocha-loader": "^1.1.1",
