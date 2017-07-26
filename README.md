@@ -32,10 +32,18 @@ git clone git@github.com:gameeapp/gamee-js.git
 
 ```bash
 npm install
-npm test # run test with mocha in CLI
-npm test:mocha:watch # HRM test with mocha in browser
-npm watch # realtime building
-npm b:dist # one time build
+
+# run test with mocha in CLI
+npm test
+
+# HRM test with mocha in browser
+npm test:mocha:watch
+
+# realtime building
+npm watch
+
+# one time build
+npm b:dist
 ```
 
 ## Contact
