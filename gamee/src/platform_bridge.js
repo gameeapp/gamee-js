@@ -1,3 +1,5 @@
+import { core } from "./core.js"
+
 /**
  * 
  * @requires core
@@ -12,7 +14,7 @@
  * @param {function} _unmute
  * @param {function} _start
  */
-var PlatformAPI = {
+export var PlatformAPI = {
 	emitter: null,
 	pause: function (cb) {
 		var event = new CustomEvent('pause', {
@@ -91,7 +93,7 @@ var PlatformAPI = {
  * @class PlatformBridge
  * 
  */
-function PlatformBridge() {
+export function PlatformBridge() {
 	this.requests = {};
 	this.platform = "";
 	this._init();
@@ -148,7 +150,7 @@ PlatformBridge.prototype = {
  * @class PostMessageBridge
  * @requires PlatformBridge
  */
-function PostMessageBridge(endpoint) {
+export function PostMessageBridge(endpoint) {
 	this._gameeWin = endpoint;
 	PlatformBridge.call(this);
 	this.platform = "web";
@@ -247,7 +249,7 @@ PostMessageBridge.prototype._resolveAPICall = function (method, messageId, opt_d
  * @requires PlatformBridge
  * 
  */
-function MobileBridge(device) {
+export function MobileBridge(device) {
 	this.device = device;
 	PostMessageBridge.call(this);
 	this.platform = "mobile";
@@ -292,7 +294,7 @@ MobileBridge.prototype.doCall = function (preparedObject, requestData) {
  * @class FacebookBridge
  * @requires PlatformBridge
  */
-function FacebookBridge() {
+export function FacebookBridge() {
 	PlatformBridge.call(this);
 	this.platform = "fb";
 }

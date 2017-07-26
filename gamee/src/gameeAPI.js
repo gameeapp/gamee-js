@@ -1,3 +1,6 @@
+import { core } from "./core.js"
+
+
 /**
  * gameeAPI module desc
  * @module gameeAPI
@@ -8,7 +11,7 @@
  * @class GameeEmitter
  * @extends CustomEmitter
  */
-var GameeEmitter = function () {
+export var GameeEmitter = function () {
     CustomEmitter.call(this);
 };
 
@@ -17,7 +20,7 @@ var GameeEmitter = function () {
  * @requires core
  * 
  */
-var Gamee = function () {
+export var Gamee = function () {
     /**
      * @instance
      * 

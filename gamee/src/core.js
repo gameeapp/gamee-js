@@ -1,7 +1,9 @@
+import { Controller } from "./game_controllers.js"
+
 /**
  * @class core
  */
-var core = (function () {
+export var core = (function () {
 
     // # Gamee.js
     // 

@@ -9,7 +9,7 @@
  * 
  * The controller and its buttons are instance of Bullet.
  */
-var BulletClass = Bullet.constructor;
+export var BulletClass = Bullet.constructor;
 
 
 /** ## Button
@@ -23,7 +23,7 @@ var BulletClass = Bullet.constructor;
  * @param {Number} keyCode keycode for the key to represent the button
  * on keyboard
  */
-function Button(key, keyCode) {
+export function Button(key, keyCode) {
 	var self = this;
 
 	BulletClass.call(this);
@@ -78,7 +78,7 @@ Button.prototype.isDown = function () {
  * 
  * @class Controller
  */
-function Controller() {
+export function Controller() {
 	var self = this;
 
 	BulletClass.call(this);
@@ -241,7 +241,7 @@ Controller.prototype.remapButton = function (oldName, newName) {
  * Controller with only one button.
  * @class OneButtonController
  */
-function OneButtonController() {
+export function OneButtonController() {
 	Controller.call(this);
 
 	// * __name__: 'button' 
@@ -257,7 +257,7 @@ OneButtonController.prototype.constructor = OneButtonController;
  * Controller with two buttons
  * @class TwoButtonController
  */
-function TwoButtonController() {
+export function TwoButtonController() {
 	Controller.call(this);
 
 	// * __name__: 'left'
@@ -277,7 +277,7 @@ TwoButtonController.prototype.constructor = TwoButtonController;
  * Controller with two action buttons (A,B)
  * @class TwoActionButtonsController
  */
-function TwoActionButtonsController() {
+export function TwoActionButtonsController() {
 	Controller.call(this);
 
 	// * __name__: 'left'
@@ -297,7 +297,7 @@ TwoActionButtonsController.prototype.constructor = TwoActionButtonsController;
  * Controller with four buttons
  * @class FourButtonController
  */
-function FourButtonController() {
+export function FourButtonController() {
 	Controller.call(this);
 
 	// * __name__: 'up'
@@ -325,7 +325,7 @@ FourButtonController.prototype.constructor = FourButtonController;
  * Controller with five buttons
  * @class FiveButtonController
  */
-function FiveButtonController() {
+export function FiveButtonController() {
 	Controller.call(this);
 
 	// * __name__: 'up'
@@ -357,7 +357,7 @@ FiveButtonController.prototype.constructor = FiveButtonController;
  * Controller with six buttons
  * @class SixButtonController
  */
-function SixButtonController() {
+export function SixButtonController() {
 	Controller.call(this);
 
 	// * __name__: 'up'
@@ -393,7 +393,7 @@ SixButtonController.prototype.constructor = SixButtonController;
  * Controller with two arrows and one action button
  * @class TwoArrowsOneButtonController
  */
-function TwoArrowsOneButtonController() {
+export function TwoArrowsOneButtonController() {
 	Controller.call(this);
 
 
@@ -420,7 +420,7 @@ TwoArrowsOneButtonController.prototype.constructor = TwoArrowsOneButtonControlle
  * Controller with two arrows and two action buttons
  * @class TwoArrowsTwoButtonsController
  */
-function TwoArrowsTwoButtonsController() {
+export function TwoArrowsTwoButtonsController() {
 	Controller.call(this);
 
 
@@ -451,7 +451,7 @@ TwoArrowsTwoButtonsController.prototype.constructor = TwoArrowsTwoButtonsControl
  * Controller with four arrow buttons
  * @class FourArrowController
  */
-function FourArrowController() {
+export function FourArrowController() {
 	Controller.call(this);
 
 	// * __name__: 'up'
@@ -496,7 +496,7 @@ FourArrowController.prototype.constructor = FourArrowController;
  * ```
  * @class TouchController
  */
-function TouchController() {
+export function TouchController() {
 	var self = this;
 
 	Controller.call(this);
@@ -543,7 +543,7 @@ TouchController.prototype.constructor = TouchController;
  * ```
  * @class JoystickController
  */
-function JoystickController() {
+export function JoystickController() {
 	var self = this;
 
 	Controller.call(this);
@@ -581,7 +581,7 @@ JoystickController.prototype.constructor = JoystickController;
  * ```
  * @class JoystickButtonController
  */
-function JoystickButtonController() {
+export function JoystickButtonController() {
 	var self = this;
 
 	JoystickController.call(this);

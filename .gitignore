@@ -5,6 +5,9 @@
 logs
 *.log
 
+### NPM ###
+package-lock.json
+
 # Runtime data
 pids
 *.pid

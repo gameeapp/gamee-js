@@ -1,12 +1,16 @@
-exports = (function () {
+import { } from "../libs/shims.js"
+import { Gamee } from "./gameeAPI.js"
 
-    /**
-     * Instance of gamee object with API for developers. 
-     * Internal functions becomes private this way
-     * 
-     * @requires Gamee
-     */
-    var gamee = new Gamee();
+
+/**
+ * Instance of gamee object with API for developers. 
+ * Internal functions becomes private this way
+ * 
+ * @requires Gamee
+ */
+var gamee = new Gamee();
+
+(function () {
 
     /**
      * Resolves what platform is being used and make instance of platform API. 
@@ -69,7 +73,6 @@ exports = (function () {
 
     PlatformAPI.emitter = gamee.emitter;
 
-    return gamee;
 })();
 
 function loadScript(url, callback) {
