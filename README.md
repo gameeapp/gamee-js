@@ -8,10 +8,10 @@ Documentation is currently located on [Github wiki](https://github.com/gameeapp/
 
 ## Usage
 
-Download the minified framework located in [gamee/dist/gamee-js.2.0.0.min.js](https://github.com/gameeapp/gamee-js/blob/master/gamee/dist/gamee-js.2.0.0.min.js) and include it in your ```index.html``` file. 
+Download the minified framework located in [gamee/dist/gamee-js.min.js](https://github.com/gameeapp/gamee-js/blob/master/gamee/dist/gamee-js.min.js) and include it in your ```index.html``` file. 
 
 ```html
-<script src="gamee-js.2.0.0.min.js"></script>
+<script src="gamee-js.min.js"></script>
 ```
 
 ## Previous versions (and changelogs)
@@ -32,9 +32,10 @@ git clone git@github.com:gameeapp/gamee-js.git
 
 ```bash
 npm install
-bower install
-grunt
-grunt watch (Framework development) 
+npm test # run test with mocha in CLI
+npm test:mocha:watch # HRM test with mocha in browser
+npm watch # realtime building
+npm b:dist # one time build
 ```
 
 ## Contact
