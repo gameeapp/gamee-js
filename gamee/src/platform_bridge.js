@@ -104,7 +104,7 @@ PlatformBridge.prototype = {
 	_init: function () {
 	},
 	createRequest: function (method, opt_requestData, opt_callback) {
-		if (!validateMethod(method))
+		if (!this.validateMethod(method))
 			return;
 		if (typeof opt_requestData === 'function') {
 			opt_callback = opt_requestData;
