@@ -1,4 +1,5 @@
 import * as controllers from "./game_controllers.js"
+import { wrapKeyEvent } from "../libs/shims.js"
 
 /**
  * @class core
