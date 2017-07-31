@@ -63,7 +63,7 @@ module.exports = {
                 properties: true,
                 dead_code: true,
                 drop_debugger: true,
-                drop_console: false,
+                drop_console: true,
                 conditionals: true,
                 comparisons: true
             },
