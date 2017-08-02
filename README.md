@@ -14,6 +14,16 @@ Download the minified framework located in [gamee/dist/gamee-js.min.js](https://
 <script src="gamee-js.min.js"></script>
 ```
 
+### Usage with NPM and Webpack
+
+Install the framework with command ```npm install gamee-js```. Then use:
+
+```javascript
+import { gamee } from "gamee-js"
+```
+
+in your files. 
+
 ## Previous versions (and changelogs)
 
 [https://github.com/gameeapp/gamee-js/releases](https://github.com/gameeapp/gamee-js/releases)
