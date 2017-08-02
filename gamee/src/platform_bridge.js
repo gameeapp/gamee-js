@@ -280,7 +280,7 @@ MobileBridge.prototype._init = function () {
 			throw "Couldn't parse message from native app: \n" + data + "\n" + err;
 		}
 		this.dispatchEvent(new CustomEvent("message", { detail: data }));
-	};
+	}.bind(window);
 
 };
 

@@ -15,6 +15,7 @@ export var GameeEmitter = function () {
     CustomEmitter.call(this);
 };
 
+
 /**
  * @class Gamee
  * @requires core
@@ -169,7 +170,16 @@ Gamee.prototype = (function () {
          * @param {Gamee~requestSocialDataCallback} cb 
          */
         requestSocial: function (cb) {
-            var data = core.requestSocial(cb);
+            // functionality supposed to be removed once we do update for iOS
+            if (this._platform === "ios") {
+                var data = core.requestSocial(function (error, responseData) {
+                    var modifiedResponse = {};
+                    modifiedResponse.socialData = responseData;
+                    cb(null, modifiedResponse);
+                });
+            } else {
+                var data = core.requestSocial(cb);
+            }
             //cb(null, data);
         }
     };

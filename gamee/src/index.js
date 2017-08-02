@@ -48,6 +48,8 @@ var platformBridge = (function () {
 
     gamee = new Gamee(platformType);
 
+    window.gamee = gamee;
+
     switch (platformType) {
         case "web":
             if (window.parent === window) {
