@@ -115,7 +115,7 @@ Gamee.prototype = (function () {
             validateDataType(data, "string", "data", "gamee.gameSave");
             if (typeof opt_share === 'function')
                 opt_cb = opt_share;
-            else
+            else if (typeof opt_share !== "undefined")
                 validateDataType(opt_share, "boolean", "opt_share", "gamee.gameSave");
 
             opt_cb = opt_cb || cbError;
@@ -146,7 +146,7 @@ Gamee.prototype = (function () {
             validateDataType(score, "number", "score", "gamee.updateScore");
             if (typeof opt_ghostSign === "function")
                 opt_cb = opt_ghostSign;
-            else
+            else if (typeof opt_ghostSign !== "undefined")
                 validateDataType(opt_ghostSign, "boolean", "opt_ghostSign", "gamee.updateScore");
 
             opt_cb = opt_cb || cbError;
@@ -165,8 +165,8 @@ Gamee.prototype = (function () {
         gameOver: function (opt_replayData, opt_cb) {
             if (typeof opt_replayData === "function")
                 opt_cb = opt_replayData;
-            else
-                validateDataType(opt_replayData, "string", "opt_replayData", "gamee.gameOver");
+            else if (typeof opt_replayData !== "undefined")
+                validateDataType(opt_replayData, "object", "opt_replayData", "gamee.gameOver");
 
             opt_cb = opt_cb || cbError;
             validateDataType(opt_cb, "function", "opt_cb", "gamee.gameOver");

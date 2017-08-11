@@ -250,18 +250,7 @@ export var core = (function () {
      * share must be expression evaluating to either true or false; it indicates, whether the game progress should be shared on feed
      */
     core.gameSave = function (data, share) {
-        var state;
-        if (typeof data === "object") {
-            // gameeNative.gameSave(internals.variant, data, share ? 1 : 0);
-            try {
-                state = JSON.stringify(data);
-            } catch (err) {
-                throw "data provided to gameSave function must be valid JSON: " + err;
-            }
-            core.native.createRequest("saveState", { state: state, share: share });
-        } else {
-            throw "data provided to gameSave function must be object";
-        }
+        core.native.createRequest("saveState", { state: data, share: share });
     };
 
     core.requestSocial = function (cb) {
