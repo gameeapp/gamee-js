@@ -25,7 +25,7 @@ var platformBridge = (function () {
     /* current user agent */
     var userAgent = navigator.userAgent.toLowerCase();
 
-    if ((window.parent !== window) && (/facebook/.test(document.referrer))) { // FB
+    if ((window.parent !== window) && (/facebook\./.test(document.referrer) || /messenger\.com/.test(document.referrer))) { // FB
         // TODO fb platform
         platformType = "fb";
     } else if (/iphone|ipod|ipad/.test(userAgent)) { // test ios device
