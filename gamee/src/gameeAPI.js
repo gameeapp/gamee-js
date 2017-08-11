@@ -1,5 +1,6 @@
 import { core } from "./core.js"
 import { CustomEmitter } from "../libs/shims.js"
+import { validateDataType } from "./core.js"
 
 /**
  * gameeAPI module desc
@@ -56,14 +57,16 @@ Gamee.prototype = (function () {
          * @param {gameInitCallback} cb 
          */
         gameInit: function (controllType, controllOpts, capabilities, cb) {
+            validateDataType(controllType, "string", "controllType", "gamee.updateScore");
+            validateDataType(controllOpts, "object", "controllOpts", "gamee.gameInit");
+            validateDataType(capabilities, "array", "capabilities", "gamee.gameInit");
+            validateDataType(cb, "function", "cb", "gamee.gameInit");
             var result = core.gameeInit(controllType, controllOpts, capabilities, cb);
             // cb(null, result);
         },
 
         /**
          * gameLoadingProgress
-         * 
-         * NOTE: There are 2 signatures for this function
          * 
          *     gamee.gameLoadingProgress()
          * 
@@ -73,7 +76,9 @@ Gamee.prototype = (function () {
          * 
          */
         gameLoadingProgress: function (percentage, opt_cb) {
+            validateDataType(percentage, "number", "percentage", "gamee.gameLoadingProgress");
             opt_cb = opt_cb || cbError;
+            validateDataType(opt_cb, "function", "opt_cb", "gamee.gameLoadingProgress");
             core.gameLoadingProgress(percentage);
             opt_cb(null);
         },
@@ -86,6 +91,7 @@ Gamee.prototype = (function () {
          */
         gameReady: function (opt_cb) {
             opt_cb = opt_cb || cbError;
+            validateDataType(opt_cb, "function", "opt_cb", "gamee.gameReady");
             core.gameReady();
             opt_cb(null);
         },
@@ -99,23 +105,23 @@ Gamee.prototype = (function () {
          *     gamee.gameSave(data, opt_share, opt_cb)
          * 
          * @memberof Gamee
-         * @param {object} data current loading progress
-         * @param {boolean} [opt_share=false] 
+         * @param {String} data current ingame progress
+         * @param {Boolean} [opt_share=false] 
          * @param {Gamee~voidCallback} [opt_cb] 
          * 
          */
         gameSave: function (data, opt_share, opt_cb) {
             var share = false, cb;
-            if (typeof opt_share === 'undefined')
-                cb = cbError;
-            else if (typeof opt_share === 'function')
-                cb = opt_share;
-            else if (typeof opt_share === 'boolean') {
-                share = opt_share;
-                cb = opt_cb || cbError;
-            }
+            validateDataType(data, "string", "data", "gamee.gameSave");
+            if (typeof opt_share === 'function')
+                opt_cb = opt_share;
+            else
+                validateDataType(opt_share, "boolean", "opt_share", "gamee.gameSave");
+
+            opt_cb = opt_cb || cbError;
+            validateDataType(opt_cb, "function", "opt_cb", "gamee.gameSave");
             core.gameSave(data, share);
-            cb(null);
+            opt_cb(null);
         },
 
         /**
@@ -137,11 +143,14 @@ Gamee.prototype = (function () {
          * @param {Gamee~voidCallback} [opt_cb] 
          */
         updateScore: function (score, opt_ghostSign, opt_cb) {
-            if (typeof opt_ghostSign === "function") {
+            validateDataType(score, "number", "score", "gamee.updateScore");
+            if (typeof opt_ghostSign === "function")
                 opt_cb = opt_ghostSign;
-                opt_ghostSign = undefined;
-            }
+            else
+                validateDataType(opt_ghostSign, "boolean", "opt_ghostSign", "gamee.updateScore");
+
             opt_cb = opt_cb || cbError;
+            validateDataType(opt_cb, "function", "opt_cb", "gamee.updateScore");
             core.updateScore(score, opt_ghostSign);
             opt_cb(null);
         },
@@ -154,11 +163,13 @@ Gamee.prototype = (function () {
          * @param {Gamee~voidCallback} [opt_cb] 
          */
         gameOver: function (opt_replayData, opt_cb) {
-            if (typeof opt_replayData === "function") {
+            if (typeof opt_replayData === "function")
                 opt_cb = opt_replayData;
-                opt_replayData = undefined;
-            }
+            else
+                validateDataType(opt_replayData, "string", "opt_replayData", "gamee.gameOver");
+
             opt_cb = opt_cb || cbError;
+            validateDataType(opt_cb, "function", "opt_cb", "gamee.gameOver");
             core.gameOver(opt_replayData);
             opt_cb(null);
         },
@@ -170,6 +181,8 @@ Gamee.prototype = (function () {
          * @param {Gamee~requestSocialDataCallback} cb 
          */
         requestSocial: function (cb) {
+            validateDataType(cb, "function", "cb", "gamee.requestSocial");
+
             // functionality supposed to be removed once we do update for iOS
             if (this._platform === "ios") {
                 var data = core.requestSocial(function (error, responseData) {

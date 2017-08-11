@@ -1,6 +1,7 @@
 import * as controllers from "./game_controllers.js"
 import { wrapKeyEvent } from "../libs/shims.js"
 
+
 /**
  * @class core
  */
@@ -455,3 +456,25 @@ export var core = (function () {
 
     return core;
 })();
+
+export var DataTypeException = function (expected, present, argument, method) {
+    this.expected = expected;
+    this.present = present;
+    this.method = method;
+    this.argument = argument;
+    this.message = `Invalid data type in method ${this.method}, argument ${this.argument} is expected to be ${this.expected}, but found ${this.present}`;
+};
+
+export var validateDataType = function (testedInput, expectedType, argument, originMethod) {
+    switch (expectedType) {
+
+        case "array":
+            if (!Array.isArray(testedInput))
+                throw new DataTypeException(expectedType, typeof testedInput, argument, originMethod);
+            break;
+
+        default:
+            if (typeof testedInput !== expectedType)
+                throw new DataTypeException(expectedType, typeof testedInput, argument, originMethod);
+    }
+}
