@@ -184,15 +184,12 @@ Gamee.prototype = (function () {
             validateDataType(cb, "function", "cb", "gamee.requestSocial");
 
             // functionality supposed to be removed once we do update for iOS
-            if (this._platform === "ios") {
-                var data = core.requestSocial(function (error, responseData) {
-                    var modifiedResponse = {};
-                    modifiedResponse.socialData = responseData;
-                    cb(null, modifiedResponse);
-                });
-            } else {
-                var data = core.requestSocial(cb);
-            }
+            var data = core.requestSocial(function (error, responseData) {
+                var modifiedResponse = !responseData.hasOwnProperty("socialData") ? { socialData: responseData } : responseData
+                cb(null, modifiedResponse);
+            });
+
+            // var data = core.requestSocial(cb);
             //cb(null, data);
         }
     };
