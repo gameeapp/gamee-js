@@ -1,6 +1,43 @@
 import * as controllers from "./game_controllers.js"
 import { wrapKeyEvent } from "../libs/shims.js"
 
+// unlock audio
+// overrides native AudioContext & webkitAudioContext
+(function () {
+    // this works as a constructor
+    var overloadedAudioContext = function (type) {
+        var ctx = new type()
+        // add audio resume to function on touchstart
+        if (ctx.state === 'suspended') {
+
+            var resume = function () {
+                ctx.resume()
+                setTimeout(function () {
+                    if (ctx.state === 'running') {
+                        document.body.removeEventListener('touchstart', resume, false)
+                    }
+                }, 0)
+            }
+
+            document.body.addEventListener('touchstart', resume, false);
+        }
+        // allowed in JS to return different type of the object in the constructor
+        return ctx
+    }
+
+    try {
+        if (typeof AudioContext !== 'undefined') {
+            AudioContext = overloadedAudioContext.bind(null, AudioContext)
+        } else if (typeof webkitAudioContext !== 'undefined') {
+            webkitAudioContext = overloadedAudioContext.bind(null, webkitAudioContext)
+        }
+    } catch (e) { // throw error in async part
+        setTimeout(() => {
+            throw e
+        }, 0)
+    }
+})()
+
 
 /**
  * @class core
