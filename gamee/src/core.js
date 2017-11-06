@@ -14,22 +14,22 @@ import { wrapKeyEvent } from "../libs/shims.js"
                 ctx.resume()
                 setTimeout(function () {
                     if (ctx.state === 'running') {
-                        document.body.removeEventListener('touchstart', resume, false)
+                        document.body.removeEventListener('touchend', resume, false)
                     }
                 }, 0)
             }
 
-            document.body.addEventListener('touchstart', resume, false);
+            document.body.addEventListener('touchend', resume, false);
         }
         // allowed in JS to return different type of the object in the constructor
         return ctx
     }
 
     try {
-        if (typeof AudioContext !== 'undefined') {
-            AudioContext = overloadedAudioContext.bind(null, AudioContext)
+        if (typeof window.AudioContext !== 'undefined') {
+            window.AudioContext = overloadedAudioContext.bind(null, window.AudioContext)
         } else if (typeof webkitAudioContext !== 'undefined') {
-            webkitAudioContext = overloadedAudioContext.bind(null, webkitAudioContext)
+            window.webkitAudioContext = overloadedAudioContext.bind(null, window.webkitAudioContext)
         }
     } catch (e) { // throw error in async part
         setTimeout(() => {
