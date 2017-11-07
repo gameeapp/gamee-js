@@ -7,10 +7,24 @@ import { wrapKeyEvent } from "../libs/shims.js"
     // this works as a constructor
     var overloadedAudioContext = function (type) {
         var ctx = new type()
+
         // add audio resume to function on touchstart
         if (ctx.state === 'suspended') {
 
             var resume = function () {
+
+                // Check if hack is necessary. Only occurs in iOS6+ devices
+                // and only when you first boot the iPhone, or play a audio/video
+                // with a different sample rate
+                if (/(iPhone|iPad)/i.test(navigator.userAgent)) {
+                    var buffer = ctx.createBuffer(1, 1, 44100)
+                    var dummy = ctx.createBufferSource()
+                    dummy.buffer = buffer
+                    dummy.connect(ctx.destination)
+                    dummy.start(0)
+                    dummy.disconnect()
+                }
+
                 ctx.resume()
                 setTimeout(function () {
                     if (ctx.state === 'running') {
