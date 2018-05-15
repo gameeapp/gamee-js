@@ -28,12 +28,40 @@ import { wrapKeyEvent } from "../libs/shims.js"
                 ctx.resume()
                 setTimeout(function () {
                     if (ctx.state === 'running') {
-                        document.body.removeEventListener('touchend', resume, false)
+                        document.body.removeEventListener([
+                            'touchcancel',
+                            'touchend',
+                            'touchenter',
+                            'touchleave',
+                            'touchmove',
+                            'touchstart',
+                            'mouseenter',
+                            'mouseover',
+                            'mousemove',
+                            'mousedown',
+                            'mouseup'
+                        ].join(" "), resume, false)
                     }
                 }, 0)
             }
 
-            document.body.addEventListener('touchend', resume, false);
+            // only touchend will work, but hey, we tried... 
+            // https://github.com/WebAudio/web-audio-api/issues/836
+            // https://www.chromestatus.com/feature/6406908126691328
+            document.body.addEventListener([
+                'touchcancel',
+                'touchend',
+                'touchenter',
+                'touchleave',
+                'touchmove',
+                'touchstart',
+                'mouseenter',
+                'mouseover',
+                'mousemove',
+                'mousedown',
+                'mouseup'
+            ].join(" "),
+                resume, false);
         }
         // allowed in JS to return different type of the object in the constructor
         return ctx
