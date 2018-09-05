@@ -1,7 +1,7 @@
 import { } from "../libs/shims.js"
 import { Gamee } from "./gameeAPI.js"
 import { core } from "./core.js"
-import { PlatformAPI, PlatformBridge, PostMessageBridge, MobileBridge, FacebookBridge } from "./platform_bridge.js"
+import { PlatformAPI, PlatformBridge, PostMessageBridge, MobileBridge } from "./platform_bridge.js"
 
 
 /**
@@ -25,10 +25,7 @@ var platformBridge = (function () {
     /* current user agent */
     var userAgent = navigator.userAgent.toLowerCase();
 
-    if ((window.parent !== window) && (/facebook\./.test(document.referrer) || /messenger\.com/.test(document.referrer))) { // FB
-        // TODO fb platform
-        platformType = "fb";
-    } else if (/iphone|ipod|ipad/.test(userAgent)) { // test ios device
+    if (/iphone|ipod|ipad/.test(userAgent)) { // test ios device
         // user agent is use to determine current enviroment
 
         // Test if window with game have a parent (loading in iframe)
@@ -62,9 +59,6 @@ var platformBridge = (function () {
             break;
         case "android":
             platformBridge = new MobileBridge("android");
-            break;
-        case "fb":
-            platformBridge = new FacebookBridge("fb");
             break;
         default:
             throw "Can't identify the platform";

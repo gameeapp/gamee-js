@@ -107,8 +107,8 @@ export var core = (function () {
 
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
-        VERSION: "2.0", // version of the gamee library
-        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData"], // supported capabilities
+        VERSION: "2.1.0", // version of the gamee library
+        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData","rewardedAds","coins","logEvents","playerData"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
         onReady: noop, // for intercepting real onReady because of behind the scenes variant handling
@@ -168,7 +168,7 @@ export var core = (function () {
             // might fail if controller of this type doesnt exist
             var error = null;
             try {
-                if (this.native.platform === "web" || this.native.platform === "fb") {
+                if (this.native.platform === "web") {
                     responseData.controller = core.controller.requestController(ctrlType, { enableKeyboard: true });
                     this._bindKeyboardTriggers(responseData.controller);
                 } else {
@@ -305,7 +305,7 @@ export var core = (function () {
      * Data has the same format as data received in onReady callback.
      * Data must be string = responsibility for turning data structure into string is left to the game!
      */
-    core.gameOver = function (opt_replayData) {
+    core.gameOver = function (opt_replayData,opt_saveState) {
         // var allOk = ((data !== undefined) && (typeof data === "string")) || (data === undefined);
         // if (!allOk) console.error("Data provided to gameOver function must be string.");
         // gameeNative.gameOver(gamee, internals.variant, allOk ? data : "");
@@ -318,6 +318,7 @@ export var core = (function () {
                 throw "Replay data must have `data` property";
             }
             requestData.replayData = opt_replayData;
+            requestData.state = opt_saveState;
         }
         core.native.createRequest("gameOver", requestData);
     };
@@ -329,16 +330,104 @@ export var core = (function () {
      * share must be expression evaluating to either true or false; it indicates, whether the game progress should be shared on feed
      */
     core.gameSave = function (data, share) {
+        
+        if(!cache.capabilities.saveState)
+            throw "Save State not supported, you must add the capability on gamee.Init"
+        
         core.native.createRequest("saveState", { state: data, share: share });
     };
 
-    core.requestSocial = function (cb) {
-        this.native.createRequest("requestSocial", function (responseData) {
+    core.requestSocial = function (cb,numberOfPlayers) {
+        
+        if(!cache.capabilities.socialData)
+            throw "Social Data not supported, you must add the capability on gamee.Init"
+        
+        this.native.createRequest("requestSocial", numberOfPlayers,function (responseData) {
             cb(null, responseData);
         });
     };
 
-
+    core.logEvent = function (eventName,eventValue) {
+        
+        if(!cache.capabilities.logEvents)
+            throw "Log Events not supported, you must add the capability on gamee.Init"
+        
+        //var valuesToLogString = JSON.stringify(eventValue)
+        
+        this.native.createRequest("logEvent", {eventName,eventValue},function(error){
+            if(error){
+                throw error
+            }
+        });
+        
+    };
+    
+    core.requestPlayerReplay = function (userID,cb) {
+        
+        if(!cache.capabilities.replay)
+            throw "Replays not supported, you must add the capability on gamee.Init"
+        
+        this.native.createRequest("requestPlayerReplay", {userID}, function (responseData) {
+            cb(null, responseData);
+        });
+    };
+    
+    core.requestPlayerSaveState = function (userID,cb) {
+        this.native.createRequest("requestPlayerSaveState", {userID}, function (responseData) {
+            cb(null, responseData);
+        });
+    };
+    
+    core.purchaseItem = function (options,cb) {
+        
+        if(!cache.capabilities.coins)
+            throw "Purchases not supported, you must add the capability on gamee.Init"
+        
+        if (options) {
+            var propertiesList = ["coinsCost","itemName"]
+            propertiesList.forEach(function(property){                
+                if(!options.hasOwnProperty(property))
+                    throw "Purchase Options must have `"+property+"` property"
+            })
+        }
+        
+        console.log(options)
+        
+        this.native.createRequest("purchaseItem",options, function (responseData) {
+            cb(null, responseData);
+        });
+    };
+    
+    core.loadRewardedVideo = function (cb) {
+        
+        if(!cache.capabilities.rewardedAds)
+            throw "Rewarded Ads not supported, you must add the capability on gamee.Init"
+        
+        this.native.createRequest("loadRewardedVideo", function (responseData) {
+            cb(null, responseData);
+        });
+    };
+    
+    core.showRewardedVideo = function (cb) {
+        
+        if(!cache.capabilities.rewardedAds)
+            throw "Rewarded Ads not supported, you must add the capability on gamee.Init"
+        
+        this.native.createRequest("showRewardedVideo", function (responseData) {
+            cb(null, responseData);
+        });
+    };
+    
+    core.requestPlayerData = function (cb) {
+        
+        if(!cache.capabilities.playerData)
+            throw "Player Data not supported, you must add the capability on gamee.Init"
+        
+        this.native.createRequest("requestPlayerData",function (responseData) {
+            cb(null, responseData);
+        });
+    };
+    
     core.startSignal = function (data) {
         var error;
 

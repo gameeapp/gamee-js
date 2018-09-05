@@ -162,7 +162,7 @@ Gamee.prototype = (function () {
          * @param {Gamee~ReplayData} [opt_replayData]
          * @param {Gamee~voidCallback} [opt_cb] 
          */
-        gameOver: function (opt_replayData, opt_cb) {
+        gameOver: function (opt_replayData, opt_cb, opt_saveState) {
             if (typeof opt_replayData === "function")
                 opt_cb = opt_replayData;
             else if (typeof opt_replayData !== "undefined")
@@ -170,7 +170,7 @@ Gamee.prototype = (function () {
 
             opt_cb = opt_cb || cbError;
             validateDataType(opt_cb, "function", "opt_cb", "gamee.gameOver");
-            core.gameOver(opt_replayData);
+            core.gameOver(opt_replayData,opt_saveState);
             opt_cb(null);
         },
 
@@ -180,18 +180,122 @@ Gamee.prototype = (function () {
          * @memberof Gamee
          * @param {Gamee~requestSocialDataCallback} cb 
          */
-        requestSocial: function (cb) {
+        requestSocial: function (cb,numberOfPlayers) {
             validateDataType(cb, "function", "cb", "gamee.requestSocial");
 
             // functionality supposed to be removed once we do update for iOS
             var data = core.requestSocial(function (error, responseData) {
                 var modifiedResponse = !responseData.hasOwnProperty("socialData") ? { socialData: responseData } : responseData
                 cb(null, modifiedResponse);
-            });
+            },numberOfPlayers);
 
             // var data = core.requestSocial(cb);
             //cb(null, data);
-        }
+        },
+        
+         /**
+         * logEvent
+         * 
+         * @memberof Gamee
+         * @param {string} eventName 
+         * @param {number} valueToSum
+         * @param {string} parameters
+         */
+        logEvent: function (eventName,eventValue) {
+            
+            validateDataType(eventName,"string","eventName","gamee.logEvent")
+            
+            if(!eventName || eventName.length > 24){
+                console.error("eventName parameter cant be null and can only contain up to 24 characters");   
+                return
+            }
+            
+            validateDataType(eventValue,"string","eventValue","gamee.logEvent")
+            
+            if(!eventValue || eventValue.length > 24){
+                console.error("eventValue parameter cant be null and can only contain up to 24 characters");   
+                return
+            }
+            
+            core.logEvent(eventName,eventValue)
+        },
+        
+        /**
+         * requestPlayerReplay
+         * 
+         * @memberof Gamee
+         * @param {number} userID 
+         * @param {Gamee~requestPlayerReplayDataCallback} cb 
+         */
+        requestPlayerReplay: function (userID, cb) {
+            
+            validateDataType(userID, "number", "userID", "gamee.requestPlayerReplay");
+            validateDataType(cb, "function", "cb", "gamee.requestPlayerReplay");
+            
+            core.requestPlayerReplay(userID, cb);
+        },
+        
+        /**
+         * requestPlayerSaveState
+         * 
+         * @memberof Gamee
+         * @param {number} userID 
+         * @param {Gamee~requestPlayerSaveStateDataCallback} cb 
+         */
+        requestPlayerSaveState: function (userID, cb) {
+            
+            validateDataType(userID, "number", "userID", "gamee.requestPlayerSaveState");
+            validateDataType(cb, "function", "cb", "gamee.requestPlayerSaveState");
+            
+            core.requestPlayerSaveState(userID, cb);
+        },
+        
+        /*
+        *puchaseitem
+        *@member of Gamee
+        *@param {object} purchaseDetails
+        *@param {Gamee~purchaseItemDataCallback} cb
+        */
+        purchaseItem: function(purchaseDetails,cb){
+            
+            validateDataType(purchaseDetails,"object","purchaseDetails","gamee.purchaseItem");
+            validateDataType(cb,"function","cb","gamee.purchaseItem")
+            
+            core.purchaseItem(purchaseDetails,cb)   
+        },
+        
+        /*
+        *loadRewardedVideo
+        *@member of Gamee
+        *@param {Gamee~loadRewardedVideo} cb
+        */
+        loadRewardedVideo: function(cb){
+            
+            validateDataType(cb,"function","cb","gamee.loadRewardedVideo")
+            core.loadRewardedVideo(cb)   
+        },
+        
+        /*
+        *showRewardedVideo
+        *@member of Gamee
+        *@param{Gamee~showRewardedVideo} cb
+        */
+        showRewardedVideo: function(cb){
+            
+            validateDataType(cb,"function","cb","gamee.showRewardedVideo")
+            core.showRewardedVideo(cb)   
+        },
+        
+        /*
+        *requestPlayerData
+        *@member of Gamee
+        *@param{Gamee~requestPlayerData} cb
+        */
+        requestPlayerData: function(cb){
+            
+            validateDataType(cb,"function","cb","gamee.requestPlayerData")
+            core.requestPlayerData(cb)   
+        },
     };
 
     /**

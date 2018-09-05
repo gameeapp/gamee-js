@@ -83,7 +83,11 @@ export var PlatformAPI = {
 			event.detail.opt_ghostMode = true;
 		if (data.resetState)
 			event.detail.opt_resetState = true;
-
+        if (data.replayData){
+            event.detail.replayData = data.replayData
+        }
+            
+        
 		this.emitter.dispatchEvent(event);
 	}
 };
@@ -179,6 +183,8 @@ PostMessageBridge.prototype._init = function () {
 			// message is not from native platform
 			return;
 		}
+        
+        console.log(JSON.stringify(data, null, 4) + ' data')
 		// this is request
 		if (data.request && data.request.method && typeof data.request.messageId !== "undefined") {
 			this._resolveAPICall(data.request.method, data.request.messageId, data.request.data);
@@ -279,6 +285,7 @@ MobileBridge.prototype._init = function () {
 		} catch (err) {
 			throw "Couldn't parse message from native app: \n" + data + "\n" + err;
 		}
+        console.log(JSON.stringify(data, null, 4))
 		this.dispatchEvent(new CustomEvent("message", { detail: data }));
 	}.bind(window);
 
@@ -295,79 +302,3 @@ MobileBridge.prototype.doCall = function (preparedObject, requestData) {
 	this._gameeWin.postMessage(preparedObject, "*");
 };
 
-/**
- * @class FacebookBridge
- * @requires PlatformBridge
- */
-export function FacebookBridge() {
-	PlatformBridge.call(this);
-	this.platform = "fb";
-}
-
-FacebookBridge.prototype = Object.create(PlatformBridge.prototype);
-FacebookBridge.prototype.constructor = FacebookBridge;
-
-FacebookBridge.prototype._init = function () {
-};
-
-FacebookBridge.prototype.createRequest = function (method, opt_requestData, opt_callback) {
-	if (typeof opt_requestData === 'function') {
-		opt_callback = opt_requestData;
-		opt_requestData = undefined;
-	}
-
-	try {
-		this._methods[method](opt_callback, opt_requestData);
-	} catch (err) {
-		throw err;
-	}
-};
-
-FacebookBridge.prototype.validateMethod = function (method) {
-	return true;
-};
-
-FacebookBridge.prototype._methods = {
-	init: function (cb, data) {
-		var scripts = "https://connect.facebook.net/en_US/fbinstant.2.1.js"; // TODO?
-		loadScript(scripts, function () {
-			FBInstant.initializeAsync().then(function (v) {
-				FBInstant.player.getDataAsync(['gamee']).then(function (data) {
-					var saveState = data.gamee || null;
-					cb({
-						saveState: saveState,
-						replayData: null,
-						sound: true
-					});
-				});
-
-			}, function (e) {
-				throw e;
-			});
-		});
-	},
-	gameLoadingProgress: function (cb, data) {
-		FBInstant.setLoadingProgress(data.percentage);
-	},
-	gameReady: function () {
-		FBInstant.setLoadingProgress(100);
-		FBInstant.startGameAsync().then(function () {
-			PlatformAPI.start({}, function () { });
-		});
-	},
-	updateScore: function (cb, data) {
-		FBInstant.setScore(data.score);
-	},
-	gameOver: function () {
-		FBInstant.endGameAsync().then(function () {
-			PlatformAPI.start({}, function () { });
-		});
-	},
-	saveState: function (cb, data) {
-		FBInstant.player.setDataAsync({
-			"gamee": data.state
-		}).then(function () {
-			console.log('FB: data is saved');
-		});
-	}
-};
