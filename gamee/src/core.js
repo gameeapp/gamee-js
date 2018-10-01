@@ -107,8 +107,8 @@ export var core = (function () {
 
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
-        VERSION: "2.1.0", // version of the gamee library
-        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData","rewardedAds","coins","logEvents","playerData"], // supported capabilities
+        VERSION: "2.2.0", // version of the gamee library
+        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData","rewardedAds","coins","logEvents","playerData","share"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
         onReady: noop, // for intercepting real onReady because of behind the scenes variant handling
@@ -394,6 +394,25 @@ export var core = (function () {
         console.log(options)
         
         this.native.createRequest("purchaseItem",options, function (responseData) {
+            cb(null, responseData);
+        });
+    };
+    
+    core.share = function (options,cb) {
+        
+        if(!cache.capabilities.share)
+            throw "Share option not supported, you must add the capability on gamee.Init"
+        
+        if (options) {
+            var propertiesList = ["destination"]
+            propertiesList.forEach(function(property){                
+                if(!options.hasOwnProperty(property))
+                    throw "Share Options must have `"+property+"` property"
+            })
+        }
+        console.log(options)
+        
+        this.native.createRequest("share",options, function (responseData) {
             cb(null, responseData);
         });
     };

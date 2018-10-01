@@ -264,6 +264,18 @@ Gamee.prototype = (function () {
             core.purchaseItem(purchaseDetails,cb)   
         },
         
+        /*share
+        *@member of Gamee
+        *@param {object} shareDetails
+        *@param {Gamee~shareDataCallback} cb
+        */
+        share: function(shareDetails,cb){
+            validateDataType(shareDetails,"object","shareDetails","gamee.share");
+            validateDataType(cb,"function","cb","gamee.share")
+            
+            core.share(shareDetails,cb) 
+        },
+        
         /*
         *loadRewardedVideo
         *@member of Gamee
