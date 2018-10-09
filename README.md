@@ -28,8 +28,6 @@ in your files.
 
 [https://github.com/gameeapp/gamee-js/releases](https://github.com/gameeapp/gamee-js/releases)
 
-[Planned Updates](https://github.com/gameeapp/gamee-js/wiki/planned-updates).
-
 ## Contribute
 
 If you want to contribute, please feel free to use [Github issue tracker](https://github.com/gameeapp/gamee-js/issues) of this repository. 
