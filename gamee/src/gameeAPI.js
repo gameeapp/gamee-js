@@ -212,8 +212,8 @@ Gamee.prototype = (function () {
             
             validateDataType(eventValue,"string","eventValue","gamee.logEvent")
             
-            if(!eventValue || eventValue.length > 24){
-                console.error("eventValue parameter cant be null and can only contain up to 24 characters");   
+            if(!eventValue || eventValue.length > 160){
+                console.error("eventValue parameter cant be null and can only contain up to 160 characters");   
                 return
             }
             

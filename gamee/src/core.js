@@ -318,8 +318,12 @@ export var core = (function () {
                 throw "Replay data must have `data` property";
             }
             requestData.replayData = opt_replayData;
+        }
+
+        if (opt_saveState) {
             requestData.state = opt_saveState;
         }
+
         core.native.createRequest("gameOver", requestData);
     };
 
