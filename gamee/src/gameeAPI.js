@@ -16,16 +16,15 @@ export var GameeEmitter = function () {
     CustomEmitter.call(this);
 };
 
-
 /**
  * @class Gamee
  * @requires core
- * 
+ *
  */
 export var Gamee = function (platform) {
     /**
      * @instance
-     * 
+     *
      * @fires gameeAPI:GameeEmitter~start
      * @fires gameeAPI:GameeEmitter~mute
      * @fires gameeAPI:GameeEmitter~unmute
@@ -53,8 +52,8 @@ Gamee.prototype = (function () {
          * @memberof Gamee
          * @param {string} controllType
          * @param {object} controllOpts
-         * @param {string[]} capabilites
-         * @param {gameInitCallback} cb 
+         * @param {string[]} capabilities
+         * @param {gameInitCallback} cb
          */
         gameInit: function (controllType, controllOpts, capabilities, cb) {
             validateDataType(controllType, "string", "controllType", "gamee.updateScore");
@@ -67,13 +66,13 @@ Gamee.prototype = (function () {
 
         /**
          * gameLoadingProgress
-         * 
+         *
          *     gamee.gameLoadingProgress()
-         * 
+         *
          * @memberof Gamee
          * @param {number} percentage current loading progress
-         * @param {Gamee~voidCallback} [opt_cb] 
-         * 
+         * @param {Gamee~voidCallback} [opt_cb]
+         *
          */
         gameLoadingProgress: function (percentage, opt_cb) {
             validateDataType(percentage, "number", "percentage", "gamee.gameLoadingProgress");
@@ -85,9 +84,9 @@ Gamee.prototype = (function () {
 
         /**
          * gameReady
-         * 
+         *
          * @memberof Gamee
-         * @param {Gamee~voidCallback} [opt_cb] 
+         * @param {Gamee~voidCallback} [opt_cb]
          */
         gameReady: function (opt_cb) {
             opt_cb = opt_cb || cbError;
@@ -98,17 +97,17 @@ Gamee.prototype = (function () {
 
         /**
          * gameSave
-         * 
+         *
          * NOTE: There are 2 signatures for this function
-         * 
+         *
          *     gamee.gameSave(data, opt_cb)
          *     gamee.gameSave(data, opt_share, opt_cb)
-         * 
+         *
          * @memberof Gamee
          * @param {String} data current ingame progress
-         * @param {Boolean} [opt_share=false] 
-         * @param {Gamee~voidCallback} [opt_cb] 
-         * 
+         * @param {Boolean} [opt_share=false]
+         * @param {Gamee~voidCallback} [opt_cb]
+         *
          */
         gameSave: function (data, opt_share, opt_cb) {
             var share = false, cb;
@@ -126,7 +125,7 @@ Gamee.prototype = (function () {
 
         /**
          * getPlatform
-         * 
+         *
          * @memberof Gamee
          * @returns {string} platform type can be android | ios | web | fb
          */
@@ -136,11 +135,11 @@ Gamee.prototype = (function () {
 
         /**
          * updateScore
-         * 
+         *
          * @memberof Gamee
          * @param {number} score
-         * @param {boolean} [opt_ghostSign=false] If true, score will be updated for ghost instead. 
-         * @param {Gamee~voidCallback} [opt_cb] 
+         * @param {boolean} [opt_ghostSign=false] If true, score will be updated for ghost instead.
+         * @param {Gamee~voidCallback} [opt_cb]
          */
         updateScore: function (score, opt_ghostSign, opt_cb) {
             validateDataType(score, "number", "score", "gamee.updateScore");
@@ -157,10 +156,10 @@ Gamee.prototype = (function () {
 
         /**
          * gameOver
-         * 
+         *
          * @memberof Gamee
          * @param {Gamee~ReplayData} [opt_replayData]
-         * @param {Gamee~voidCallback} [opt_cb] 
+         * @param {Gamee~voidCallback} [opt_cb]
          */
         gameOver: function (opt_replayData, opt_cb, opt_saveState) {
             if (typeof opt_replayData === "function")
@@ -170,148 +169,148 @@ Gamee.prototype = (function () {
 
             opt_cb = opt_cb || cbError;
             validateDataType(opt_cb, "function", "opt_cb", "gamee.gameOver");
-            core.gameOver(opt_replayData,opt_saveState);
+            core.gameOver(opt_replayData, opt_saveState);
             opt_cb(null);
         },
 
         /**
          * requestSocialData
-         * 
+         *
          * @memberof Gamee
-         * @param {Gamee~requestSocialDataCallback} cb 
+         * @param {Gamee~requestSocialDataCallback} cb
+         * @param {number} numberOfPlayers
          */
-        requestSocial: function (cb,numberOfPlayers) {
+        requestSocial: function (cb, numberOfPlayers) {
             validateDataType(cb, "function", "cb", "gamee.requestSocial");
 
             // functionality supposed to be removed once we do update for iOS
             var data = core.requestSocial(function (error, responseData) {
-                var modifiedResponse = !responseData.hasOwnProperty("socialData") ? { socialData: responseData } : responseData
+                var modifiedResponse = !responseData.hasOwnProperty("socialData") ? { socialData: responseData } : responseData;
                 cb(null, modifiedResponse);
-            },numberOfPlayers);
+            }, numberOfPlayers);
 
             // var data = core.requestSocial(cb);
             //cb(null, data);
         },
-        
+
          /**
          * logEvent
-         * 
+         *
          * @memberof Gamee
-         * @param {string} eventName 
-         * @param {number} valueToSum
-         * @param {string} parameters
+         * @param {string} eventName
+         * @param {string} eventValue
          */
-        logEvent: function (eventName,eventValue) {
-            
-            validateDataType(eventName,"string","eventName","gamee.logEvent")
-            
+        logEvent: function (eventName, eventValue) {
+
+            validateDataType(eventName,"string","eventName","gamee.logEvent");
+
             if(!eventName || eventName.length > 24){
-                console.error("eventName parameter cant be null and can only contain up to 24 characters");   
+                console.error("eventName parameter cant be null and can only contain up to 24 characters");
                 return
             }
-            
-            validateDataType(eventValue,"string","eventValue","gamee.logEvent")
-            
+
+            validateDataType(eventValue,"string","eventValue","gamee.logEvent");
+
             if(!eventValue || eventValue.length > 160){
-                console.error("eventValue parameter cant be null and can only contain up to 160 characters");   
+                console.error("eventValue parameter cant be null and can only contain up to 160 characters");
                 return
             }
-            
-            core.logEvent(eventName,eventValue)
+
+            core.logEvent(eventName,eventValue);
         },
-        
+
         /**
          * requestPlayerReplay
-         * 
+         *
          * @memberof Gamee
-         * @param {number} userID 
-         * @param {Gamee~requestPlayerReplayDataCallback} cb 
+         * @param {number} userID
+         * @param {Gamee~requestPlayerReplayDataCallback} cb
          */
         requestPlayerReplay: function (userID, cb) {
-            
+
             validateDataType(userID, "number", "userID", "gamee.requestPlayerReplay");
             validateDataType(cb, "function", "cb", "gamee.requestPlayerReplay");
-            
+
             core.requestPlayerReplay(userID, cb);
         },
-        
+
         /**
          * requestPlayerSaveState
-         * 
+         *
          * @memberof Gamee
-         * @param {number} userID 
-         * @param {Gamee~requestPlayerSaveStateDataCallback} cb 
+         * @param {number} userID
+         * @param {Gamee~requestPlayerSaveStateDataCallback} cb
          */
         requestPlayerSaveState: function (userID, cb) {
-            
+
             validateDataType(userID, "number", "userID", "gamee.requestPlayerSaveState");
             validateDataType(cb, "function", "cb", "gamee.requestPlayerSaveState");
-            
+
             core.requestPlayerSaveState(userID, cb);
         },
-        
+
         /*
         *puchaseitem
         *@member of Gamee
         *@param {object} purchaseDetails
         *@param {Gamee~purchaseItemDataCallback} cb
         */
-        purchaseItem: function(purchaseDetails,cb){
-            
+        purchaseItem: function (purchaseDetails,cb){
+
             validateDataType(purchaseDetails,"object","purchaseDetails","gamee.purchaseItem");
-            validateDataType(cb,"function","cb","gamee.purchaseItem")
-            
-            core.purchaseItem(purchaseDetails,cb)   
+            validateDataType(cb,"function","cb","gamee.purchaseItem");
+
+            core.purchaseItem(purchaseDetails,cb)
         },
-        
+
         /*share
         *@member of Gamee
         *@param {object} shareDetails
         *@param {Gamee~shareDataCallback} cb
         */
-        share: function(shareDetails,cb){
+        share: function (shareDetails,cb){
             validateDataType(shareDetails,"object","shareDetails","gamee.share");
-            validateDataType(cb,"function","cb","gamee.share")
-            
-            core.share(shareDetails,cb) 
+            validateDataType(cb,"function","cb","gamee.share");
+
+            core.share(shareDetails,cb)
         },
-        
+
         /*
         *loadRewardedVideo
         *@member of Gamee
         *@param {Gamee~loadRewardedVideo} cb
         */
-        loadRewardedVideo: function(cb){
-            
-            validateDataType(cb,"function","cb","gamee.loadRewardedVideo")
-            core.loadRewardedVideo(cb)   
+        loadRewardedVideo: function (cb){
+
+            validateDataType(cb,"function","cb","gamee.loadRewardedVideo");
+            core.loadRewardedVideo(cb)
         },
-        
+
         /*
         *showRewardedVideo
         *@member of Gamee
         *@param{Gamee~showRewardedVideo} cb
         */
-        showRewardedVideo: function(cb){
-            
-            validateDataType(cb,"function","cb","gamee.showRewardedVideo")
-            core.showRewardedVideo(cb)   
+        showRewardedVideo: function (cb){
+
+            validateDataType(cb,"function","cb","gamee.showRewardedVideo");
+            core.showRewardedVideo(cb)
         },
-        
+
         /*
         *requestPlayerData
         *@member of Gamee
         *@param{Gamee~requestPlayerData} cb
         */
-        requestPlayerData: function(cb){
-            
-            validateDataType(cb,"function","cb","gamee.requestPlayerData")
-            core.requestPlayerData(cb)   
+        requestPlayerData: function (cb){
+
+            validateDataType(cb,"function","cb","gamee.requestPlayerData");
+            core.requestPlayerData(cb)
         },
     };
 
     /**
-     * 
+     *
      * @typedef ReplayData
      * @param {string} variant
      * @param {string} data
@@ -340,18 +339,18 @@ Gamee.prototype = (function () {
 })();
 
 /**
- * Signals that game should start as normal|replay|ghost game. 
- * Signal means there is no overlay over the game. 
- * This signal is also being used for game restart. If previous 
+ * Signals that game should start as normal|replay|ghost game.
+ * Signal means there is no overlay over the game.
+ * This signal is also being used for game restart. If previous
  * instance of the game was running, it should be terminated without
- * any additional calls and current progress should be tossed. 
+ * any additional calls and current progress should be tossed.
  * @event gameeAPI:GameeEmitter~start
  * @type {object}
  * @property {EventDetailStart} detail - Common property of events
  */
 
 /**
- * Data carried with start event. 
+ * Data carried with start event.
  * @typedef EventDetailStart
  * @property {Gamee~voidCallback} callback - called after finishing task
  * @property {boolean} [opt_resetState=false] - if true, game must delete current progress and saved progress
@@ -360,15 +359,15 @@ Gamee.prototype = (function () {
  */
 
 /**
- * After that signal, game must silent all sounds immediately. 
- * Game must remain silent until unmute signal occures. 
+ * After that signal, game must silent all sounds immediately.
+ * Game must remain silent until unmute signal occures.
  * @event gameeAPI:GameeEmitter~mute
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
  */
 
 /**
- * After unmute signal, game can play sounds again. 
+ * After unmute signal, game can play sounds again.
  * @event gameeAPI:GameeEmitter~unmute
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
@@ -377,15 +376,15 @@ Gamee.prototype = (function () {
 /**
  * Pause signal means there appeared overlay over the game. Player
  * is unable to reach the context of the game anymore. So game should
- * pause all its acctions immediately. 
+ * pause all its acctions immediately.
  * @event gameeAPI:GameeEmitter~pause
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
  */
 
 /**
- * Unpause signal means there is no overlay over the game anymore. 
- * Game should continue with all previous actions. 
+ * Unpause signal means there is no overlay over the game anymore.
+ * Game should continue with all previous actions.
  * @event gameeAPI:GameeEmitter~unpause
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
@@ -393,25 +392,25 @@ Gamee.prototype = (function () {
 
 /**
  * Signal ghostHide can appear only if game is running in ghost mode.
- * Game should hide ghost behavior and look like exactly as game without 
- * the ghost (if this is possible). 
+ * Game should hide ghost behavior and look like exactly as game without
+ * the ghost (if this is possible).
  * @event gameeAPI:GameeEmitter~ghostHide
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
  */
 
 /**
- * Signal ghostShow can appear only if game is running in ghost mode. 
+ * Signal ghostShow can appear only if game is running in ghost mode.
  * Game should show ghost again if it was hidden. If ghost died or ended
  * while it was hidden, game should point that out, so the player can understand
- * why the ghost is not visible anymore.  
+ * why the ghost is not visible anymore.
  * @event gameeAPI:GameeEmitter~ghostShow
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
  */
 
 /**
- * Data carried with various events. Contains only callback method. 
+ * Data carried with various events. Contains only callback method.
  * @typedef {object} EventDetailVoid
  * @property {Gamee~voidCallback} callback - call after finishing task
  */

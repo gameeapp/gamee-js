@@ -6,7 +6,7 @@ import { wrapKeyEvent } from "../libs/shims.js"
 (function () {
     // this works as a constructor
     var overloadedAudioContext = function (type) {
-        var ctx = new type()
+        var ctx = new type();
 
         // add audio resume to function on touchstart
         if (ctx.state === 'suspended') {
@@ -17,15 +17,15 @@ import { wrapKeyEvent } from "../libs/shims.js"
                 // and only when you first boot the iPhone, or play a audio/video
                 // with a different sample rate
                 if (/(iPhone|iPad)/i.test(navigator.userAgent)) {
-                    var buffer = ctx.createBuffer(1, 1, 44100)
-                    var dummy = ctx.createBufferSource()
-                    dummy.buffer = buffer
-                    dummy.connect(ctx.destination)
-                    dummy.start(0)
-                    dummy.disconnect()
+                    var buffer = ctx.createBuffer(1, 1, 44100);
+                    var dummy = ctx.createBufferSource();
+                    dummy.buffer = buffer;
+                    dummy.connect(ctx.destination);
+                    dummy.start(0);
+                    dummy.disconnect();
                 }
 
-                ctx.resume()
+                ctx.resume();
                 setTimeout(function () {
                     if (ctx.state === 'running') {
                         document.body.removeEventListener([
@@ -40,12 +40,12 @@ import { wrapKeyEvent } from "../libs/shims.js"
                             'mousemove',
                             'mousedown',
                             'mouseup'
-                        ].join(" "), resume, false)
+                        ].join(" "), resume, false);
                     }
-                }, 0)
-            }
+                }, 0);
+            };
 
-            // only touchend will work, but hey, we tried... 
+            // only touchend will work, but hey, we tried...
             // https://github.com/WebAudio/web-audio-api/issues/836
             // https://www.chromestatus.com/feature/6406908126691328
             document.body.addEventListener([
@@ -65,20 +65,20 @@ import { wrapKeyEvent } from "../libs/shims.js"
         }
         // allowed in JS to return different type of the object in the constructor
         return ctx
-    }
+    };
 
     try {
         if (typeof window.AudioContext !== 'undefined') {
-            window.AudioContext = overloadedAudioContext.bind(null, window.AudioContext)
+            window.AudioContext = overloadedAudioContext.bind(null, window.AudioContext);
         } else if (typeof webkitAudioContext !== 'undefined') {
-            window.webkitAudioContext = overloadedAudioContext.bind(null, window.webkitAudioContext)
+            window.webkitAudioContext = overloadedAudioContext.bind(null, window.webkitAudioContext);
         }
     } catch (e) { // throw error in async part
         setTimeout(() => {
-            throw e
+            throw e;
         }, 0)
     }
-})()
+})();
 
 
 /**
@@ -87,17 +87,17 @@ import { wrapKeyEvent } from "../libs/shims.js"
 export var core = (function () {
 
     // # Gamee.js
-    // 
+    //
     // This file defines and expose a public API for games to communicate
     // with Gamee*.
     //
-    // Also it handles some requirements when Gamee is run in an desktop 
+    // Also it handles some requirements when Gamee is run in an desktop
     // environment.
     //
     // \* _later in the document Gamee will be referred as GameeApp to not
     // be mistaken for word game_
     //
-    // ** _GameeWebApp will refer to Gamee which is running in a desktop 
+    // ** _GameeWebApp will refer to Gamee which is running in a desktop
     // browser_
 
     /** an empty function */
@@ -118,10 +118,10 @@ export var core = (function () {
     /** ## gamee
      *
      * GameeApp interface for games. It is exposed as a `gamee` global
-     * object and games should only use its public methods and 
-     * properties to communicate with the GameeApp. 
+     * object and games should only use its public methods and
+     * properties to communicate with the GameeApp.
      *
-     * _There is also [$gameeNative](gamee_native.js.html) global object 
+     * _There is also [$gameeNative](gamee_native.js.html) global object
      * which handles internal parts of the communication._
      */
     var core = {};
@@ -235,7 +235,6 @@ export var core = (function () {
                     controller.trigger("keyup", { button: "A" });
                     break;
 
-
                 case 'button_b_down':
                     controller.trigger("keydown", { button: "B" });
                     break;
@@ -267,7 +266,7 @@ export var core = (function () {
 
     /** ### gamee.gameReady
      *
-     * Notifies platform game can accept start command. 
+     * Notifies platform game can accept start command.
      */
     core.gameReady = function () {
         this.native.createRequest("gameReady");
@@ -305,7 +304,7 @@ export var core = (function () {
      * Data has the same format as data received in onReady callback.
      * Data must be string = responsibility for turning data structure into string is left to the game!
      */
-    core.gameOver = function (opt_replayData,opt_saveState) {
+    core.gameOver = function (opt_replayData, opt_saveState) {
         // var allOk = ((data !== undefined) && (typeof data === "string")) || (data === undefined);
         // if (!allOk) console.error("Data provided to gameOver function must be string.");
         // gameeNative.gameOver(gamee, internals.variant, allOk ? data : "");
@@ -334,123 +333,123 @@ export var core = (function () {
      * share must be expression evaluating to either true or false; it indicates, whether the game progress should be shared on feed
      */
     core.gameSave = function (data, share) {
-        
+
         if(!cache.capabilities.saveState)
-            throw "Save State not supported, you must add the capability on gamee.Init"
-        
+            throw "Save State not supported, you must add the capability on gamee.Init";
+
         core.native.createRequest("saveState", { state: data, share: share });
     };
 
     core.requestSocial = function (cb,numberOfPlayers) {
-        
+
         if(!cache.capabilities.socialData)
-            throw "Social Data not supported, you must add the capability on gamee.Init"
-        
-        this.native.createRequest("requestSocial", numberOfPlayers,function (responseData) {
+            throw "Social Data not supported, you must add the capability on gamee.Init";
+
+        this.native.createRequest("requestSocial", numberOfPlayers, function (responseData) {
             cb(null, responseData);
         });
     };
 
-    core.logEvent = function (eventName,eventValue) {
-        
+    core.logEvent = function (eventName, eventValue) {
+
         if(!cache.capabilities.logEvents)
-            throw "Log Events not supported, you must add the capability on gamee.Init"
-        
+            throw "Log Events not supported, you must add the capability on gamee.Init";
+
         //var valuesToLogString = JSON.stringify(eventValue)
-        
-        this.native.createRequest("logEvent", {eventName,eventValue},function(error){
+
+        this.native.createRequest("logEvent", {eventName,eventValue}, function (error){
             if(error){
                 throw error
             }
         });
-        
+
     };
-    
-    core.requestPlayerReplay = function (userID,cb) {
-        
+
+    core.requestPlayerReplay = function (userID, cb) {
+
         if(!cache.capabilities.replay)
-            throw "Replays not supported, you must add the capability on gamee.Init"
-        
+            throw "Replays not supported, you must add the capability on gamee.Init";
+
         this.native.createRequest("requestPlayerReplay", {userID}, function (responseData) {
             cb(null, responseData);
         });
     };
-    
-    core.requestPlayerSaveState = function (userID,cb) {
+
+    core.requestPlayerSaveState = function (userID, cb) {
         this.native.createRequest("requestPlayerSaveState", {userID}, function (responseData) {
             cb(null, responseData);
         });
     };
-    
-    core.purchaseItem = function (options,cb) {
-        
+
+    core.purchaseItem = function (options, cb) {
+
         if(!cache.capabilities.coins)
-            throw "Purchases not supported, you must add the capability on gamee.Init"
-        
+            throw "Purchases not supported, you must add the capability on gamee.Init";
+
         if (options) {
-            var propertiesList = ["coinsCost","itemName"]
-            propertiesList.forEach(function(property){                
+            var propertiesList = ["coinsCost","itemName"];
+            propertiesList.forEach(function (property){
                 if(!options.hasOwnProperty(property))
                     throw "Purchase Options must have `"+property+"` property"
             })
         }
-        
-        console.log(options)
-        
-        this.native.createRequest("purchaseItem",options, function (responseData) {
+
+        console.log(options);
+
+        this.native.createRequest("purchaseItem", options, function (responseData) {
             cb(null, responseData);
         });
     };
-    
-    core.share = function (options,cb) {
-        
+
+    core.share = function (options, cb) {
+
         if(!cache.capabilities.share)
-            throw "Share option not supported, you must add the capability on gamee.Init"
-        
+            throw "Share option not supported, you must add the capability on gamee.Init";
+
         if (options) {
-            var propertiesList = ["destination"]
-            propertiesList.forEach(function(property){                
+            var propertiesList = ["destination"];
+            propertiesList.forEach(function (property){
                 if(!options.hasOwnProperty(property))
-                    throw "Share Options must have `"+property+"` property"
+                    throw "Share Options must have `"+property+"` property";
             })
         }
-        console.log(options)
-        
+        console.log(options);
+
         this.native.createRequest("share",options, function (responseData) {
             cb(null, responseData);
         });
     };
-    
+
     core.loadRewardedVideo = function (cb) {
-        
+
         if(!cache.capabilities.rewardedAds)
-            throw "Rewarded Ads not supported, you must add the capability on gamee.Init"
-        
+            throw "Rewarded Ads not supported, you must add the capability on gamee.Init";
+
         this.native.createRequest("loadRewardedVideo", function (responseData) {
             cb(null, responseData);
         });
     };
-    
+
     core.showRewardedVideo = function (cb) {
-        
+
         if(!cache.capabilities.rewardedAds)
-            throw "Rewarded Ads not supported, you must add the capability on gamee.Init"
-        
+            throw "Rewarded Ads not supported, you must add the capability on gamee.Init";
+
         this.native.createRequest("showRewardedVideo", function (responseData) {
             cb(null, responseData);
         });
     };
-    
+
     core.requestPlayerData = function (cb) {
-        
+
         if(!cache.capabilities.playerData)
-            throw "Player Data not supported, you must add the capability on gamee.Init"
-        
+            throw "Player Data not supported, you must add the capability on gamee.Init";
+
         this.native.createRequest("requestPlayerData",function (responseData) {
             cb(null, responseData);
         });
     };
-    
+
     core.startSignal = function (data) {
         var error;
 
@@ -471,14 +470,14 @@ export var core = (function () {
     // ## gamee.controller
     //
     // Namespace where the methods for controller are published.
-    // 
+    //
 
     /**
      * TODO transform this into instance of gamee class
      */
     core.controller = {
         /** ### mainController
-         * 
+         *
          * Current controller.
          */
         mainController: null,
@@ -492,10 +491,10 @@ export var core = (function () {
          * `gamee.gameStart()`.
          *
          * @param {String} type type of controller (see [controllerTypes](#controllertypes))
-         * @param {Object} [opts] optional controller options 
+         * @param {Object} [opts] optional controller options
          * {'enableKeyboard': .., 'buttons': ...}
          * @param {boolean} [opts.enableKeyboard] enable the keyboard
-         * @param {Object} [opts.buttons] remap buttons {'oldKey': 'newKey', 
+         * @param {Object} [opts.buttons] remap buttons {'oldKey': 'newKey',
          * 'left': 'break' ..}
          */
         requestController: function (type, opts) {
@@ -510,13 +509,13 @@ export var core = (function () {
         },
 
         /** ### additionalController
-         * 
+         *
          * Construct an additional controller. Sometimes games require a
-         * different controller depending on platform (eg. touch on mobile, 
+         * different controller depending on platform (eg. touch on mobile,
          e but Four Buttons on desktop)
          *
-         * **This is currently supported only for GameeWebApp** as a way to 
-         * have alternate keybinding. The game should request a type used 
+         * **This is currently supported only for GameeWebApp** as a way to
+         * have alternate keybinding. The game should request a type used
          * for mobile platform and then some other as *additionalController*
          * if alternate keybinding is needed;
          */
@@ -529,12 +528,12 @@ export var core = (function () {
         },
 
         /** ### trigger
-         * 
+         *
          * Triggers and event for the controller
          *
          * This is called by GameeApp to trigger the *keydown*, *keyup*
          * events. For more info see [Controller](#controller)
-         * 
+         *
          * @param {String} eventName name of the event
          * @param {*} [data,...] data to pass for the event
          *
@@ -550,28 +549,28 @@ export var core = (function () {
         }
     };
 
-	/** ### core._keydown
-	 * 
-	 * A helper function to listen for `keydown` events on window object.
-	 * 
-	 * @param {Function} fn callback to handle the event
-	 */
+    /** ### core._keydown
+     *
+     * A helper function to listen for `keydown` events on window object.
+     *
+     * @param {Function} fn callback to handle the event
+     */
     core._keydown = function (fn) {
         global.addEventListener('keydown', wrapKeyEvent(fn));
     };
 
-	/** ### core._keyup
-	 * 
-	 * A helper function to listen for `keyup` events on window object.
-	 * 
-	 * @param {Function} fn callback to handle the event
-	 */
+    /** ### core._keyup
+     *
+     * A helper function to listen for `keyup` events on window object.
+     *
+     * @param {Function} fn callback to handle the event
+     */
     core._keyup = function (fn) {
         global.addEventListener('keyup', wrapKeyEvent(fn));
     };
 
     /** ### createController
-     * 
+     *
      * Function to create a controller.
      *
      * *see [requestController](#requestcontroller)
@@ -657,4 +656,4 @@ export var validateDataType = function (testedInput, expectedType, argument, ori
             if (typeof testedInput !== expectedType)
                 throw new DataTypeException(expectedType, typeof testedInput, argument, originMethod);
     }
-}
+};
