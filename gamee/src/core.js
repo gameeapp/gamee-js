@@ -440,12 +440,17 @@ export var core = (function () {
         });
     };
 
-    core.requestPlayerData = function (cb) {
+    core.requestPlayerData = function (cb, userID) {
 
         if(!cache.capabilities.playerData)
             throw "Player Data not supported, you must add the capability on gamee.Init";
 
-        this.native.createRequest("requestPlayerData",function (responseData) {
+        let options = undefined;
+        if (userID) {
+            options = {userID};
+        }
+
+        this.native.createRequest("requestPlayerData", options, function (responseData) {
             cb(null, responseData);
         });
     };

@@ -297,15 +297,17 @@ Gamee.prototype = (function () {
             core.showRewardedVideo(cb)
         },
 
-        /*
+        /**
         *requestPlayerData
         *@member of Gamee
         *@param{Gamee~requestPlayerData} cb
+        * @param {number} userID
         */
-        requestPlayerData: function (cb){
+        requestPlayerData: function (cb, userID){
 
             validateDataType(cb,"function","cb","gamee.requestPlayerData");
-            core.requestPlayerData(cb)
+            validateDataType(userID,"number","userId","gamee.requestPlayerData");
+            core.requestPlayerData(cb, userID)
         },
     };
 
