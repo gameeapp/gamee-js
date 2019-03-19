@@ -141,7 +141,7 @@ export var core = (function () {
      * capabilities -> array of strings representing supported features:
      * after the initialization onReady is invoked and after that game can use the api
      */
-    core.gameeInit = function (ctrlType, ctrlOpts, capabilities, cb) {
+    core.gameeInit = function (ctrlType, ctrlOpts, capabilities, cb, silentMode = false) {
         // let's validate the array here, so that all backends can benefit from it
         var allOk = true, cap = {};
         if ((capabilities !== undefined) && (Array.isArray(capabilities))) {
@@ -164,6 +164,9 @@ export var core = (function () {
         }, function (responseData) {
             // remember capabilities of the game
             cache.capabilities = cap;
+            //
+            // // Mute gamee-js console output
+            // cache.silentMode = silentMode;
 
             // might fail if controller of this type doesnt exist
             var error = null;
@@ -394,7 +397,9 @@ export var core = (function () {
             })
         }
 
-        console.log(options);
+        if (!this.isSilentModeEnabled()) {
+            console.log(options);
+        }
 
         this.native.createRequest("purchaseItem", options, function (responseData) {
             cb(null, responseData);
@@ -413,7 +418,10 @@ export var core = (function () {
                     throw "Share Options must have `"+property+"` property";
             })
         }
-        console.log(options);
+
+        if (!this.isSilentModeEnabled()) {
+            console.log(options);
+        }
 
         this.native.createRequest("share",options, function (responseData) {
             cb(null, responseData);
@@ -636,6 +644,14 @@ export var core = (function () {
     core.registerPlatform = function (platformAPI) {
         // platformAPI.addEventListener()
         // TODO ?
+    };
+
+    /**
+     * Is true mute all console outputs
+     * @return {boolean}
+     */
+    core.isSilentModeEnabled = function () {
+        return cache.silentMode;
     };
 
     return core;

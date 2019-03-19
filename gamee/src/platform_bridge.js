@@ -183,7 +183,9 @@ PostMessageBridge.prototype._init = function () {
 			return;
 		}
 
-        console.log(JSON.stringify(data, null, 4) + ' data');
+        if (!core.isSilentModeEnabled()) {
+            console.log(JSON.stringify(data, null, 4) + ' data');
+        }
 		// this is request
 		if (data.request && data.request.method && typeof data.request.messageId !== "undefined") {
 			this._resolveAPICall(data.request.method, data.request.messageId, data.request.data);
@@ -249,7 +251,9 @@ PostMessageBridge.prototype._resolveAPICall = function (method, messageId, opt_d
 			PlatformAPI.start(opt_data, cb);
 			break;
 		default:
-			console.error("Unknown method call");
+		    if (!core.isSilentModeEnabled()) {
+			    console.error("Unknown method call");
+            }
 	}
 };
 
@@ -284,7 +288,9 @@ MobileBridge.prototype._init = function () {
 		} catch (err) {
 			throw "Couldn't parse message from native app: \n" + data + "\n" + err;
 		}
-        console.log(JSON.stringify(data, null, 4))
+		if (!core.isSilentModeEnabled()) {
+            console.log(JSON.stringify(data, null, 4));
+        }
 		this.dispatchEvent(new CustomEvent("message", { detail: data }));
 	}.bind(window);
 

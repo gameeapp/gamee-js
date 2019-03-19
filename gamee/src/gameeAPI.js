@@ -54,13 +54,15 @@ Gamee.prototype = (function () {
          * @param {object} controllOpts
          * @param {string[]} capabilities
          * @param {gameInitCallback} cb
+         * @param {boolean} silentMode
          */
-        gameInit: function (controllType, controllOpts, capabilities, cb) {
+        gameInit: function (controllType, controllOpts, capabilities, cb, silentMode = false) {
             validateDataType(controllType, "string", "controllType", "gamee.updateScore");
             validateDataType(controllOpts, "object", "controllOpts", "gamee.gameInit");
             validateDataType(capabilities, "array", "capabilities", "gamee.gameInit");
             validateDataType(cb, "function", "cb", "gamee.gameInit");
-            var result = core.gameeInit(controllType, controllOpts, capabilities, cb);
+            validateDataType(silentMode, "boolean", "silentMode", "gamee.gameInit");
+            var result = core.gameeInit(controllType, controllOpts, capabilities, cb, silentMode);
             // cb(null, result);
         },
 
@@ -306,7 +308,9 @@ Gamee.prototype = (function () {
         requestPlayerData: function (cb, userID){
 
             validateDataType(cb,"function","cb","gamee.requestPlayerData");
-            validateDataType(userID,"number","userId","gamee.requestPlayerData");
+            if (userID !== undefined) {
+                validateDataType(userID,"number","userId","gamee.requestPlayerData");
+            }
             core.requestPlayerData(cb, userID)
         },
     };
