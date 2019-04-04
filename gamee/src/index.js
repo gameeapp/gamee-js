@@ -5,16 +5,16 @@ import { PlatformAPI, PlatformBridge, PostMessageBridge, MobileBridge } from "./
 
 
 /**
- * Instance of gamee object with API for developers. 
+ * Instance of gamee object with API for developers.
  * Internal functions becomes private this way
- * 
+ *
  * @requires Gamee
  */
 export var gamee;
 
 /**
- * Resolves what platform is being used and make instance of platform API. 
- * 
+ * Resolves what platform is being used and make instance of platform API.
+ *
  * @requires PlatformBridge
  */
 var platformBridge = (function () {
@@ -72,7 +72,7 @@ core.native = platformBridge;
 PlatformAPI.emitter = gamee.emitter;
 
 
-function loadScript(url, callback) {
+function loadScript (url, callback) {
     // Adding the script tag to the head as suggested before
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');

@@ -1,6 +1,6 @@
 {
   "name": "gamee-js",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Gamee JS SDK",
   "main": "gamee/src/index.js",
   "scripts": {
