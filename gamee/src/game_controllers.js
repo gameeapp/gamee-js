@@ -4,11 +4,11 @@ import { Bullet } from "../libs/bullet.js"
  * @module game_controllers
  */
 
-/** ## Bullet 
+/** ## Bullet
  *
  * [Bullet.js](https://github.com/munkychop/bullet) is used as pub/sub
- * library. 
- * 
+ * library.
+ *
  * The controller and its buttons are instance of Bullet.
  */
 export var BulletClass = Bullet.constructor;
@@ -16,10 +16,10 @@ export var BulletClass = Bullet.constructor;
 
 /** ## Button
  *
- * Represenation of a controller button. It is a child of 
+ * Represenation of a controller button. It is a child of
  * [Bullet](https://github.com/munkychop/bullet), so you can
- * subscribe for events triggered on it. 
- * 
+ * subscribe for events triggered on it.
+ *
  * @class Button
  * @param {String} key name of the button
  * @param {Number} keyCode keycode for the key to represent the button
@@ -48,7 +48,7 @@ Button.prototype = Object.create(BulletClass.constructor.prototype);
 Button.constructor = Button;
 
 /** ### isDown
- * 
+ *
  * Ask if the button is currently pressed.
  *
  * @return {Boolean} true if the button is currently pressed
@@ -58,11 +58,11 @@ Button.prototype.isDown = function () {
 };
 
 /** ## Controller
- * 
+ *
  * Controller has a collection of [buttons](#buttons).
- * It is a child of 
- * [Bullet](https://github.com/munkychop/bullet), so you can 
- * subscribe for events triggered on it. 
+ * It is a child of
+ * [Bullet](https://github.com/munkychop/bullet), so you can
+ * subscribe for events triggered on it.
  *
  * Controllers will get all the events for its buttons so you can
  * listen for them globaly from controller or individualy on every
@@ -77,7 +77,7 @@ Button.prototype.isDown = function () {
  *   console.log('button left is pressed');
  * });
  * ```
- * 
+ *
  * @class Controller
  */
 export function Controller() {
@@ -103,7 +103,7 @@ export function Controller() {
 	this.buttonAlias = {};
 
 	// Events prefixed with *$* are private, sent from GameeApp ment
-	// to be handled before resended as *public (non-prefixed)* 
+	// to be handled before resended as *public (non-prefixed)*
 	// event.
 	//
 	// They should be not used in games as they can change in the future.
@@ -125,10 +125,10 @@ export function Controller() {
 
 	// By default GameeApp will trigger *keydown* and *keyup* events for
 	// the controller for every button presses/released.
-	// 
+	//
 	// The controller then handles the event and triggers the event for
 	// the coresponding button.
-	// 
+	//
 	// It expexts a `data` argument which should have a property `button`
 	// with the name of button.
 	this.on('keydown', function (data) {
@@ -154,7 +154,7 @@ Controller.constructor = Controller;
 /** ### addButton
  *
  * Add button to the controller.
- * 
+ *
  * @param {Button} button a [Button](#button) instance
  */
 Controller.prototype.addButton = function (button) {
@@ -162,8 +162,8 @@ Controller.prototype.addButton = function (button) {
 };
 
 /** ### enableKeyboard
- * 
- * Enable keyboard controlls. It will attach event listeners to the 
+ *
+ * Enable keyboard controlls. It will attach event listeners to the
  * *window* object for every button and trigger their *keydown* /
  * *keyup* event for the controller.
  */
@@ -202,16 +202,16 @@ Controller.prototype.enableKeyboard = function (gamee) {
 };
 
 /** ### remapButton
- * 
+ *
  * Remap the names of the controller's buttons. Controllers have their
- * button names set (left, right, A, B), but sometimes in context of 
+ * button names set (left, right, A, B), but sometimes in context of
  * the game a different names are desired.
  *
  * ```javascript
  * var controller = gamee.controller.requestController('TwoButtons');
  * controller.remapButton('left', 'throttle');
  * controller.remapButton('right', 'break');
- * 
+ *
  * controller.buttons.throttle.on('keydown', ..);
  * ```
  *
@@ -236,7 +236,7 @@ Controller.prototype.remapButton = function (oldName, newName) {
 	}
 };
 
-// ## Controllers 
+// ## Controllers
 
 /** ### OneButtonController
  *
@@ -246,7 +246,7 @@ Controller.prototype.remapButton = function (oldName, newName) {
 export function OneButtonController() {
 	Controller.call(this);
 
-	// * __name__: 'button' 
+	// * __name__: 'button'
 	// * __key__: spacebar
 	this.addButton(new Button('button', 32));
 }
@@ -448,7 +448,7 @@ export function TwoArrowsTwoButtonsController() {
 TwoArrowsTwoButtonsController.prototype = Object.create(Controller.prototype);
 TwoArrowsTwoButtonsController.prototype.constructor = TwoArrowsTwoButtonsController;
 
-/** ### FourArrowController 
+/** ### FourArrowController
  *
  * Controller with four arrow buttons
  * @class FourArrowController
@@ -476,14 +476,14 @@ export function FourArrowController() {
 FourArrowController.prototype = Object.create(Controller.prototype);
 FourArrowController.prototype.constructor = FourArrowController;
 
-/** ### TouchController 
+/** ### TouchController
  *
  * This controller has no buttons. Instead it has a touchpad which
  * triggers *touchstart*, *touchend*, *touchmove*, *touchcancel*,
- * *touchend* events (similar to 
+ * *touchend* events (similar to
  * [Touch event types](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent#Touch_event_types))
  *
- * The position of the touch is in the `data.position` argument as a 
+ * The position of the touch is in the `data.position` argument as a
  * *x* and *y* with the values between [0, 0] for the left top corner
  * and [1, 1] for the bottom right corner ([0.5, 0.5] is the center).
  *
@@ -526,13 +526,13 @@ export function TouchController() {
 TouchController.prototype = Object.create(TouchController.prototype);
 TouchController.prototype.constructor = TouchController;
 
-/** ### JoystickController 
+/** ### JoystickController
  *
- * JoystickController emits `change` event, after the position of the 
- * joystick is changed. 
+ * JoystickController emits `change` event, after the position of the
+ * joystick is changed.
  *
- * The position of the joystick is in the property `x` and `y`. The 
- * position on axis is between <-1, 1> (for x -1 is max left 
+ * The position of the joystick is in the property `x` and `y`. The
+ * position on axis is between <-1, 1> (for x -1 is max left
  * position, 1 max right position). [0.0, 0.0] is the center.
  *
  * ```javascript
@@ -565,7 +565,7 @@ export function JoystickController() {
 JoystickController.prototype = Object.create(Controller.prototype);
 JoystickController.prototype.constructor = JoystickController;
 
-/** ### JoystickButtonController 
+/** ### JoystickButtonController
  *
  * JoystickButtonController is a `JoystickController` with one button.
  *
@@ -588,7 +588,7 @@ export function JoystickButtonController() {
 
 	JoystickController.call(this);
 
-	// * __name__: 'button' 
+	// * __name__: 'button'
 	// * __key__: spacebar
 	this.addButton(new Button('button', 32));
 }

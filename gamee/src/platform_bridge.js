@@ -1,9 +1,9 @@
 import { core } from "./core.js"
 
 /**
- * 
+ *
  * @requires core
- * 
+ *
  * @typedef PlatformAPI
  * @param {EventTarget} emitter
  * @param {function} _pause
@@ -86,8 +86,7 @@ export var PlatformAPI = {
         if (data.replayData){
             event.detail.replayData = data.replayData
         }
-            
-        
+
 		this.emitter.dispatchEvent(event);
 	}
 };
@@ -95,7 +94,7 @@ export var PlatformAPI = {
 
 /**
  * @class PlatformBridge
- * 
+ *
  */
 export function PlatformBridge() {
 	this.requests = {};
@@ -183,8 +182,10 @@ PostMessageBridge.prototype._init = function () {
 			// message is not from native platform
 			return;
 		}
-        
-        console.log(JSON.stringify(data, null, 4) + ' data')
+
+        if (!core.isSilentModeEnabled()) {
+            console.log(JSON.stringify(data, null, 4) + ' data');
+        }
 		// this is request
 		if (data.request && data.request.method && typeof data.request.messageId !== "undefined") {
 			this._resolveAPICall(data.request.method, data.request.messageId, data.request.data);
@@ -250,7 +251,9 @@ PostMessageBridge.prototype._resolveAPICall = function (method, messageId, opt_d
 			PlatformAPI.start(opt_data, cb);
 			break;
 		default:
-			console.error("Unknown method call");
+		    if (!core.isSilentModeEnabled()) {
+			    console.error("Unknown method call");
+            }
 	}
 };
 
@@ -258,7 +261,7 @@ PostMessageBridge.prototype._resolveAPICall = function (method, messageId, opt_d
 /**
  * @class MobileBridge
  * @requires PlatformBridge
- * 
+ *
  */
 export function MobileBridge(device) {
 	this.device = device;
@@ -285,7 +288,9 @@ MobileBridge.prototype._init = function () {
 		} catch (err) {
 			throw "Couldn't parse message from native app: \n" + data + "\n" + err;
 		}
-        console.log(JSON.stringify(data, null, 4))
+		if (!core.isSilentModeEnabled()) {
+            console.log(JSON.stringify(data, null, 4));
+        }
 		this.dispatchEvent(new CustomEvent("message", { detail: data }));
 	}.bind(window);
 
@@ -301,4 +306,3 @@ MobileBridge.prototype.doCall = function (preparedObject, requestData) {
 
 	this._gameeWin.postMessage(preparedObject, "*");
 };
-
