@@ -1,4 +1,4 @@
-/*! @preserve build time 2019-04-02 12:51:35 */
+/*! @preserve build time 2019-04-04 12:04:11 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -280,7 +280,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
                 }, 0);
             };
 
-            // only touchend will work, but hey, we tried... 
+            // only touchend will work, but hey, we tried...
             // https://github.com/WebAudio/web-audio-api/issues/836
             // https://www.chromestatus.com/feature/6406908126691328
             document.body.addEventListener(['touchcancel', 'touchend', 'touchenter', 'touchleave', 'touchmove', 'touchstart', 'mouseenter', 'mouseover', 'mousemove', 'mousedown', 'mouseup'].join(" "), resume, false);
@@ -309,17 +309,17 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var core = exports.core = function () {
 
     // # Gamee.js
-    // 
+    //
     // This file defines and expose a public API for games to communicate
     // with Gamee*.
     //
-    // Also it handles some requirements when Gamee is run in an desktop 
+    // Also it handles some requirements when Gamee is run in an desktop
     // environment.
     //
     // \* _later in the document Gamee will be referred as GameeApp to not
     // be mistaken for word game_
     //
-    // ** _GameeWebApp will refer to Gamee which is running in a desktop 
+    // ** _GameeWebApp will refer to Gamee which is running in a desktop
     // browser_
 
     /** an empty function */
@@ -329,7 +329,7 @@ var core = exports.core = function () {
 
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
-        VERSION: "2.2.0", // version of the gamee library
+        VERSION: "2.2.2", // version of the gamee library
         CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData", "rewardedAds", "coins", "logEvents", "playerData", "share"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
@@ -340,10 +340,10 @@ var core = exports.core = function () {
     /** ## gamee
      *
      * GameeApp interface for games. It is exposed as a `gamee` global
-     * object and games should only use its public methods and 
-     * properties to communicate with the GameeApp. 
+     * object and games should only use its public methods and
+     * properties to communicate with the GameeApp.
      *
-     * _There is also [$gameeNative](gamee_native.js.html) global object 
+     * _There is also [$gameeNative](gamee_native.js.html) global object
      * which handles internal parts of the communication._
      */
     var core = {};
@@ -364,6 +364,8 @@ var core = exports.core = function () {
      * after the initialization onReady is invoked and after that game can use the api
      */
     core.gameeInit = function (ctrlType, ctrlOpts, capabilities, cb) {
+        var silentMode = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
         // let's validate the array here, so that all backends can benefit from it
         var allOk = true,
             cap = {};
@@ -385,6 +387,9 @@ var core = exports.core = function () {
         }, function (responseData) {
             // remember capabilities of the game
             cache.capabilities = cap;
+            //
+            // // Mute gamee-js console output
+            // cache.silentMode = silentMode;
 
             // might fail if controller of this type doesnt exist
             var error = null;
@@ -484,7 +489,7 @@ var core = exports.core = function () {
 
     /** ### gamee.gameReady
      *
-     * Notifies platform game can accept start command. 
+     * Notifies platform game can accept start command.
      */
     core.gameReady = function () {
         this.native.createRequest("gameReady");
@@ -604,7 +609,9 @@ var core = exports.core = function () {
             });
         }
 
-        console.log(options);
+        if (!this.isSilentModeEnabled()) {
+            console.log(options);
+        }
 
         this.native.createRequest("purchaseItem", options, function (responseData) {
             cb(null, responseData);
@@ -621,7 +628,10 @@ var core = exports.core = function () {
                 if (!options.hasOwnProperty(property)) throw "Share Options must have `" + property + "` property";
             });
         }
-        console.log(options);
+
+        if (!this.isSilentModeEnabled()) {
+            console.log(options);
+        }
 
         this.native.createRequest("share", options, function (responseData) {
             cb(null, responseData);
@@ -646,11 +656,16 @@ var core = exports.core = function () {
         });
     };
 
-    core.requestPlayerData = function (cb) {
+    core.requestPlayerData = function (cb, userID) {
 
         if (!cache.capabilities.playerData) throw "Player Data not supported, you must add the capability on gamee.Init";
 
-        this.native.createRequest("requestPlayerData", function (responseData) {
+        var options = undefined;
+        if (userID) {
+            options = { userID: userID };
+        }
+
+        this.native.createRequest("requestPlayerData", options, function (responseData) {
             cb(null, responseData);
         });
     };
@@ -673,14 +688,14 @@ var core = exports.core = function () {
     // ## gamee.controller
     //
     // Namespace where the methods for controller are published.
-    // 
+    //
 
     /**
      * TODO transform this into instance of gamee class
      */
     core.controller = {
         /** ### mainController
-         * 
+         *
          * Current controller.
          */
         mainController: null,
@@ -694,10 +709,10 @@ var core = exports.core = function () {
          * `gamee.gameStart()`.
          *
          * @param {String} type type of controller (see [controllerTypes](#controllertypes))
-         * @param {Object} [opts] optional controller options 
+         * @param {Object} [opts] optional controller options
          * {'enableKeyboard': .., 'buttons': ...}
          * @param {boolean} [opts.enableKeyboard] enable the keyboard
-         * @param {Object} [opts.buttons] remap buttons {'oldKey': 'newKey', 
+         * @param {Object} [opts.buttons] remap buttons {'oldKey': 'newKey',
          * 'left': 'break' ..}
          */
         requestController: function requestController(type, opts) {
@@ -711,13 +726,13 @@ var core = exports.core = function () {
         },
 
         /** ### additionalController
-         * 
+         *
          * Construct an additional controller. Sometimes games require a
-         * different controller depending on platform (eg. touch on mobile, 
+         * different controller depending on platform (eg. touch on mobile,
          e but Four Buttons on desktop)
          *
-         * **This is currently supported only for GameeWebApp** as a way to 
-         * have alternate keybinding. The game should request a type used 
+         * **This is currently supported only for GameeWebApp** as a way to
+         * have alternate keybinding. The game should request a type used
          * for mobile platform and then some other as *additionalController*
          * if alternate keybinding is needed;
          */
@@ -730,12 +745,12 @@ var core = exports.core = function () {
         },
 
         /** ### trigger
-         * 
+         *
          * Triggers and event for the controller
          *
          * This is called by GameeApp to trigger the *keydown*, *keyup*
          * events. For more info see [Controller](#controller)
-         * 
+         *
          * @param {String} eventName name of the event
          * @param {*} [data,...] data to pass for the event
          *
@@ -752,9 +767,9 @@ var core = exports.core = function () {
     };
 
     /** ### core._keydown
-     * 
+     *
      * A helper function to listen for `keydown` events on window object.
-     * 
+     *
      * @param {Function} fn callback to handle the event
      */
     core._keydown = function (fn) {
@@ -762,9 +777,9 @@ var core = exports.core = function () {
     };
 
     /** ### core._keyup
-     * 
+     *
      * A helper function to listen for `keyup` events on window object.
-     * 
+     *
      * @param {Function} fn callback to handle the event
      */
     core._keyup = function (fn) {
@@ -772,7 +787,7 @@ var core = exports.core = function () {
     };
 
     /** ### createController
-     * 
+     *
      * Function to create a controller.
      *
      * *see [requestController](#requestcontroller)
@@ -832,6 +847,14 @@ var core = exports.core = function () {
         // TODO ?
     };
 
+    /**
+     * Is true mute all console outputs
+     * @return {boolean}
+     */
+    core.isSilentModeEnabled = function () {
+        return cache.silentMode;
+    };
+
     return core;
 }();
 
@@ -889,12 +912,12 @@ var GameeEmitter = exports.GameeEmitter = function GameeEmitter() {
 /**
  * @class Gamee
  * @requires core
- * 
+ *
  */
 var Gamee = exports.Gamee = function Gamee(platform) {
     /**
      * @instance
-     * 
+     *
      * @fires gameeAPI:GameeEmitter~start
      * @fires gameeAPI:GameeEmitter~mute
      * @fires gameeAPI:GameeEmitter~unmute
@@ -922,27 +945,31 @@ Gamee.prototype = function () {
          * @memberof Gamee
          * @param {string} controllType
          * @param {object} controllOpts
-         * @param {string[]} capabilites
-         * @param {gameInitCallback} cb 
+         * @param {string[]} capabilities
+         * @param {gameInitCallback} cb
+         * @param {boolean} silentMode
          */
         gameInit: function gameInit(controllType, controllOpts, capabilities, cb) {
+            var silentMode = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
             (0, _core.validateDataType)(controllType, "string", "controllType", "gamee.updateScore");
             (0, _core.validateDataType)(controllOpts, "object", "controllOpts", "gamee.gameInit");
             (0, _core.validateDataType)(capabilities, "array", "capabilities", "gamee.gameInit");
             (0, _core.validateDataType)(cb, "function", "cb", "gamee.gameInit");
-            var result = _core.core.gameeInit(controllType, controllOpts, capabilities, cb);
+            (0, _core.validateDataType)(silentMode, "boolean", "silentMode", "gamee.gameInit");
+            var result = _core.core.gameeInit(controllType, controllOpts, capabilities, cb, silentMode);
             // cb(null, result);
         },
 
         /**
          * gameLoadingProgress
-         * 
+         *
          *     gamee.gameLoadingProgress()
-         * 
+         *
          * @memberof Gamee
          * @param {number} percentage current loading progress
-         * @param {Gamee~voidCallback} [opt_cb] 
-         * 
+         * @param {Gamee~voidCallback} [opt_cb]
+         *
          */
         gameLoadingProgress: function gameLoadingProgress(percentage, opt_cb) {
             (0, _core.validateDataType)(percentage, "number", "percentage", "gamee.gameLoadingProgress");
@@ -954,9 +981,9 @@ Gamee.prototype = function () {
 
         /**
          * gameReady
-         * 
+         *
          * @memberof Gamee
-         * @param {Gamee~voidCallback} [opt_cb] 
+         * @param {Gamee~voidCallback} [opt_cb]
          */
         gameReady: function gameReady(opt_cb) {
             opt_cb = opt_cb || cbError;
@@ -967,17 +994,17 @@ Gamee.prototype = function () {
 
         /**
          * gameSave
-         * 
+         *
          * NOTE: There are 2 signatures for this function
-         * 
+         *
          *     gamee.gameSave(data, opt_cb)
          *     gamee.gameSave(data, opt_share, opt_cb)
-         * 
+         *
          * @memberof Gamee
          * @param {String} data current ingame progress
-         * @param {Boolean} [opt_share=false] 
-         * @param {Gamee~voidCallback} [opt_cb] 
-         * 
+         * @param {Boolean} [opt_share=false]
+         * @param {Gamee~voidCallback} [opt_cb]
+         *
          */
         gameSave: function gameSave(data, opt_share, opt_cb) {
             var share = false,
@@ -993,7 +1020,7 @@ Gamee.prototype = function () {
 
         /**
          * getPlatform
-         * 
+         *
          * @memberof Gamee
          * @returns {string} platform type can be android | ios | web | fb
          */
@@ -1003,11 +1030,11 @@ Gamee.prototype = function () {
 
         /**
          * updateScore
-         * 
+         *
          * @memberof Gamee
          * @param {number} score
-         * @param {boolean} [opt_ghostSign=false] If true, score will be updated for ghost instead. 
-         * @param {Gamee~voidCallback} [opt_cb] 
+         * @param {boolean} [opt_ghostSign=false] If true, score will be updated for ghost instead.
+         * @param {Gamee~voidCallback} [opt_cb]
          */
         updateScore: function updateScore(score, opt_ghostSign, opt_cb) {
             (0, _core.validateDataType)(score, "number", "score", "gamee.updateScore");
@@ -1021,10 +1048,10 @@ Gamee.prototype = function () {
 
         /**
          * gameOver
-         * 
+         *
          * @memberof Gamee
          * @param {Gamee~ReplayData} [opt_replayData]
-         * @param {Gamee~voidCallback} [opt_cb] 
+         * @param {Gamee~voidCallback} [opt_cb]
          */
         gameOver: function gameOver(opt_replayData, opt_cb, opt_saveState) {
             if (typeof opt_replayData === "function") opt_cb = opt_replayData;else if (typeof opt_replayData !== "undefined") (0, _core.validateDataType)(opt_replayData, "object", "opt_replayData", "gamee.gameOver");
@@ -1037,9 +1064,10 @@ Gamee.prototype = function () {
 
         /**
          * requestSocialData
-         * 
+         *
          * @memberof Gamee
-         * @param {Gamee~requestSocialDataCallback} cb 
+         * @param {Gamee~requestSocialDataCallback} cb
+         * @param {number} numberOfPlayers
          */
         requestSocial: function requestSocial(cb, numberOfPlayers) {
             (0, _core.validateDataType)(cb, "function", "cb", "gamee.requestSocial");
@@ -1056,11 +1084,10 @@ Gamee.prototype = function () {
 
         /**
         * logEvent
-        * 
+        *
         * @memberof Gamee
-        * @param {string} eventName 
-        * @param {number} valueToSum
-        * @param {string} parameters
+        * @param {string} eventName
+        * @param {string} eventValue
         */
         logEvent: function logEvent(eventName, eventValue) {
 
@@ -1083,10 +1110,10 @@ Gamee.prototype = function () {
 
         /**
          * requestPlayerReplay
-         * 
+         *
          * @memberof Gamee
-         * @param {number} userID 
-         * @param {Gamee~requestPlayerReplayDataCallback} cb 
+         * @param {number} userID
+         * @param {Gamee~requestPlayerReplayDataCallback} cb
          */
         requestPlayerReplay: function requestPlayerReplay(userID, cb) {
 
@@ -1098,10 +1125,10 @@ Gamee.prototype = function () {
 
         /**
          * requestPlayerSaveState
-         * 
+         *
          * @memberof Gamee
-         * @param {number} userID 
-         * @param {Gamee~requestPlayerSaveStateDataCallback} cb 
+         * @param {number} userID
+         * @param {Gamee~requestPlayerSaveStateDataCallback} cb
          */
         requestPlayerSaveState: function requestPlayerSaveState(userID, cb) {
 
@@ -1159,20 +1186,24 @@ Gamee.prototype = function () {
             _core.core.showRewardedVideo(cb);
         },
 
-        /*
+        /**
         *requestPlayerData
         *@member of Gamee
         *@param{Gamee~requestPlayerData} cb
+        * @param {number} userID
         */
-        requestPlayerData: function requestPlayerData(cb) {
+        requestPlayerData: function requestPlayerData(cb, userID) {
 
             (0, _core.validateDataType)(cb, "function", "cb", "gamee.requestPlayerData");
-            _core.core.requestPlayerData(cb);
+            if (userID !== undefined) {
+                (0, _core.validateDataType)(userID, "number", "userId", "gamee.requestPlayerData");
+            }
+            _core.core.requestPlayerData(cb, userID);
         }
     };
 
     /**
-     * 
+     *
      * @typedef ReplayData
      * @param {string} variant
      * @param {string} data
@@ -1200,18 +1231,18 @@ Gamee.prototype = function () {
 }();
 
 /**
- * Signals that game should start as normal|replay|ghost game. 
- * Signal means there is no overlay over the game. 
- * This signal is also being used for game restart. If previous 
+ * Signals that game should start as normal|replay|ghost game.
+ * Signal means there is no overlay over the game.
+ * This signal is also being used for game restart. If previous
  * instance of the game was running, it should be terminated without
- * any additional calls and current progress should be tossed. 
+ * any additional calls and current progress should be tossed.
  * @event gameeAPI:GameeEmitter~start
  * @type {object}
  * @property {EventDetailStart} detail - Common property of events
  */
 
 /**
- * Data carried with start event. 
+ * Data carried with start event.
  * @typedef EventDetailStart
  * @property {Gamee~voidCallback} callback - called after finishing task
  * @property {boolean} [opt_resetState=false] - if true, game must delete current progress and saved progress
@@ -1220,15 +1251,15 @@ Gamee.prototype = function () {
  */
 
 /**
- * After that signal, game must silent all sounds immediately. 
- * Game must remain silent until unmute signal occures. 
+ * After that signal, game must silent all sounds immediately.
+ * Game must remain silent until unmute signal occures.
  * @event gameeAPI:GameeEmitter~mute
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
  */
 
 /**
- * After unmute signal, game can play sounds again. 
+ * After unmute signal, game can play sounds again.
  * @event gameeAPI:GameeEmitter~unmute
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
@@ -1237,15 +1268,15 @@ Gamee.prototype = function () {
 /**
  * Pause signal means there appeared overlay over the game. Player
  * is unable to reach the context of the game anymore. So game should
- * pause all its acctions immediately. 
+ * pause all its acctions immediately.
  * @event gameeAPI:GameeEmitter~pause
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
  */
 
 /**
- * Unpause signal means there is no overlay over the game anymore. 
- * Game should continue with all previous actions. 
+ * Unpause signal means there is no overlay over the game anymore.
+ * Game should continue with all previous actions.
  * @event gameeAPI:GameeEmitter~unpause
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
@@ -1253,25 +1284,25 @@ Gamee.prototype = function () {
 
 /**
  * Signal ghostHide can appear only if game is running in ghost mode.
- * Game should hide ghost behavior and look like exactly as game without 
- * the ghost (if this is possible). 
+ * Game should hide ghost behavior and look like exactly as game without
+ * the ghost (if this is possible).
  * @event gameeAPI:GameeEmitter~ghostHide
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
  */
 
 /**
- * Signal ghostShow can appear only if game is running in ghost mode. 
+ * Signal ghostShow can appear only if game is running in ghost mode.
  * Game should show ghost again if it was hidden. If ghost died or ended
  * while it was hidden, game should point that out, so the player can understand
- * why the ghost is not visible anymore.  
+ * why the ghost is not visible anymore.
  * @event gameeAPI:GameeEmitter~ghostShow
  * @type {object}
  * @property {EventDetailVoid} detail - Common property of events
  */
 
 /**
- * Data carried with various events. Contains only callback method. 
+ * Data carried with various events. Contains only callback method.
  * @typedef {object} EventDetailVoid
  * @property {Gamee~voidCallback} callback - call after finishing task
  */
@@ -1303,9 +1334,9 @@ exports.MobileBridge = MobileBridge;
 var _core = __webpack_require__(1);
 
 /**
- * 
+ *
  * @requires core
- * 
+ *
  * @typedef PlatformAPI
  * @param {EventTarget} emitter
  * @param {function} _pause
@@ -1392,7 +1423,7 @@ var PlatformAPI = exports.PlatformAPI = {
 
 /**
  * @class PlatformBridge
- * 
+ *
  */
 function PlatformBridge() {
 	this.requests = {};
@@ -1477,7 +1508,9 @@ PostMessageBridge.prototype._init = function () {
 			return;
 		}
 
-		console.log(JSON.stringify(data, null, 4) + ' data');
+		if (!_core.core.isSilentModeEnabled()) {
+			console.log(JSON.stringify(data, null, 4) + ' data');
+		}
 		// this is request
 		if (data.request && data.request.method && typeof data.request.messageId !== "undefined") {
 			this._resolveAPICall(data.request.method, data.request.messageId, data.request.data);
@@ -1540,14 +1573,16 @@ PostMessageBridge.prototype._resolveAPICall = function (method, messageId, opt_d
 			PlatformAPI.start(opt_data, cb);
 			break;
 		default:
-			console.error("Unknown method call");
+			if (!_core.core.isSilentModeEnabled()) {
+				console.error("Unknown method call");
+			}
 	}
 };
 
 /**
  * @class MobileBridge
  * @requires PlatformBridge
- * 
+ *
  */
 function MobileBridge(device) {
 	this.device = device;
@@ -1574,7 +1609,9 @@ MobileBridge.prototype._init = function () {
 		} catch (err) {
 			throw "Couldn't parse message from native app: \n" + data + "\n" + err;
 		}
-		console.log(JSON.stringify(data, null, 4));
+		if (!_core.core.isSilentModeEnabled()) {
+			console.log(JSON.stringify(data, null, 4));
+		}
 		this.dispatchEvent(new CustomEvent("message", { detail: data }));
 	}.bind(window);
 };
@@ -1701,21 +1738,21 @@ var _bullet = __webpack_require__(4);
  * @module game_controllers
  */
 
-/** ## Bullet 
+/** ## Bullet
  *
  * [Bullet.js](https://github.com/munkychop/bullet) is used as pub/sub
- * library. 
- * 
+ * library.
+ *
  * The controller and its buttons are instance of Bullet.
  */
 var BulletClass = exports.BulletClass = _bullet.Bullet.constructor;
 
 /** ## Button
  *
- * Represenation of a controller button. It is a child of 
+ * Represenation of a controller button. It is a child of
  * [Bullet](https://github.com/munkychop/bullet), so you can
- * subscribe for events triggered on it. 
- * 
+ * subscribe for events triggered on it.
+ *
  * @class Button
  * @param {String} key name of the button
  * @param {Number} keyCode keycode for the key to represent the button
@@ -1744,7 +1781,7 @@ Button.prototype = Object.create(BulletClass.constructor.prototype);
 Button.constructor = Button;
 
 /** ### isDown
- * 
+ *
  * Ask if the button is currently pressed.
  *
  * @return {Boolean} true if the button is currently pressed
@@ -1754,11 +1791,11 @@ Button.prototype.isDown = function () {
 };
 
 /** ## Controller
- * 
+ *
  * Controller has a collection of [buttons](#buttons).
- * It is a child of 
- * [Bullet](https://github.com/munkychop/bullet), so you can 
- * subscribe for events triggered on it. 
+ * It is a child of
+ * [Bullet](https://github.com/munkychop/bullet), so you can
+ * subscribe for events triggered on it.
  *
  * Controllers will get all the events for its buttons so you can
  * listen for them globaly from controller or individualy on every
@@ -1773,7 +1810,7 @@ Button.prototype.isDown = function () {
  *   console.log('button left is pressed');
  * });
  * ```
- * 
+ *
  * @class Controller
  */
 function Controller() {
@@ -1799,7 +1836,7 @@ function Controller() {
 	this.buttonAlias = {};
 
 	// Events prefixed with *$* are private, sent from GameeApp ment
-	// to be handled before resended as *public (non-prefixed)* 
+	// to be handled before resended as *public (non-prefixed)*
 	// event.
 	//
 	// They should be not used in games as they can change in the future.
@@ -1821,10 +1858,10 @@ function Controller() {
 
 	// By default GameeApp will trigger *keydown* and *keyup* events for
 	// the controller for every button presses/released.
-	// 
+	//
 	// The controller then handles the event and triggers the event for
 	// the coresponding button.
-	// 
+	//
 	// It expexts a `data` argument which should have a property `button`
 	// with the name of button.
 	this.on('keydown', function (data) {
@@ -1850,7 +1887,7 @@ Controller.constructor = Controller;
 /** ### addButton
  *
  * Add button to the controller.
- * 
+ *
  * @param {Button} button a [Button](#button) instance
  */
 Controller.prototype.addButton = function (button) {
@@ -1858,8 +1895,8 @@ Controller.prototype.addButton = function (button) {
 };
 
 /** ### enableKeyboard
- * 
- * Enable keyboard controlls. It will attach event listeners to the 
+ *
+ * Enable keyboard controlls. It will attach event listeners to the
  * *window* object for every button and trigger their *keydown* /
  * *keyup* event for the controller.
  */
@@ -1901,16 +1938,16 @@ Controller.prototype.enableKeyboard = function (gamee) {
 };
 
 /** ### remapButton
- * 
+ *
  * Remap the names of the controller's buttons. Controllers have their
- * button names set (left, right, A, B), but sometimes in context of 
+ * button names set (left, right, A, B), but sometimes in context of
  * the game a different names are desired.
  *
  * ```javascript
  * var controller = gamee.controller.requestController('TwoButtons');
  * controller.remapButton('left', 'throttle');
  * controller.remapButton('right', 'break');
- * 
+ *
  * controller.buttons.throttle.on('keydown', ..);
  * ```
  *
@@ -1935,7 +1972,7 @@ Controller.prototype.remapButton = function (oldName, newName) {
 	}
 };
 
-// ## Controllers 
+// ## Controllers
 
 /** ### OneButtonController
  *
@@ -1945,7 +1982,7 @@ Controller.prototype.remapButton = function (oldName, newName) {
 function OneButtonController() {
 	Controller.call(this);
 
-	// * __name__: 'button' 
+	// * __name__: 'button'
 	// * __key__: spacebar
 	this.addButton(new Button('button', 32));
 }
@@ -2133,7 +2170,7 @@ function TwoArrowsTwoButtonsController() {
 TwoArrowsTwoButtonsController.prototype = Object.create(Controller.prototype);
 TwoArrowsTwoButtonsController.prototype.constructor = TwoArrowsTwoButtonsController;
 
-/** ### FourArrowController 
+/** ### FourArrowController
  *
  * Controller with four arrow buttons
  * @class FourArrowController
@@ -2160,14 +2197,14 @@ function FourArrowController() {
 FourArrowController.prototype = Object.create(Controller.prototype);
 FourArrowController.prototype.constructor = FourArrowController;
 
-/** ### TouchController 
+/** ### TouchController
  *
  * This controller has no buttons. Instead it has a touchpad which
  * triggers *touchstart*, *touchend*, *touchmove*, *touchcancel*,
- * *touchend* events (similar to 
+ * *touchend* events (similar to
  * [Touch event types](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent#Touch_event_types))
  *
- * The position of the touch is in the `data.position` argument as a 
+ * The position of the touch is in the `data.position` argument as a
  * *x* and *y* with the values between [0, 0] for the left top corner
  * and [1, 1] for the bottom right corner ([0.5, 0.5] is the center).
  *
@@ -2210,13 +2247,13 @@ function TouchController() {
 TouchController.prototype = Object.create(TouchController.prototype);
 TouchController.prototype.constructor = TouchController;
 
-/** ### JoystickController 
+/** ### JoystickController
  *
- * JoystickController emits `change` event, after the position of the 
- * joystick is changed. 
+ * JoystickController emits `change` event, after the position of the
+ * joystick is changed.
  *
- * The position of the joystick is in the property `x` and `y`. The 
- * position on axis is between <-1, 1> (for x -1 is max left 
+ * The position of the joystick is in the property `x` and `y`. The
+ * position on axis is between <-1, 1> (for x -1 is max left
  * position, 1 max right position). [0.0, 0.0] is the center.
  *
  * ```javascript
@@ -2249,7 +2286,7 @@ function JoystickController() {
 JoystickController.prototype = Object.create(Controller.prototype);
 JoystickController.prototype.constructor = JoystickController;
 
-/** ### JoystickButtonController 
+/** ### JoystickButtonController
  *
  * JoystickButtonController is a `JoystickController` with one button.
  *
@@ -2272,7 +2309,7 @@ function JoystickButtonController() {
 
 	JoystickController.call(this);
 
-	// * __name__: 'button' 
+	// * __name__: 'button'
 	// * __key__: spacebar
 	this.addButton(new Button('button', 32));
 }
@@ -2300,16 +2337,16 @@ var _core = __webpack_require__(1);
 var _platform_bridge = __webpack_require__(3);
 
 /**
- * Instance of gamee object with API for developers. 
+ * Instance of gamee object with API for developers.
  * Internal functions becomes private this way
- * 
+ *
  * @requires Gamee
  */
 var gamee = exports.gamee = undefined;
 
 /**
- * Resolves what platform is being used and make instance of platform API. 
- * 
+ * Resolves what platform is being used and make instance of platform API.
+ *
  * @requires PlatformBridge
  */
 var platformBridge = function () {
