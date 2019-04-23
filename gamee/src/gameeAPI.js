@@ -162,8 +162,10 @@ Gamee.prototype = (function () {
          * @memberof Gamee
          * @param {Gamee~ReplayData} [opt_replayData]
          * @param {Gamee~voidCallback} [opt_cb]
+         * @param {Gamee~object} [opt_saveState]
+         * @param {Gamee~string} [picture]
          */
-        gameOver: function (opt_replayData, opt_cb, opt_saveState) {
+        gameOver: function (opt_replayData, opt_cb, opt_saveState, picture = null) {
             if (typeof opt_replayData === "function")
                 opt_cb = opt_replayData;
             else if (typeof opt_replayData !== "undefined")
@@ -171,7 +173,7 @@ Gamee.prototype = (function () {
 
             opt_cb = opt_cb || cbError;
             validateDataType(opt_cb, "function", "opt_cb", "gamee.gameOver");
-            core.gameOver(opt_replayData, opt_saveState);
+            core.gameOver(opt_replayData, opt_saveState, picture);
             opt_cb(null);
         },
 
