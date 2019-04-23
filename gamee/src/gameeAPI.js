@@ -222,6 +222,21 @@ Gamee.prototype = (function () {
         },
 
         /**
+         * requestBattleData
+         *
+         * @memberof Gamee
+         * @param {number} battleID
+         * @param {Gamee~requestBattleDataDataCallback} cb
+         */
+        requestBattleData: function (battleID, cb) {
+
+            validateDataType(battleID, "number", "battleID", "gamee.requestBattleData");
+            validateDataType(cb, "function", "cb", "gamee.requestBattleData");
+
+            core.requestBattleData(userID, cb);
+        },
+
+        /**
          * requestPlayerReplay
          *
          * @memberof Gamee
@@ -297,6 +312,17 @@ Gamee.prototype = (function () {
 
             validateDataType(cb,"function","cb","gamee.showRewardedVideo");
             core.showRewardedVideo(cb)
+        },
+
+        /*
+        *showSubscribeDialog
+        *@member of Gamee
+        *@param{Gamee~showSubscribeDialog} cb
+        */
+        showSubscribeDialog: function (cb){
+
+            validateDataType(cb,"function","cb","gamee.showSubscribeDialog");
+            core.showSubscribeDialog(cb)
         },
 
         /**

@@ -108,7 +108,7 @@ export var core = (function () {
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
         VERSION: "2.2.2", // version of the gamee library
-        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData","rewardedAds","coins","logEvents","playerData","share"], // supported capabilities
+        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData","rewardedAds","coins","logEvents","playerData","share","subscribe"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
         onReady: noop, // for intercepting real onReady because of behind the scenes variant handling
@@ -368,6 +368,12 @@ export var core = (function () {
 
     };
 
+    core.requestBattleData = function (battleID, cb) {
+        this.native.createRequest("requestBattleData", {battleID}, function (responseData) {
+            cb(null, responseData);
+        });
+    };
+
     core.requestPlayerReplay = function (userID, cb) {
 
         if(!cache.capabilities.replay)
@@ -444,6 +450,16 @@ export var core = (function () {
             throw "Rewarded Ads not supported, you must add the capability on gamee.Init";
 
         this.native.createRequest("showRewardedVideo", function (responseData) {
+            cb(null, responseData);
+        });
+    };
+
+    core.showSubscribeDialog = function (cb) {
+
+        if(!cache.capabilities.subscribe)
+            throw "Subscribe not supported, you must add the capability on gamee.Init";
+
+        this.native.createRequest("showSubscribeDialog", function (responseData) {
             cb(null, responseData);
         });
     };
