@@ -372,8 +372,8 @@ export var core = (function () {
 
     };
 
-    core.requestBattleData = function (battleID, cb) {
-        this.native.createRequest("requestBattleData", {battleID}, function (responseData) {
+    core.requestBattleData = function (cb) {
+        this.native.createRequest("requestBattleData", undefined, function (responseData) {
             cb(null, responseData);
         });
     };

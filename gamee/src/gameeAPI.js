@@ -227,15 +227,12 @@ Gamee.prototype = (function () {
          * requestBattleData
          *
          * @memberof Gamee
-         * @param {number} battleID
          * @param {Gamee~requestBattleDataDataCallback} cb
          */
-        requestBattleData: function (battleID, cb) {
-
-            validateDataType(battleID, "number", "battleID", "gamee.requestBattleData");
+        requestBattleData: function (cb) {
             validateDataType(cb, "function", "cb", "gamee.requestBattleData");
 
-            core.requestBattleData(userID, cb);
+            core.requestBattleData(cb);
         },
 
         /**
