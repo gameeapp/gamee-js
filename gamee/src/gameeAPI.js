@@ -162,6 +162,7 @@ Gamee.prototype = (function () {
          * @memberof Gamee
          * @param {Gamee~ReplayData} [opt_replayData]
          * @param {Gamee~voidCallback} [opt_cb]
+         * @param {Gamee~object} [opt_saveState]
          */
         gameOver: function (opt_replayData, opt_cb, opt_saveState) {
             if (typeof opt_replayData === "function")
@@ -219,6 +220,18 @@ Gamee.prototype = (function () {
             }
 
             core.logEvent(eventName,eventValue);
+        },
+
+        /**
+         * requestBattleData
+         *
+         * @memberof Gamee
+         * @param {Gamee~requestBattleDataDataCallback} cb
+         */
+        requestBattleData: function (cb) {
+            validateDataType(cb, "function", "cb", "gamee.requestBattleData");
+
+            core.requestBattleData(cb);
         },
 
         /**
