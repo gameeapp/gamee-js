@@ -163,9 +163,8 @@ Gamee.prototype = (function () {
          * @param {Gamee~ReplayData} [opt_replayData]
          * @param {Gamee~voidCallback} [opt_cb]
          * @param {Gamee~object} [opt_saveState]
-         * @param {Gamee~string} [picture]
          */
-        gameOver: function (opt_replayData, opt_cb, opt_saveState, picture = null) {
+        gameOver: function (opt_replayData, opt_cb, opt_saveState) {
             if (typeof opt_replayData === "function")
                 opt_cb = opt_replayData;
             else if (typeof opt_replayData !== "undefined")
@@ -173,7 +172,7 @@ Gamee.prototype = (function () {
 
             opt_cb = opt_cb || cbError;
             validateDataType(opt_cb, "function", "opt_cb", "gamee.gameOver");
-            core.gameOver(opt_replayData, opt_saveState, picture);
+            core.gameOver(opt_replayData, opt_saveState);
             opt_cb(null);
         },
 
@@ -311,17 +310,6 @@ Gamee.prototype = (function () {
 
             validateDataType(cb,"function","cb","gamee.showRewardedVideo");
             core.showRewardedVideo(cb)
-        },
-
-        /*
-        *showSubscribeDialog
-        *@member of Gamee
-        *@param{Gamee~showSubscribeDialog} cb
-        */
-        showSubscribeDialog: function (cb){
-
-            validateDataType(cb,"function","cb","gamee.showSubscribeDialog");
-            core.showSubscribeDialog(cb)
         },
 
         /**

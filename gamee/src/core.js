@@ -307,7 +307,7 @@ export var core = (function () {
      * Data has the same format as data received in onReady callback.
      * Data must be string = responsibility for turning data structure into string is left to the game!
      */
-    core.gameOver = function (opt_replayData, opt_saveState, picture = null) {
+    core.gameOver = function (opt_replayData, opt_saveState) {
         // var allOk = ((data !== undefined) && (typeof data === "string")) || (data === undefined);
         // if (!allOk) console.error("Data provided to gameOver function must be string.");
         // gameeNative.gameOver(gamee, internals.variant, allOk ? data : "");
@@ -324,10 +324,6 @@ export var core = (function () {
 
         if (opt_saveState) {
             requestData.state = opt_saveState;
-        }
-
-        if (picture) {
-            requestData.picture = picture;
         }
 
         core.native.createRequest("gameOver", requestData);
@@ -454,12 +450,6 @@ export var core = (function () {
             throw "Rewarded Ads not supported, you must add the capability on gamee.Init";
 
         this.native.createRequest("showRewardedVideo", function (responseData) {
-            cb(null, responseData);
-        });
-    };
-
-    core.showSubscribeDialog = function (cb) {
-        this.native.createRequest("showSubscribeDialog", function (responseData) {
             cb(null, responseData);
         });
     };
