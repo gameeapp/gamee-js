@@ -1,4 +1,4 @@
-/*! @preserve build time 2019-04-04 12:04:11 */
+/*! @preserve build time 2019-06-12 13:32:18 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -329,7 +329,7 @@ var core = exports.core = function () {
 
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
-        VERSION: "2.2.2", // version of the gamee library
+        VERSION: "2.3.0", // version of the gamee library
         CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData", "rewardedAds", "coins", "logEvents", "playerData", "share"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
@@ -580,6 +580,12 @@ var core = exports.core = function () {
             if (error) {
                 throw error;
             }
+        });
+    };
+
+    core.requestBattleData = function (cb) {
+        this.native.createRequest("requestBattleData", undefined, function (responseData) {
+            cb(null, responseData);
         });
     };
 
@@ -1052,6 +1058,7 @@ Gamee.prototype = function () {
          * @memberof Gamee
          * @param {Gamee~ReplayData} [opt_replayData]
          * @param {Gamee~voidCallback} [opt_cb]
+         * @param {Gamee~object} [opt_saveState]
          */
         gameOver: function gameOver(opt_replayData, opt_cb, opt_saveState) {
             if (typeof opt_replayData === "function") opt_cb = opt_replayData;else if (typeof opt_replayData !== "undefined") (0, _core.validateDataType)(opt_replayData, "object", "opt_replayData", "gamee.gameOver");
@@ -1106,6 +1113,18 @@ Gamee.prototype = function () {
             }
 
             _core.core.logEvent(eventName, eventValue);
+        },
+
+        /**
+         * requestBattleData
+         *
+         * @memberof Gamee
+         * @param {Gamee~requestBattleDataDataCallback} cb
+         */
+        requestBattleData: function requestBattleData(cb) {
+            (0, _core.validateDataType)(cb, "function", "cb", "gamee.requestBattleData");
+
+            _core.core.requestBattleData(cb);
         },
 
         /**
