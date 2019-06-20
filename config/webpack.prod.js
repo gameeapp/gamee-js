@@ -4,7 +4,10 @@ const path = require('path'),
 module.exports = {
     devtool: '#source-map',
 
-    entry: './gamee/src/index.js',
+    entry: {
+        "gamee-js": "./gamee/src/index.js",
+        "gamee-js.min": "./gamee/src/index.js",
+    },
 
     module: {
         rules: [
@@ -26,7 +29,7 @@ module.exports = {
         // library: 'gamee',
         libraryTarget: 'umd',
         path: path.resolve(__dirname, '../gamee/dist'),
-        filename: 'gamee-js.min.js'
+        filename: '[name].js'
     },
 
     plugins: [
@@ -38,6 +41,7 @@ module.exports = {
             banner: `@preserve build time ${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}`
         }),
         new webpack.optimize.UglifyJsPlugin({
+            include: /\.min\.js$/,
             sourceMap: true,
             beautify: false,
             mangle: {
