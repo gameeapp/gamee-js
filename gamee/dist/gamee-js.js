@@ -1,4 +1,4 @@
-/*! @preserve build time 2019-06-20 09:02:37 */
+/*! @preserve build time 2019-07-22 14:03:39 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -329,8 +329,8 @@ var core = exports.core = function () {
 
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
-        VERSION: "2.3.0", // version of the gamee library
-        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData", "rewardedAds", "coins", "logEvents", "playerData", "share"], // supported capabilities
+        VERSION: "2.4.0", // version of the gamee library
+        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData", "rewardedAds", "coins", "logEvents", "playerData", "share", "gems"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
         onReady: noop, // for intercepting real onReady because of behind the scenes variant handling
@@ -526,7 +526,8 @@ var core = exports.core = function () {
      * Data has the same format as data received in onReady callback.
      * Data must be string = responsibility for turning data structure into string is left to the game!
      */
-    core.gameOver = function (opt_replayData, opt_saveState) {
+    core.gameOver = function (opt_replayData, opt_saveState, opt_hideOverlay) {
+        opt_hideOverlay = opt_hideOverlay !== undefined ? opt_hideOverlay : false;
         // var allOk = ((data !== undefined) && (typeof data === "string")) || (data === undefined);
         // if (!allOk) console.error("Data provided to gameOver function must be string.");
         // gameeNative.gameOver(gamee, internals.variant, allOk ? data : "");
@@ -540,6 +541,7 @@ var core = exports.core = function () {
             }
             requestData.replayData = opt_replayData;
         }
+        requestData.hideOverlay = opt_hideOverlay;
 
         if (opt_saveState) {
             requestData.state = opt_saveState;
@@ -606,7 +608,7 @@ var core = exports.core = function () {
 
     core.purchaseItem = function (options, cb) {
 
-        if (!cache.capabilities.coins) throw "Purchases not supported, you must add the capability on gamee.Init";
+        if (!cache.capabilities.coins) throw "Coins purchases not supported, you must add the capability on gamee.Init";
 
         if (options) {
             var propertiesList = ["coinsCost", "itemName"];
@@ -620,6 +622,35 @@ var core = exports.core = function () {
         }
 
         this.native.createRequest("purchaseItem", options, function (responseData) {
+            cb(null, responseData);
+        });
+    };
+
+    core.purchaseItemWithGems = function (options, cb) {
+
+        if (!cache.capabilities.gems) throw "Gems purchases not supported, you must add the capability on gamee.Init";
+
+        if (options) {
+            var propertiesList = ["gemsCost", "itemName"];
+            propertiesList.forEach(function (property) {
+                if (!options.hasOwnProperty(property)) throw "Purchase options must have `" + property + "` property";
+            });
+        }
+
+        if (!this.isSilentModeEnabled()) {
+            console.log(options);
+        }
+
+        this.native.createRequest("purchaseItemWithGems", options, function (responseData) {
+            cb(null, responseData);
+        });
+    };
+
+    core.requestGemsCount = function (cb) {
+
+        if (!cache.capabilities.gems) throw "Gems not supported, you must add the capability on gamee.Init";
+
+        this.native.createRequest("requestGemsCount", options, function (responseData) {
             cb(null, responseData);
         });
     };
@@ -1059,13 +1090,18 @@ Gamee.prototype = function () {
          * @param {Gamee~ReplayData} [opt_replayData]
          * @param {Gamee~voidCallback} [opt_cb]
          * @param {Gamee~object} [opt_saveState]
+         * @param {Gamee~boolean} [opt_hideOverlay]
          */
-        gameOver: function gameOver(opt_replayData, opt_cb, opt_saveState) {
+        gameOver: function gameOver(opt_replayData, opt_cb, opt_saveState, opt_hideOverlay) {
             if (typeof opt_replayData === "function") opt_cb = opt_replayData;else if (typeof opt_replayData !== "undefined") (0, _core.validateDataType)(opt_replayData, "object", "opt_replayData", "gamee.gameOver");
+
+            if (typeof opt_hideOverlay !== 'undefined') {
+                (0, _core.validateDataType)(opt_hideOverlay, "boolean", "opt_hideOverlay", "gamee.gameOver");
+            }
 
             opt_cb = opt_cb || cbError;
             (0, _core.validateDataType)(opt_cb, "function", "opt_cb", "gamee.gameOver");
-            _core.core.gameOver(opt_replayData, opt_saveState);
+            _core.core.gameOver(opt_replayData, opt_saveState, opt_hideOverlay);
             opt_cb(null);
         },
 
@@ -1169,6 +1205,30 @@ Gamee.prototype = function () {
             (0, _core.validateDataType)(cb, "function", "cb", "gamee.purchaseItem");
 
             _core.core.purchaseItem(purchaseDetails, cb);
+        },
+
+        /*
+        *purchaseItemWithGems
+        *@member of Gamee
+        *@param {object} purchaseDetails
+        *@param {Gamee~purchaseItemWithGemsDataCallback} cb
+        */
+        purchaseItemWithGems: function purchaseItemWithGems(purchaseDetails, cb) {
+
+            (0, _core.validateDataType)(purchaseDetails, "object", "purchaseDetails", "gamee.purchaseItemWithGems");
+            (0, _core.validateDataType)(cb, "function", "cb", "gamee.purchaseItemWithGems");
+
+            _core.core.purchaseItemWithGems(purchaseDetails, cb);
+        },
+
+        /*
+        *requestGemsCount
+        *@member of Gamee
+        *@param {Gamee~requestGemsCountDataCallback} cb
+        */
+        requestGemsCount: function requestGemsCount(cb) {
+            (0, _core.validateDataType)(cb, "function", "cb", "gamee.requestGemsCount");
+            _core.core.requestGemsCount(cb);
         },
 
         /*share
