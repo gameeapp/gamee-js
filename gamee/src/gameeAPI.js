@@ -283,6 +283,20 @@ Gamee.prototype = (function () {
             core.purchaseItem(purchaseDetails,cb)
         },
 
+        /*
+        *puchaseitemwithgems
+        *@member of Gamee
+        *@param {object} purchaseDetails
+        *@param {Gamee~purchaseItemDataCallback} cb
+        */
+        purchaseItemWithGems: function (purchaseDetails,cb) {
+
+            validateDataType(purchaseDetails,"object","purchaseDetails","gamee.purchaseItemWithGems");
+            validateDataType(cb,"function","cb","gamee.purchaseItemWithGems");
+
+            core.purchaseItemWithGems(purchaseDetails,cb)
+        },
+
         /*share
         *@member of Gamee
         *@param {object} shareDetails

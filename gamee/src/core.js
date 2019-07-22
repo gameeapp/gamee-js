@@ -108,7 +108,7 @@ export var core = (function () {
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
         VERSION: "2.3.0", // version of the gamee library
-        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData","rewardedAds","coins","logEvents","playerData","share"], // supported capabilities
+        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData","rewardedAds","coins","logEvents","playerData","share", "gems"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
         onReady: noop, // for intercepting real onReady because of behind the scenes variant handling
@@ -395,7 +395,7 @@ export var core = (function () {
     core.purchaseItem = function (options, cb) {
 
         if(!cache.capabilities.coins)
-            throw "Purchases not supported, you must add the capability on gamee.Init";
+            throw "Coins purchases not supported, you must add the capability on gamee.Init";
 
         if (options) {
             var propertiesList = ["coinsCost","itemName"];
@@ -410,6 +410,28 @@ export var core = (function () {
         }
 
         this.native.createRequest("purchaseItem", options, function (responseData) {
+            cb(null, responseData);
+        });
+    };
+
+    core.purchaseItemWithGems = function (options, cb) {
+
+        if(!cache.capabilities.gems)
+            throw "Gems purchases not supported, you must add the capability on gamee.Init";
+
+        if (options) {
+            var propertiesList = ["gemsCost","itemName"];
+            propertiesList.forEach(function (property){
+                if(!options.hasOwnProperty(property))
+                    throw "Purchase options must have `"+property+"` property"
+            })
+        }
+
+        if (!this.isSilentModeEnabled()) {
+            console.log(options);
+        }
+
+        this.native.createRequest("purchaseItemWithGems", options, function (responseData) {
             cb(null, responseData);
         });
     };
