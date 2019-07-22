@@ -436,6 +436,16 @@ export var core = (function () {
         });
     };
 
+    core.requestGemsCount = function (cb) {
+
+        if(!cache.capabilities.gems)
+            throw "Gems not supported, you must add the capability on gamee.Init";
+
+        this.native.createRequest("requestGemsCount", options, function (responseData) {
+            cb(null, responseData);
+        });
+    };
+
     core.share = function (options, cb) {
 
         if(!cache.capabilities.share)

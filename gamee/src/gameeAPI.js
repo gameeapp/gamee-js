@@ -284,10 +284,10 @@ Gamee.prototype = (function () {
         },
 
         /*
-        *puchaseitemwithgems
+        *purchaseItemWithGems
         *@member of Gamee
         *@param {object} purchaseDetails
-        *@param {Gamee~purchaseItemDataCallback} cb
+        *@param {Gamee~purchaseItemWithGemsDataCallback} cb
         */
         purchaseItemWithGems: function (purchaseDetails,cb) {
 
@@ -295,6 +295,16 @@ Gamee.prototype = (function () {
             validateDataType(cb,"function","cb","gamee.purchaseItemWithGems");
 
             core.purchaseItemWithGems(purchaseDetails,cb)
+        },
+
+        /*
+        *requestGemsCount
+        *@member of Gamee
+        *@param {Gamee~requestGemsCountDataCallback} cb
+        */
+        requestGemsCount: function (cb) {
+            validateDataType(cb,"function","cb","gamee.requestGemsCount");
+            core.requestGemsCount(cb)
         },
 
         /*share
