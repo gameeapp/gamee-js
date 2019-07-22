@@ -307,7 +307,8 @@ export var core = (function () {
      * Data has the same format as data received in onReady callback.
      * Data must be string = responsibility for turning data structure into string is left to the game!
      */
-    core.gameOver = function (opt_replayData, opt_saveState) {
+    core.gameOver = function (opt_replayData, opt_saveState, opt_hideOverlay) {
+        opt_hideOverlay = opt_hideOverlay !== undefined ? opt_hideOverlay : false;
         // var allOk = ((data !== undefined) && (typeof data === "string")) || (data === undefined);
         // if (!allOk) console.error("Data provided to gameOver function must be string.");
         // gameeNative.gameOver(gamee, internals.variant, allOk ? data : "");
@@ -321,6 +322,7 @@ export var core = (function () {
             }
             requestData.replayData = opt_replayData;
         }
+        requestData.hideOverlay = opt_hideOverlay;
 
         if (opt_saveState) {
             requestData.state = opt_saveState;
