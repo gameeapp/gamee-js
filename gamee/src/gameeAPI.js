@@ -270,7 +270,7 @@ Gamee.prototype = (function () {
         },
 
         /*
-        *puchaseitem
+        *purchaseItem
         *@member of Gamee
         *@param {object} purchaseDetails
         *@param {Gamee~purchaseItemDataCallback} cb
@@ -280,7 +280,7 @@ Gamee.prototype = (function () {
             validateDataType(purchaseDetails,"object","purchaseDetails","gamee.purchaseItem");
             validateDataType(cb,"function","cb","gamee.purchaseItem");
 
-            core.purchaseItem(purchaseDetails,cb)
+            core.purchaseItemWithCoins(purchaseDetails, cb, true)
         },
 
         /*
@@ -293,7 +293,7 @@ Gamee.prototype = (function () {
             validateDataType(purchaseDetails,"object","purchaseDetails","gamee.purchaseItemWithCoins");
             validateDataType(cb,"function","cb","gamee.purchaseItemWithCoins");
 
-            core.purchaseItem(purchaseDetails,cb)
+            core.purchaseItemWithCoins(purchaseDetails, cb)
         },
 
         /*

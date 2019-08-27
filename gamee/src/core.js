@@ -392,7 +392,7 @@ export var core = (function () {
         });
     };
 
-    core.purchaseItem = function (options, cb) {
+    core.purchaseItemWithCoins = function (options, cb, oldMethod) {
 
         if(!cache.capabilities.coins)
             throw "Coins purchases not supported, you must add the capability on gamee.Init";
@@ -409,7 +409,11 @@ export var core = (function () {
             console.log(options);
         }
 
-        this.native.createRequest("purchaseItem", options, function (responseData) {
+        var method = "purchaseItemWithCoins";
+        if (oldMethod !== undefined && oldMethod === true) {
+            method = "purchaseItem";
+        }
+        this.native.createRequest(method, options, function (responseData) {
             cb(null, responseData);
         });
     };

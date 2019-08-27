@@ -1,4 +1,4 @@
-/*! @preserve build time 2019-07-22 14:03:39 */
+/*! @preserve build time 2019-08-27 08:54:59 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -606,7 +606,7 @@ var core = exports.core = function () {
         });
     };
 
-    core.purchaseItem = function (options, cb) {
+    core.purchaseItemWithCoins = function (options, cb, oldMethod) {
 
         if (!cache.capabilities.coins) throw "Coins purchases not supported, you must add the capability on gamee.Init";
 
@@ -621,7 +621,11 @@ var core = exports.core = function () {
             console.log(options);
         }
 
-        this.native.createRequest("purchaseItem", options, function (responseData) {
+        var method = "purchaseItemWithCoins";
+        if (oldMethod !== undefined && oldMethod === true) {
+            method = "purchaseItem";
+        }
+        this.native.createRequest(method, options, function (responseData) {
             cb(null, responseData);
         });
     };
@@ -642,15 +646,6 @@ var core = exports.core = function () {
         }
 
         this.native.createRequest("purchaseItemWithGems", options, function (responseData) {
-            cb(null, responseData);
-        });
-    };
-
-    core.requestGemsCount = function (cb) {
-
-        if (!cache.capabilities.gems) throw "Gems not supported, you must add the capability on gamee.Init";
-
-        this.native.createRequest("requestGemsCount", options, function (responseData) {
             cb(null, responseData);
         });
     };
@@ -1194,7 +1189,7 @@ Gamee.prototype = function () {
         },
 
         /*
-        *puchaseitem
+        *purchaseItem
         *@member of Gamee
         *@param {object} purchaseDetails
         *@param {Gamee~purchaseItemDataCallback} cb
@@ -1204,7 +1199,20 @@ Gamee.prototype = function () {
             (0, _core.validateDataType)(purchaseDetails, "object", "purchaseDetails", "gamee.purchaseItem");
             (0, _core.validateDataType)(cb, "function", "cb", "gamee.purchaseItem");
 
-            _core.core.purchaseItem(purchaseDetails, cb);
+            _core.core.purchaseItemWithCoins(purchaseDetails, cb, true);
+        },
+
+        /*
+        *purchaseItemWithCoins
+        *@member of Gamee
+        *@param {object} purchaseDetails
+        *@param {Gamee~purchaseItemDataCallback} cb
+        */
+        purchaseItemWithCoins: function purchaseItemWithCoins(purchaseDetails, cb) {
+            (0, _core.validateDataType)(purchaseDetails, "object", "purchaseDetails", "gamee.purchaseItemWithCoins");
+            (0, _core.validateDataType)(cb, "function", "cb", "gamee.purchaseItemWithCoins");
+
+            _core.core.purchaseItemWithCoins(purchaseDetails, cb);
         },
 
         /*
@@ -1219,16 +1227,6 @@ Gamee.prototype = function () {
             (0, _core.validateDataType)(cb, "function", "cb", "gamee.purchaseItemWithGems");
 
             _core.core.purchaseItemWithGems(purchaseDetails, cb);
-        },
-
-        /*
-        *requestGemsCount
-        *@member of Gamee
-        *@param {Gamee~requestGemsCountDataCallback} cb
-        */
-        requestGemsCount: function requestGemsCount(cb) {
-            (0, _core.validateDataType)(cb, "function", "cb", "gamee.requestGemsCount");
-            _core.core.requestGemsCount(cb);
         },
 
         /*share
