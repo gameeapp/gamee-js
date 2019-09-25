@@ -107,8 +107,8 @@ export var core = (function () {
 
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
-        VERSION: "2.3.0", // version of the gamee library
-        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData","rewardedAds","coins","logEvents","playerData","share"], // supported capabilities
+        VERSION: "2.4.0", // version of the gamee library
+        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData","rewardedAds","coins","logEvents","playerData","share", "gems"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
         onReady: noop, // for intercepting real onReady because of behind the scenes variant handling
@@ -307,7 +307,8 @@ export var core = (function () {
      * Data has the same format as data received in onReady callback.
      * Data must be string = responsibility for turning data structure into string is left to the game!
      */
-    core.gameOver = function (opt_replayData, opt_saveState) {
+    core.gameOver = function (opt_replayData, opt_saveState, opt_hideOverlay) {
+        opt_hideOverlay = opt_hideOverlay !== undefined ? opt_hideOverlay : false;
         // var allOk = ((data !== undefined) && (typeof data === "string")) || (data === undefined);
         // if (!allOk) console.error("Data provided to gameOver function must be string.");
         // gameeNative.gameOver(gamee, internals.variant, allOk ? data : "");
@@ -321,6 +322,7 @@ export var core = (function () {
             }
             requestData.replayData = opt_replayData;
         }
+        requestData.hideOverlay = opt_hideOverlay;
 
         if (opt_saveState) {
             requestData.state = opt_saveState;
@@ -390,10 +392,10 @@ export var core = (function () {
         });
     };
 
-    core.purchaseItem = function (options, cb) {
+    core.purchaseItemWithCoins = function (options, cb, oldMethod) {
 
         if(!cache.capabilities.coins)
-            throw "Purchases not supported, you must add the capability on gamee.Init";
+            throw "Coins purchases not supported, you must add the capability on gamee.Init";
 
         if (options) {
             var propertiesList = ["coinsCost","itemName"];
@@ -407,7 +409,33 @@ export var core = (function () {
             console.log(options);
         }
 
-        this.native.createRequest("purchaseItem", options, function (responseData) {
+        var method = "purchaseItemWithCoins";
+        if (oldMethod !== undefined && oldMethod === true) {
+            method = "purchaseItem";
+        }
+        this.native.createRequest(method, options, function (responseData) {
+            cb(null, responseData);
+        });
+    };
+
+    core.purchaseItemWithGems = function (options, cb) {
+
+        if(!cache.capabilities.gems)
+            throw "Gems purchases not supported, you must add the capability on gamee.Init";
+
+        if (options) {
+            var propertiesList = ["gemsCost","itemName"];
+            propertiesList.forEach(function (property){
+                if(!options.hasOwnProperty(property))
+                    throw "Purchase options must have `"+property+"` property"
+            })
+        }
+
+        if (!this.isSilentModeEnabled()) {
+            console.log(options);
+        }
+
+        this.native.createRequest("purchaseItemWithGems", options, function (responseData) {
             cb(null, responseData);
         });
     };

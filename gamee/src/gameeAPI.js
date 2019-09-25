@@ -163,16 +163,21 @@ Gamee.prototype = (function () {
          * @param {Gamee~ReplayData} [opt_replayData]
          * @param {Gamee~voidCallback} [opt_cb]
          * @param {Gamee~object} [opt_saveState]
+         * @param {Gamee~boolean} [opt_hideOverlay]
          */
-        gameOver: function (opt_replayData, opt_cb, opt_saveState) {
+        gameOver: function (opt_replayData, opt_cb, opt_saveState, opt_hideOverlay) {
             if (typeof opt_replayData === "function")
                 opt_cb = opt_replayData;
             else if (typeof opt_replayData !== "undefined")
                 validateDataType(opt_replayData, "object", "opt_replayData", "gamee.gameOver");
 
+            if (typeof opt_hideOverlay !== 'undefined') {
+                validateDataType(opt_hideOverlay, "boolean", "opt_hideOverlay", "gamee.gameOver");
+            }
+
             opt_cb = opt_cb || cbError;
             validateDataType(opt_cb, "function", "opt_cb", "gamee.gameOver");
-            core.gameOver(opt_replayData, opt_saveState);
+            core.gameOver(opt_replayData, opt_saveState, opt_hideOverlay);
             opt_cb(null);
         },
 
@@ -265,7 +270,7 @@ Gamee.prototype = (function () {
         },
 
         /*
-        *puchaseitem
+        *purchaseItem
         *@member of Gamee
         *@param {object} purchaseDetails
         *@param {Gamee~purchaseItemDataCallback} cb
@@ -275,7 +280,34 @@ Gamee.prototype = (function () {
             validateDataType(purchaseDetails,"object","purchaseDetails","gamee.purchaseItem");
             validateDataType(cb,"function","cb","gamee.purchaseItem");
 
-            core.purchaseItem(purchaseDetails,cb)
+            core.purchaseItemWithCoins(purchaseDetails, cb, true)
+        },
+
+        /*
+        *purchaseItemWithCoins
+        *@member of Gamee
+        *@param {object} purchaseDetails
+        *@param {Gamee~purchaseItemDataCallback} cb
+        */
+        purchaseItemWithCoins: function (purchaseDetails, cb) {
+            validateDataType(purchaseDetails,"object","purchaseDetails","gamee.purchaseItemWithCoins");
+            validateDataType(cb,"function","cb","gamee.purchaseItemWithCoins");
+
+            core.purchaseItemWithCoins(purchaseDetails, cb)
+        },
+
+        /*
+        *purchaseItemWithGems
+        *@member of Gamee
+        *@param {object} purchaseDetails
+        *@param {Gamee~purchaseItemWithGemsDataCallback} cb
+        */
+        purchaseItemWithGems: function (purchaseDetails,cb) {
+
+            validateDataType(purchaseDetails,"object","purchaseDetails","gamee.purchaseItemWithGems");
+            validateDataType(cb,"function","cb","gamee.purchaseItemWithGems");
+
+            core.purchaseItemWithGems(purchaseDetails,cb)
         },
 
         /*share
