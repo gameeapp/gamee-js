@@ -1,4 +1,4 @@
-/*! @preserve build time 2019-08-27 08:54:59 */
+/*! @preserve build time 2019-10-15 09:07:55 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -329,7 +329,7 @@ var core = exports.core = function () {
 
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
-        VERSION: "2.4.0", // version of the gamee library
+        VERSION: "2.4.1", // version of the gamee library
         CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData", "rewardedAds", "coins", "logEvents", "playerData", "share", "gems"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
@@ -606,6 +606,14 @@ var core = exports.core = function () {
         });
     };
 
+    core.playerEnterToGameRoom = function () {
+        this.native.createRequest('playerEnterToGameRoom');
+    };
+
+    core.playerExitGameRoom = function () {
+        this.native.createRequest('playerExitGameRoom');
+    };
+
     core.purchaseItemWithCoins = function (options, cb, oldMethod) {
 
         if (!cache.capabilities.coins) throw "Coins purchases not supported, you must add the capability on gamee.Init";
@@ -684,6 +692,12 @@ var core = exports.core = function () {
         if (!cache.capabilities.rewardedAds) throw "Rewarded Ads not supported, you must add the capability on gamee.Init";
 
         this.native.createRequest("showRewardedVideo", function (responseData) {
+            cb(null, responseData);
+        });
+    };
+
+    core.showSubscribeDialog = function (cb) {
+        this.native.createRequest("showSubscribeDialog", function (responseData) {
             cb(null, responseData);
         });
     };
@@ -1189,6 +1203,22 @@ Gamee.prototype = function () {
         },
 
         /*
+         * playerEnterToGameRoom
+         * @member of Gamee
+         */
+        playerEnterToGameRoom: function playerEnterToGameRoom() {
+            _core.core.playerEnterToGameRoom();
+        },
+
+        /*
+         * playerExitGameRoom
+         * @member of Gamee
+         */
+        playerExitGameRoom: function playerExitGameRoom() {
+            _core.core.playerExitGameRoom();
+        },
+
+        /*
         *purchaseItem
         *@member of Gamee
         *@param {object} purchaseDetails
@@ -1261,6 +1291,16 @@ Gamee.prototype = function () {
 
             (0, _core.validateDataType)(cb, "function", "cb", "gamee.showRewardedVideo");
             _core.core.showRewardedVideo(cb);
+        },
+
+        /*
+         * showSubscribeDialog
+         * @member of Gamee
+         * @param{Gamee~showSubscribeDialog} cb
+         */
+        showSubscribeDialog: function showSubscribeDialog(cb) {
+            (0, _core.validateDataType)(cb, "function", "cb", "gamee.showSubscribeDialog");
+            _core.core.showSubscribeDialog(cb);
         },
 
         /**

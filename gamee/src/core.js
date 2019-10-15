@@ -107,7 +107,7 @@ export var core = (function () {
 
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
-        VERSION: "2.4.0", // version of the gamee library
+        VERSION: "2.4.1", // version of the gamee library
         CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData","rewardedAds","coins","logEvents","playerData","share", "gems"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
@@ -392,6 +392,14 @@ export var core = (function () {
         });
     };
 
+    core.playerEnterToGameRoom = function () {
+        this.native.createRequest('playerEnterToGameRoom');
+    };
+
+    core.playerExitGameRoom = function () {
+        this.native.createRequest('playerExitGameRoom');
+    };
+
     core.purchaseItemWithCoins = function (options, cb, oldMethod) {
 
         if(!cache.capabilities.coins)
@@ -478,6 +486,12 @@ export var core = (function () {
             throw "Rewarded Ads not supported, you must add the capability on gamee.Init";
 
         this.native.createRequest("showRewardedVideo", function (responseData) {
+            cb(null, responseData);
+        });
+    };
+
+    core.showSubscribeDialog = function (cb) {
+        this.native.createRequest("showSubscribeDialog", function (responseData) {
             cb(null, responseData);
         });
     };
