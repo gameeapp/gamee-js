@@ -270,19 +270,19 @@ Gamee.prototype = (function () {
         },
 
         /*
-         * playerEnterToGameRoom
+         * playerEnteredToGameRoom
          * @member of Gamee
          */
-        playerEnterToGameRoom: function () {
-            core.playerEnterToGameRoom()
+        playerEnteredToGameRoom: function () {
+            core.playerEnteredToGameRoom()
         },
 
         /*
-         * playerExitGameRoom
+         * playerLeftGameRoom
          * @member of Gamee
          */
-        playerExitGameRoom: function () {
-            core.playerExitGameRoom()
+        playerLeftGameRoom: function () {
+            core.playerLeftGameRoom()
         },
 
         /*

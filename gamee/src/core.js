@@ -392,12 +392,12 @@ export var core = (function () {
         });
     };
 
-    core.playerEnterToGameRoom = function () {
-        this.native.createRequest('playerEnterToGameRoom');
+    core.playerEnteredToGameRoom = function () {
+        this.native.createRequest('playerEnteredToGameRoom');
     };
 
-    core.playerExitGameRoom = function () {
-        this.native.createRequest('playerExitGameRoom');
+    core.playerLeftGameRoom = function () {
+        this.native.createRequest('playerLeftGameRoom');
     };
 
     core.purchaseItemWithCoins = function (options, cb, oldMethod) {
