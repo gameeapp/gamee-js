@@ -1,4 +1,4 @@
-/*! @preserve build time 2019-10-15 10:05:46 */
+/*! @preserve build time 2019-10-15 10:59:21 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -606,8 +606,8 @@ var core = exports.core = function () {
         });
     };
 
-    core.playerEnteredToGameRoom = function () {
-        this.native.createRequest('playerEnteredToGameRoom');
+    core.playerEnteredGameRoom = function () {
+        this.native.createRequest('playerEnteredGameRoom');
     };
 
     core.playerLeftGameRoom = function () {
@@ -1203,11 +1203,11 @@ Gamee.prototype = function () {
         },
 
         /*
-         * playerEnteredToGameRoom
+         * playerEnteredGameRoom
          * @member of Gamee
          */
-        playerEnteredToGameRoom: function playerEnteredToGameRoom() {
-            _core.core.playerEnteredToGameRoom();
+        playerEnteredGameRoom: function playerEnteredGameRoom() {
+            _core.core.playerEnteredGameRoom();
         },
 
         /*

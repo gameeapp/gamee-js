@@ -270,11 +270,11 @@ Gamee.prototype = (function () {
         },
 
         /*
-         * playerEnteredToGameRoom
+         * playerEnteredGameRoom
          * @member of Gamee
          */
-        playerEnteredToGameRoom: function () {
-            core.playerEnteredToGameRoom()
+        playerEnteredGameRoom: function () {
+            core.playerEnteredGameRoom()
         },
 
         /*

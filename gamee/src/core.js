@@ -392,8 +392,8 @@ export var core = (function () {
         });
     };
 
-    core.playerEnteredToGameRoom = function () {
-        this.native.createRequest('playerEnteredToGameRoom');
+    core.playerEnteredGameRoom = function () {
+        this.native.createRequest('playerEnteredGameRoom');
     };
 
     core.playerLeftGameRoom = function () {
