@@ -1,4 +1,4 @@
-/*! @preserve build time 2019-10-15 09:07:55 */
+/*! @preserve build time 2019-10-15 10:05:46 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -606,12 +606,12 @@ var core = exports.core = function () {
         });
     };
 
-    core.playerEnterToGameRoom = function () {
-        this.native.createRequest('playerEnterToGameRoom');
+    core.playerEnteredToGameRoom = function () {
+        this.native.createRequest('playerEnteredToGameRoom');
     };
 
-    core.playerExitGameRoom = function () {
-        this.native.createRequest('playerExitGameRoom');
+    core.playerLeftGameRoom = function () {
+        this.native.createRequest('playerLeftGameRoom');
     };
 
     core.purchaseItemWithCoins = function (options, cb, oldMethod) {
@@ -1203,19 +1203,19 @@ Gamee.prototype = function () {
         },
 
         /*
-         * playerEnterToGameRoom
+         * playerEnteredToGameRoom
          * @member of Gamee
          */
-        playerEnterToGameRoom: function playerEnterToGameRoom() {
-            _core.core.playerEnterToGameRoom();
+        playerEnteredToGameRoom: function playerEnteredToGameRoom() {
+            _core.core.playerEnteredToGameRoom();
         },
 
         /*
-         * playerExitGameRoom
+         * playerLeftGameRoom
          * @member of Gamee
          */
-        playerExitGameRoom: function playerExitGameRoom() {
-            _core.core.playerExitGameRoom();
+        playerLeftGameRoom: function playerLeftGameRoom() {
+            _core.core.playerLeftGameRoom();
         },
 
         /*
