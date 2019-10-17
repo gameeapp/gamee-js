@@ -1,4 +1,4 @@
-/*! @preserve build time 2019-10-15 10:59:21 */
+/*! @preserve build time 2019-10-17 14:04:37 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -329,7 +329,7 @@ var core = exports.core = function () {
 
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
-        VERSION: "2.4.1", // version of the gamee library
+        VERSION: "2.4.0", // version of the gamee library
         CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData", "rewardedAds", "coins", "logEvents", "playerData", "share", "gems"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
