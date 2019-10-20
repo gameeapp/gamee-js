@@ -1,4 +1,4 @@
-/*! @preserve build time 2019-08-27 08:54:59 */
+/*! @preserve build time 2019-10-17 14:04:37 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -606,6 +606,14 @@ var core = exports.core = function () {
         });
     };
 
+    core.playerEnteredGameRoom = function () {
+        this.native.createRequest('playerEnteredGameRoom');
+    };
+
+    core.playerLeftGameRoom = function () {
+        this.native.createRequest('playerLeftGameRoom');
+    };
+
     core.purchaseItemWithCoins = function (options, cb, oldMethod) {
 
         if (!cache.capabilities.coins) throw "Coins purchases not supported, you must add the capability on gamee.Init";
@@ -684,6 +692,12 @@ var core = exports.core = function () {
         if (!cache.capabilities.rewardedAds) throw "Rewarded Ads not supported, you must add the capability on gamee.Init";
 
         this.native.createRequest("showRewardedVideo", function (responseData) {
+            cb(null, responseData);
+        });
+    };
+
+    core.showSubscribeDialog = function (cb) {
+        this.native.createRequest("showSubscribeDialog", function (responseData) {
             cb(null, responseData);
         });
     };
@@ -1189,6 +1203,22 @@ Gamee.prototype = function () {
         },
 
         /*
+         * playerEnteredGameRoom
+         * @member of Gamee
+         */
+        playerEnteredGameRoom: function playerEnteredGameRoom() {
+            _core.core.playerEnteredGameRoom();
+        },
+
+        /*
+         * playerLeftGameRoom
+         * @member of Gamee
+         */
+        playerLeftGameRoom: function playerLeftGameRoom() {
+            _core.core.playerLeftGameRoom();
+        },
+
+        /*
         *purchaseItem
         *@member of Gamee
         *@param {object} purchaseDetails
@@ -1261,6 +1291,16 @@ Gamee.prototype = function () {
 
             (0, _core.validateDataType)(cb, "function", "cb", "gamee.showRewardedVideo");
             _core.core.showRewardedVideo(cb);
+        },
+
+        /*
+         * showSubscribeDialog
+         * @member of Gamee
+         * @param{Gamee~showSubscribeDialog} cb
+         */
+        showSubscribeDialog: function showSubscribeDialog(cb) {
+            (0, _core.validateDataType)(cb, "function", "cb", "gamee.showSubscribeDialog");
+            _core.core.showSubscribeDialog(cb);
         },
 
         /**

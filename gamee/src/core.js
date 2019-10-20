@@ -392,6 +392,14 @@ export var core = (function () {
         });
     };
 
+    core.playerEnteredGameRoom = function () {
+        this.native.createRequest('playerEnteredGameRoom');
+    };
+
+    core.playerLeftGameRoom = function () {
+        this.native.createRequest('playerLeftGameRoom');
+    };
+
     core.purchaseItemWithCoins = function (options, cb, oldMethod) {
 
         if(!cache.capabilities.coins)
@@ -478,6 +486,12 @@ export var core = (function () {
             throw "Rewarded Ads not supported, you must add the capability on gamee.Init";
 
         this.native.createRequest("showRewardedVideo", function (responseData) {
+            cb(null, responseData);
+        });
+    };
+
+    core.showSubscribeDialog = function (cb) {
+        this.native.createRequest("showSubscribeDialog", function (responseData) {
             cb(null, responseData);
         });
     };

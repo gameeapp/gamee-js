@@ -270,6 +270,22 @@ Gamee.prototype = (function () {
         },
 
         /*
+         * playerEnteredGameRoom
+         * @member of Gamee
+         */
+        playerEnteredGameRoom: function () {
+            core.playerEnteredGameRoom()
+        },
+
+        /*
+         * playerLeftGameRoom
+         * @member of Gamee
+         */
+        playerLeftGameRoom: function () {
+            core.playerLeftGameRoom()
+        },
+
+        /*
         *purchaseItem
         *@member of Gamee
         *@param {object} purchaseDetails
@@ -342,6 +358,17 @@ Gamee.prototype = (function () {
 
             validateDataType(cb,"function","cb","gamee.showRewardedVideo");
             core.showRewardedVideo(cb)
+        },
+
+
+        /*
+         * showSubscribeDialog
+         * @member of Gamee
+         * @param{Gamee~showSubscribeDialog} cb
+         */
+        showSubscribeDialog: function (cb){
+            validateDataType(cb,"function","cb","gamee.showSubscribeDialog");
+            core.showSubscribeDialog(cb)
         },
 
         /**
