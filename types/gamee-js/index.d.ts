@@ -1,4 +1,4 @@
-// Type definitions for gamee-js 2.3
+// Type definitions for gamee-js 2.4.1
 // Project: https://github.com/gameeapp/gamee-js
 // Definitions by: Vincenzo Tilotta <https://github.com/gameeapp>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
