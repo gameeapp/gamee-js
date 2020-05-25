@@ -13,6 +13,7 @@ import { core } from "./core.js"
  * @param {function} _mute
  * @param {function} _unmute
  * @param {function} _start
+ * @param {function} _useExtraLife
  */
 export var PlatformAPI = {
 	emitter: null,
@@ -88,7 +89,15 @@ export var PlatformAPI = {
         }
 
 		this.emitter.dispatchEvent(event);
-	}
+	},
+    useExtraLife: function (cb) {
+        var event = new CustomEvent('useExtraLife', {
+            detail: {
+                callback: cb
+            }
+        });
+        this.emitter.dispatchEvent(event);
+    }
 };
 
 
@@ -250,6 +259,9 @@ PostMessageBridge.prototype._resolveAPICall = function (method, messageId, opt_d
 			}
 			PlatformAPI.start(opt_data, cb);
 			break;
+        case "useExtraLife":
+            PlatformAPI.useExtraLife(cb);
+            break;
 		default:
 		    if (!core.isSilentModeEnabled()) {
 			    console.error("Unknown method call");

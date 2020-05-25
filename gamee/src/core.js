@@ -107,8 +107,8 @@ export var core = (function () {
 
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
-        VERSION: "2.4.0", // version of the gamee library
-        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData","rewardedAds","coins","logEvents","playerData","share", "gems"], // supported capabilities
+        VERSION: "2.5.0", // version of the gamee library
+        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData", "rewardedAds", "logEvents", "playerData", "platformExtraLife", "missions"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
         onReady: noop, // for intercepting real onReady because of behind the scenes variant handling
@@ -301,6 +301,23 @@ export var core = (function () {
         // core.native.createRequest(method, requestData, callback);
     };
 
+    /**
+     * Update mission number
+     * @param {number} missionNumber
+     */
+    core.updateMissionProgress = function (missionNumber) {
+        this.native.createRequest("updateMissionProgress", {
+           missionNumber: parseInt(missionNumber)
+        });
+    }
+
+    /**
+     * Send to app that game started (when start game from lobby)
+     */
+    core.gameStart = function () {
+        this.native.createRequest("gameStart");
+    };
+
     /** ### gamee.gameOver
      *
      * Indicates the game has ended, the game is waiting for subsequent onGameStart.
@@ -388,76 +405,6 @@ export var core = (function () {
 
     core.requestPlayerSaveState = function (userID, cb) {
         this.native.createRequest("requestPlayerSaveState", {userID}, function (responseData) {
-            cb(null, responseData);
-        });
-    };
-
-    core.purchaseItemWithCoins = function (options, cb, oldMethod) {
-
-        if(!cache.capabilities.coins)
-            throw "Coins purchases not supported, you must add the capability on gamee.Init";
-
-        if (options) {
-            var propertiesList = ["coinsCost","itemName"];
-            propertiesList.forEach(function (property){
-                if(!options.hasOwnProperty(property))
-                    throw "Purchase Options must have `"+property+"` property"
-            })
-        }
-
-        if (!this.isSilentModeEnabled()) {
-            console.log(options);
-        }
-
-        var method = "purchaseItemWithCoins";
-        if (oldMethod !== undefined && oldMethod === true) {
-            method = "purchaseItem";
-        }
-        this.native.createRequest(method, options, function (responseData) {
-            cb(null, responseData);
-        });
-    };
-
-    core.purchaseItemWithGems = function (options, cb) {
-
-        if(!cache.capabilities.gems)
-            throw "Gems purchases not supported, you must add the capability on gamee.Init";
-
-        if (options) {
-            var propertiesList = ["gemsCost","itemName"];
-            propertiesList.forEach(function (property){
-                if(!options.hasOwnProperty(property))
-                    throw "Purchase options must have `"+property+"` property"
-            })
-        }
-
-        if (!this.isSilentModeEnabled()) {
-            console.log(options);
-        }
-
-        this.native.createRequest("purchaseItemWithGems", options, function (responseData) {
-            cb(null, responseData);
-        });
-    };
-
-    core.share = function (options, cb) {
-
-        if(!cache.capabilities.share)
-            throw "Share option not supported, you must add the capability on gamee.Init";
-
-        if (options) {
-            var propertiesList = ["destination"];
-            propertiesList.forEach(function (property){
-                if(!options.hasOwnProperty(property))
-                    throw "Share Options must have `"+property+"` property";
-            })
-        }
-
-        if (!this.isSilentModeEnabled()) {
-            console.log(options);
-        }
-
-        this.native.createRequest("share",options, function (responseData) {
             cb(null, responseData);
         });
     };

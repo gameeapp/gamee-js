@@ -1,4 +1,4 @@
-/*! @preserve build time 2019-08-27 08:54:59 */
+/*! @preserve build time 2020-05-25 20:51:35 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -329,8 +329,8 @@ var core = exports.core = function () {
 
     /** internal variables/constants (uppercase) coupled inside separate object for potential easy referencing */
     var internals = {
-        VERSION: "2.4.0", // version of the gamee library
-        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData", "rewardedAds", "coins", "logEvents", "playerData", "share", "gems"], // supported capabilities
+        VERSION: "2.5.0", // version of the gamee library
+        CAPABILITIES: ["ghostMode", "saveState", "replay", "socialData", "rewardedAds", "logEvents", "playerData", "platformExtraLife", "missions"], // supported capabilities
         variant: 0, // for automating communication with server
         soundUnlocked: false,
         onReady: noop, // for intercepting real onReady because of behind the scenes variant handling
@@ -520,6 +520,23 @@ var core = exports.core = function () {
         // core.native.createRequest(method, requestData, callback);
     };
 
+    /**
+     * Update mission number
+     * @param {number} missionNumber
+     */
+    core.updateMissionProgress = function (missionNumber) {
+        this.native.createRequest("updateMissionProgress", {
+            missionNumber: parseInt(missionNumber)
+        });
+    };
+
+    /**
+     * Send to app that game started (when start game from lobby)
+     */
+    core.gameStart = function () {
+        this.native.createRequest("gameStart");
+    };
+
     /** ### gamee.gameOver
      *
      * Indicates the game has ended, the game is waiting for subsequent onGameStart.
@@ -602,70 +619,6 @@ var core = exports.core = function () {
 
     core.requestPlayerSaveState = function (userID, cb) {
         this.native.createRequest("requestPlayerSaveState", { userID: userID }, function (responseData) {
-            cb(null, responseData);
-        });
-    };
-
-    core.purchaseItemWithCoins = function (options, cb, oldMethod) {
-
-        if (!cache.capabilities.coins) throw "Coins purchases not supported, you must add the capability on gamee.Init";
-
-        if (options) {
-            var propertiesList = ["coinsCost", "itemName"];
-            propertiesList.forEach(function (property) {
-                if (!options.hasOwnProperty(property)) throw "Purchase Options must have `" + property + "` property";
-            });
-        }
-
-        if (!this.isSilentModeEnabled()) {
-            console.log(options);
-        }
-
-        var method = "purchaseItemWithCoins";
-        if (oldMethod !== undefined && oldMethod === true) {
-            method = "purchaseItem";
-        }
-        this.native.createRequest(method, options, function (responseData) {
-            cb(null, responseData);
-        });
-    };
-
-    core.purchaseItemWithGems = function (options, cb) {
-
-        if (!cache.capabilities.gems) throw "Gems purchases not supported, you must add the capability on gamee.Init";
-
-        if (options) {
-            var propertiesList = ["gemsCost", "itemName"];
-            propertiesList.forEach(function (property) {
-                if (!options.hasOwnProperty(property)) throw "Purchase options must have `" + property + "` property";
-            });
-        }
-
-        if (!this.isSilentModeEnabled()) {
-            console.log(options);
-        }
-
-        this.native.createRequest("purchaseItemWithGems", options, function (responseData) {
-            cb(null, responseData);
-        });
-    };
-
-    core.share = function (options, cb) {
-
-        if (!cache.capabilities.share) throw "Share option not supported, you must add the capability on gamee.Init";
-
-        if (options) {
-            var propertiesList = ["destination"];
-            propertiesList.forEach(function (property) {
-                if (!options.hasOwnProperty(property)) throw "Share Options must have `" + property + "` property";
-            });
-        }
-
-        if (!this.isSilentModeEnabled()) {
-            console.log(options);
-        }
-
-        this.native.createRequest("share", options, function (responseData) {
             cb(null, responseData);
         });
     };
@@ -957,6 +910,7 @@ var Gamee = exports.Gamee = function Gamee(platform) {
      * @fires gameeAPI:GameeEmitter~unpause
      * @fires gameeAPI:GameeEmitter~ghostHide
      * @fires gameeAPI:GameeEmitter~ghostShow
+     * @fires gameeAPI:GameeEmitter~useExtraLife
      */
     this.emitter = new GameeEmitter();
     this._platform = platform;
@@ -1079,6 +1033,24 @@ Gamee.prototype = function () {
         },
 
         /**
+         * @memberOf Gamee
+         * @param {number} missionNumber
+         */
+        updateMissionProgress: function updateMissionProgress(missionNumber) {
+            (0, _core.validateDataType)(missionNumber, 'number', 'missionNumber');
+            if (missionNumber < 0 || missionNumber > 100) throw new RangeError('Mission number can be between [0-100]');
+
+            _core.core.updateMissionProgress(missionNumber);
+        },
+
+        /**
+         * @memberOf Gamee
+         */
+        gameStart: function gameStart() {
+            _core.core.gameStart();
+        },
+
+        /**
          * gameOver
          *
          * @memberof Gamee
@@ -1186,47 +1158,6 @@ Gamee.prototype = function () {
             (0, _core.validateDataType)(cb, "function", "cb", "gamee.requestPlayerSaveState");
 
             _core.core.requestPlayerSaveState(userID, cb);
-        },
-
-        /*
-        *purchaseItem
-        *@member of Gamee
-        *@param {object} purchaseDetails
-        *@param {Gamee~purchaseItemDataCallback} cb
-        */
-        purchaseItem: function purchaseItem(purchaseDetails, cb) {
-
-            (0, _core.validateDataType)(purchaseDetails, "object", "purchaseDetails", "gamee.purchaseItem");
-            (0, _core.validateDataType)(cb, "function", "cb", "gamee.purchaseItem");
-
-            _core.core.purchaseItemWithCoins(purchaseDetails, cb, true);
-        },
-
-        /*
-        *purchaseItemWithCoins
-        *@member of Gamee
-        *@param {object} purchaseDetails
-        *@param {Gamee~purchaseItemDataCallback} cb
-        */
-        purchaseItemWithCoins: function purchaseItemWithCoins(purchaseDetails, cb) {
-            (0, _core.validateDataType)(purchaseDetails, "object", "purchaseDetails", "gamee.purchaseItemWithCoins");
-            (0, _core.validateDataType)(cb, "function", "cb", "gamee.purchaseItemWithCoins");
-
-            _core.core.purchaseItemWithCoins(purchaseDetails, cb);
-        },
-
-        /*
-        *purchaseItemWithGems
-        *@member of Gamee
-        *@param {object} purchaseDetails
-        *@param {Gamee~purchaseItemWithGemsDataCallback} cb
-        */
-        purchaseItemWithGems: function purchaseItemWithGems(purchaseDetails, cb) {
-
-            (0, _core.validateDataType)(purchaseDetails, "object", "purchaseDetails", "gamee.purchaseItemWithGems");
-            (0, _core.validateDataType)(cb, "function", "cb", "gamee.purchaseItemWithGems");
-
-            _core.core.purchaseItemWithGems(purchaseDetails, cb);
         },
 
         /*share
@@ -1423,6 +1354,7 @@ var _core = __webpack_require__(1);
  * @param {function} _mute
  * @param {function} _unmute
  * @param {function} _start
+ * @param {function} _useExtraLife
  */
 var PlatformAPI = exports.PlatformAPI = {
 	emitter: null,
@@ -1494,6 +1426,14 @@ var PlatformAPI = exports.PlatformAPI = {
 			event.detail.replayData = data.replayData;
 		}
 
+		this.emitter.dispatchEvent(event);
+	},
+	useExtraLife: function useExtraLife(cb) {
+		var event = new CustomEvent('useExtraLife', {
+			detail: {
+				callback: cb
+			}
+		});
 		this.emitter.dispatchEvent(event);
 	}
 };
@@ -1648,6 +1588,9 @@ PostMessageBridge.prototype._resolveAPICall = function (method, messageId, opt_d
 				throw "Method _start missing params";
 			}
 			PlatformAPI.start(opt_data, cb);
+			break;
+		case "useExtraLife":
+			PlatformAPI.useExtraLife(cb);
 			break;
 		default:
 			if (!_core.core.isSilentModeEnabled()) {

@@ -32,6 +32,7 @@ export var Gamee = function (platform) {
      * @fires gameeAPI:GameeEmitter~unpause
      * @fires gameeAPI:GameeEmitter~ghostHide
      * @fires gameeAPI:GameeEmitter~ghostShow
+     * @fires gameeAPI:GameeEmitter~useExtraLife
      */
     this.emitter = new GameeEmitter();
     this._platform = platform;
@@ -157,6 +158,25 @@ Gamee.prototype = (function () {
         },
 
         /**
+         * @memberOf Gamee
+         * @param {number} missionNumber
+         */
+        updateMissionProgress: function (missionNumber) {
+            validateDataType(missionNumber, 'number', 'missionNumber');
+            if (missionNumber < 0 || missionNumber > 100)
+                throw new RangeError('Mission number can be between [0-100]');
+
+            core.updateMissionProgress(missionNumber);
+        },
+
+        /**
+         * @memberOf Gamee
+         */
+        gameStart: function () {
+            core.gameStart();
+        },
+
+        /**
          * gameOver
          *
          * @memberof Gamee
@@ -267,47 +287,6 @@ Gamee.prototype = (function () {
             validateDataType(cb, "function", "cb", "gamee.requestPlayerSaveState");
 
             core.requestPlayerSaveState(userID, cb);
-        },
-
-        /*
-        *purchaseItem
-        *@member of Gamee
-        *@param {object} purchaseDetails
-        *@param {Gamee~purchaseItemDataCallback} cb
-        */
-        purchaseItem: function (purchaseDetails,cb){
-
-            validateDataType(purchaseDetails,"object","purchaseDetails","gamee.purchaseItem");
-            validateDataType(cb,"function","cb","gamee.purchaseItem");
-
-            core.purchaseItemWithCoins(purchaseDetails, cb, true)
-        },
-
-        /*
-        *purchaseItemWithCoins
-        *@member of Gamee
-        *@param {object} purchaseDetails
-        *@param {Gamee~purchaseItemDataCallback} cb
-        */
-        purchaseItemWithCoins: function (purchaseDetails, cb) {
-            validateDataType(purchaseDetails,"object","purchaseDetails","gamee.purchaseItemWithCoins");
-            validateDataType(cb,"function","cb","gamee.purchaseItemWithCoins");
-
-            core.purchaseItemWithCoins(purchaseDetails, cb)
-        },
-
-        /*
-        *purchaseItemWithGems
-        *@member of Gamee
-        *@param {object} purchaseDetails
-        *@param {Gamee~purchaseItemWithGemsDataCallback} cb
-        */
-        purchaseItemWithGems: function (purchaseDetails,cb) {
-
-            validateDataType(purchaseDetails,"object","purchaseDetails","gamee.purchaseItemWithGems");
-            validateDataType(cb,"function","cb","gamee.purchaseItemWithGems");
-
-            core.purchaseItemWithGems(purchaseDetails,cb)
         },
 
         /*share
