@@ -307,7 +307,7 @@ export var core = (function () {
      */
     core.updateMissionProgress = function (missionNumber) {
         this.native.createRequest("updateMissionProgress", {
-           missionNumber: parseInt(missionNumber)
+            missionProgress: parseInt(missionNumber)
         });
     }
 

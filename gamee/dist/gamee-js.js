@@ -1,4 +1,4 @@
-/*! @preserve build time 2020-05-25 20:51:35 */
+/*! @preserve build time 2020-05-27 15:53:51 */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -526,7 +526,7 @@ var core = exports.core = function () {
      */
     core.updateMissionProgress = function (missionNumber) {
         this.native.createRequest("updateMissionProgress", {
-            missionNumber: parseInt(missionNumber)
+            missionProgress: parseInt(missionNumber)
         });
     };
 
