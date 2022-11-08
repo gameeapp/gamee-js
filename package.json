@@ -20,10 +20,10 @@
     "babel-loader": "^7.0.0",
     "babel-preset-env": "^1.5.1",
     "banner-webpack-plugin": "^0.2.3",
-    "html-webpack-plugin": "^2.29.0",
+    "html-webpack-plugin": "^5.5.0",
     "mocha": "^3.4.2",
     "mocha-loader": "^1.1.1",
-    "webpack": "^2.7.0",
+    "webpack": "^5.74.0",
     "webpack-dev-server": "^2.11.3",
     "webpack-merge": "^4.1.0"
   }
